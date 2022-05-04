@@ -19,14 +19,25 @@ typedef struct s_read_info
 	int			nb_bytes_read;
 }	t_read_info;
 
+typedef struct s_infile
+{
+	char	*infiles;		/* Path for infile, if it exists */
+	char	*delimiter;		/* Delimiter for heredocs. NULL if infile is not a heredoc. */
+	int		fd;				/* File descriptor for input, set to stdin by default */
+}	t_infile;
+
+typedef struct s_outfile
+{
+	char	*infiles;		/* Path for infile, if it exists */
+	int		fd;				/* File descriptor for input, set to stdin by default */
+	bool	append_mode;	/* Determines whether the redir is '>' or '>>' */
+}	t_outfile;
 
 typedef struct s_io
 {
-	char	**infiles;		/* Path for infile, if it exists */
 	char	**outfiles;		/* Path for outfile, if it exists */
-	int		in;				/* File descriptor for input, set to stdin by default */
 	int		out;			/* File descriptor for output, set to stdout by default */
-	bool	append_mode;
+	int		open_mode;		/* O_APPEND | O_RDWR | O_RDONLY | O_WRONLY | HEREDOC */
 }	t_io;
 
 typedef struct s_env
@@ -41,15 +52,18 @@ typedef struct s_env
 
 typedef struct s_cmd
 {
-	t_io	io;				/* Pointer for I/O struct */
-	char	**args;			/* Input arguments for the command, element 0 is the command path */
-	char	**envp;			/* Environment path for the current shell */
-	char	*filepath;		/* Path to command */
-	char	*errname;		/* Name or path associated with error */
-	int		errnum;			/* Error status (set during parsing) */
-	int		builtin;		/* Built in command or sys command */
+	t_infile	*in;		/* in_files from parsing */
+	t_outfile	*out;		/* out_files from parsing */
+	char		**args;		/* Input arguments for the command, element 0 is the command path */
+	char		**envp;		/* Environment path for the current shell */
+	char		*filepath;	/* Path to command */
+	char		*errname;	/* Name or path associated with error */
+	int			errnum;		/* Error status (set during parsing) */
+	int			builtin;	/* Built in command or sys command */
 	//	NEW
-	int		nb_args;		/* Number of args parsed */
+	int			nb_args;	/* Number of args parsed */
+	int			nb_ins;		/* Number of in_files */
+	int			nb_outs;	/* Number of out_files */
 }	t_cmd;
 
 typedef struct s_shell
