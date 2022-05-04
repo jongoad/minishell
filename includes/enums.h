@@ -15,14 +15,13 @@ enum parse
 /* Builtin command flags */
 enum builtin
 {
-	ECHO = 0,
-	ECHO_N = 1,
-	CD = 2,
-	PWD = 3,
-	EXPORT = 4,
-	UNSET = 5,
-	ENV = 6,
-	EXIT = 7
+	E_ECHO = 0,
+	E_CD = 1,
+	E_PWD = 2,
+	E_EXPORT = 3,
+	E_UNSET = 4,
+	E_ENV = 5,
+	E_EXIT = 6
 };
 
 #endif

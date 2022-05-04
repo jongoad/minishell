@@ -33,12 +33,15 @@
 /* Function prototypes */
 
 
-
-
-
 /* Builtin commands */
-int		echo(t_shell *sh, t_cmd *cmd);
-int		echo_n(t_shell *sh, t_cmd *cmd);
+void	builtin_echo(t_shell *sh, t_cmd *cmd);
+void	builtin_cd(t_shell *sh, t_cmd *cmd);
+void	builtin_pwd(t_shell *sh, t_cmd *cmd);
+void	builtin_export(t_shell *sh, t_cmd *cmd);
+void	builtin_unset(t_shell *sh, t_cmd *cmd);
+void	builtin_env(t_shell *sh, t_cmd *cmd);
+void	builtin_exit(t_shell *sh, t_cmd *cmd);
+
 
 /* Utility functions */
 int		putchar_fd(char c, int fd);

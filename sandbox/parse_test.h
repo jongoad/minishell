@@ -82,7 +82,7 @@ typedef struct s_shell
 //	parse.c
 void	skip_whitespaces(char **line);
 int		parse_test(t_shell *sh);
-char	*get_word(char **line);
+char	*get_token(char **line);
 
 //	cmd_utils.c
 void	add_cmd_arg(t_cmd *cmd, char *arg);

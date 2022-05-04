@@ -3,11 +3,14 @@
 
 # include "minishell.h"
 
+typedef struct s_cmd	t_cmd;
+typedef struct s_shell	t_shell;
 typedef struct s_builtin
 {
-	int		*alias[9];		/* Array of builtin command aliases */
-	void	*builtin[9];	/* Array of function pointers */
+	char	*alias[7];							/* Array of builtin command aliases */
+	void	(*f[7])(t_shell *, t_cmd *);	/* Array of function pointers */
 }	t_builtin;
+
 typedef struct s_read_info
 {
 	char		*buff;
@@ -19,14 +22,14 @@ typedef struct s_read_info
 
 typedef struct s_infile
 {
-	char	*infiles;		/* Path for infile, if it exists */
+	char	*infile;		/* Path for infile, if it exists */
 	char	*delimiter;		/* Delimiter for heredocs. NULL if infile is not a heredoc. */
 	int		fd;				/* File descriptor for input, set to stdin by default */
 }	t_infile;
 
 typedef struct s_outfile
 {
-	char	*infiles;		/* Path for infile, if it exists */
+	char	*outfile;		/* Path for infile, if it exists */
 	int		fd;				/* File descriptor for input, set to stdin by default */
 	bool	append_mode;	/* Determines whether the redir is '>' or '>>' */
 }	t_outfile;
@@ -48,10 +51,10 @@ typedef struct s_env
 	int		shlvl;			/* The depth of the current shell instance */
 }	t_env;
 
-typedef struct s_cmd
+struct s_cmd
 {
-	t_infile	*in;		/* in_files from parsing */
-	t_outfile	*out;		/* out_files from parsing */
+	t_infile	*ins;		/* in_files from parsing */
+	t_outfile	*outs;		/* out_files from parsing */
 	char		**args;		/* Input arguments for the command, element 0 is the command path */
 	char		**envp;		/* Environment path for the current shell */
 	char		*filepath;	/* Path to command */
@@ -62,18 +65,19 @@ typedef struct s_cmd
 	int			nb_args;	/* Number of args parsed */
 	int			nb_ins;		/* Number of in_files */
 	int			nb_outs;	/* Number of out_files */
-}	t_cmd;
+};
 
-typedef struct s_shell
+struct s_shell
 {
-	t_env	env;			/* Environment variables struct */
-	int		*pipe;			/* Array of ints to hold pipe data */
-	char	*line;			/* Buffer for line return from readlin */
-	t_cmd	**cmds;			/* Array of command structs */
-	pid_t	*pids;			/* Array of pid for managing waits */
-	int		nb_cmds;		/* Number of commands parsed */
-	int		ret_val;		/* Return value of last executed command */
-}	t_shell;
+	t_env		env;			/* Environment variables struct */
+	int			*pipe;			/* Array of ints to hold pipe data */
+	char		*line;			/* Buffer for line return from readlin */
+	t_cmd		**cmds;			/* Array of command structs */
+	pid_t		*pids;			/* Array of pid for managing waits */
+	int			nb_cmds;		/* Number of commands parsed */
+	int			ret_val;		/* Return value of last executed command */
+	t_builtin	builtins;     /* Builtin command struct */
+};
 
 
 #endif

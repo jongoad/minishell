@@ -1,40 +1,48 @@
 #include "../includes/minishell.h"
 
 /* Echo string */
-void	echo(t_shell *sh, t_cmd *cmd)
+void	builtin_echo(t_shell *sh, t_cmd *cmd)
 {
 	int	i;
+	int	fd;
 
 	i = 0;
-	if (cmd->errnum)
+	if (!ft_strcmp(cmd->args[0], "-n"))
+	{
+		echo_n(sh, cmd);
 		return ;
+	}
+	// get the fd of the last outfile only
+	fd = cmd->outs[cmd->nb_ins - 1].fd;
 	while (cmd->args[i])
 	{
-		putstr_fd(cmd->args[i], cmd->io.out);
+		putstr_fd(cmd->args[i], fd);
 		if (cmd->args[i + 1])
-			putchar_fd(' ', cmd->io.out);
+			putchar_fd(' ', fd);
 		i++;
 	}
-	putchar_fd('\n', cmd->io.out);
+	putchar_fd('\n', fd);
 }
 
 /* Echo string without newline */
-void	echo_n(t_shell *sh, t_cmd *cmd)
+void	builtin_echo_n(t_shell *sh, t_cmd *cmd)
 {
 	int	i;
+	int fd;
 
 	i = 0;
+	fd = cmd->outs[cmd->nb_outs - 1].fd;
 	while (cmd->args[i])
 	{
-		putstr_fd(cmd->args[i], cmd->io.out);
+		putstr_fd(cmd->args[i], fd);
 		if (cmd->args[i + 1])
-			putchar_fd(' ', cmd->io.out);
+			putchar_fd(' ', fd);
 		i++;
 	}
 }
 
 /* Change directory */
-void	cd(t_shell *sh, t_cmd *cmd)
+void	builtin_cd(t_shell *sh, t_cmd *cmd)
 {
 	if (chdir(cmd->args[0]))
 	{
@@ -45,7 +53,7 @@ void	cd(t_shell *sh, t_cmd *cmd)
 //Check use of perror here?
 
 /* Print path to current directory */
-void	pwd(t_shell *sh, t_cmd *cmd)
+void	builtin_pwd(t_shell *sh, t_cmd *cmd)
 {
 	char *buf;
 
@@ -70,19 +78,19 @@ void	pwd(t_shell *sh, t_cmd *cmd)
 }
 
 /* Create a new env var for current shell instance */
-void	export(t_shell *sh, t_cmd *cmd)
+void	builtin_export(t_shell *sh, t_cmd *cmd)
 {
 
 }
 
 /* Unset env var for current shell instance */
-void	unset(t_shell *sh, t_cmd *cmd)
+void	builtin_unset(t_shell *sh, t_cmd *cmd)
 {
 
 }
 
 /* Print out env vars for current shell instance */
-int	env(t_shell *sh, t_cmd *cmd)
+int	builtin_env(t_shell *sh, t_cmd *cmd)
 {
 	int	i;
 
@@ -91,15 +99,15 @@ int	env(t_shell *sh, t_cmd *cmd)
 		return (msg_err_ret(cmd->errnum, cmd->errname));
 	while (sh->env.envp[i])
 	{
-		pustr_fd(sh->env.envp[i], cmd->io.out);
-		putchar_fd('\n', cmd->io.out);
+		pustr_fd(sh->env.envp[i], cmd->outs[cmd->nb_outs - 1].fd);
+		putchar_fd('\n', cmd->outs[cmd->nb_outs - 1].fd);
 		i++;
 	}
 	return (cmd->errnum);
 }
 
 /* Exit current shell instance */
-void	sh_exit(t_shell *sh, int ret)
+void	builtin_exit(t_shell *sh, int ret)
 {
 	cleanup(sh);
 	exit(ret);
