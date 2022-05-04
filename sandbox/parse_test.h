@@ -21,8 +21,8 @@ typedef struct s_read_info
 
 typedef struct s_io
 {
-	char	**infile;		/* Path for infile, if it exists */
-	char	**outfile;		/* Path for outfile, if it exists */
+	char	**infiles;		/* Path for infile, if it exists */
+	char	**outfiles;		/* Path for outfile, if it exists */
 	int		in;				/* File descriptor for input, set to stdin by default */
 	int		out;			/* File descriptor for output, set to stdout by default */
 	bool	append_mode;

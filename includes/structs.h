@@ -15,7 +15,7 @@ typedef struct s_io
 	char	**outfile;		/* Path for outfile, if it exists */
 	int		in;				/* File descriptor for input, set to stdin by default */
 	int		out;			/* File descriptor for output, set to stdout by default */
-	bool	append_mode;	/* Determines whether the outfile redirection is '>>' or '>' */
+	int		open_mode;		/* Can be used with open() options O_APPEND, O_RDONLY, O_WRONLY */
 }	t_io;
 
 typedef struct s_env
