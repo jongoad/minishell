@@ -2,6 +2,8 @@
 
 int	is_set(char const c, char const *set)
 {
+	if (!set)
+		return (0);
 	while (*set)
 	{
 		if (*set == c)

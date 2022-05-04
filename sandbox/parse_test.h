@@ -7,6 +7,7 @@
 
 # define BUFFSIZE 4194304
 # define WHITESPACES "\n \t"
+# define PARSE_SPEC_CH "<>\"\'$|"	// to add: &()
 
 // STRUCTS
 typedef struct s_read_info
@@ -47,6 +48,8 @@ typedef struct s_cmd
 	char	*errname;		/* Name or path associated with error */
 	int		errnum;			/* Error status (set during parsing) */
 	int		builtin;		/* Built in command or sys command */
+	//	NEW
+	int		nb_args;		/* Number of args parsed */
 }	t_cmd;
 
 typedef struct s_shell
@@ -62,6 +65,16 @@ typedef struct s_shell
 
 
 // FUNCTIONS
+//	parse.c
+void	skip_whitespaces(char **line);
+int		parse_test(t_shell *sh);
+char	*get_word(char **line);
+
+//	cmd_utils.c
+void	add_cmd_arg(t_cmd *cmd, char *arg);
+t_cmd	*add_cmd(t_shell *sh);
+t_cmd	*get_new_cmd(void);
+
 //	init_test.c
 t_shell	*init_shell(void);
 

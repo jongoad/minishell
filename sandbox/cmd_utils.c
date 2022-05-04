@@ -19,7 +19,7 @@ t_cmd	*add_cmd(t_shell *sh)
 
 	sh->nb_cmds++;
 	new_arr = ft_xalloc((sh->nb_cmds + 1) * sizeof(t_cmd *));
-	new_cmd = get_new_cmd();
+	new_cmd = ft_xalloc(sizeof(t_cmd));
 	i = 0;
 	while (i < sh->nb_cmds - 1)
 	{
@@ -33,34 +33,23 @@ t_cmd	*add_cmd(t_shell *sh)
 	return (new_cmd);
 }
 
-char	*get_word(char **line)
+void	add_cmd_arg(t_cmd *cmd, char *arg)
 {
-	char	*word;
+	t_cmd	**new_array;
+	t_cmd	*new_arg;
 	int		i;
 
-	if (!line || !*line)
-		return (NULL);
+	cmd->nb_args++;
+	new_array = ft_xalloc((cmd->nb_args + 1) * sizeof(char *));
 	i = 0;
-	while (*line[i] && !is_set(*line[i], WHITESPACES))
+	while (i < cmd->nb_args)
 	{
-		
+		new_array[i] = cmd->args[i];
+		i++;
 	}
-}
-
-int	parse_test(t_shell *sh)
-{
-	t_cmd	*curr_cmd;
-	char	*line;
-
-	curr_cmd = add_cmd(sh);
-	line = sh->line;
-	skip_whitespaces(&line);
-	parse_special_chars(curr_cmd, &line);
-	curr_cmd->filepath = get_word(&line);
-
-	while (line[i])
-	{
-		parse_redirs(&line[i]);
-		
-	}
+	new_array[i++] = new_arg;
+	new_array[i] = NULL;
+	free(cmd->args);
+	cmd->args = new_array;
+	return (new_arg);
 }
