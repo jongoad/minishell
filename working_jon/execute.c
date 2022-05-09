@@ -22,13 +22,13 @@ void	execute(t_shell *sh)
 	while (i < sh->nb_cmds)
 	{
 		builtin = check_builtins(sh, sh->cmds[i]);
-		if (sh->nb_cmds == 1 && sh->cmds[i]->builtin >= 0)
+		if (sh->nb_cmds == 1 && sh->cmds[i]->builtin >= 0)					/* If there is only one command and it is a builtin, run it without forkin */
 			sh->ret_val = run_builtin_parent(sh, sh->cmds[i], i);
 		else
 			run_cmd(sh, sh->cmds[i], i);
 		i++;
 	}
-	if (sh->nb_cmds > 1 || (sh->nb_cmds == 1 && sh->cmds[0]->builtin < 0))
+	if (sh->nb_cmds > 1 || (sh->nb_cmds == 1 && sh->cmds[0]->builtin < 0))	/* Wait unless there was only one command and it was a builtin */
 	{
 		while (wait(&sh->ret_val) > 0)
 			sh->ret_val >>= 8;
