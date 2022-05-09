@@ -8,7 +8,7 @@ typedef struct s_shell	t_shell;
 typedef struct s_builtin
 {
 	char	*alias[7];							/* Array of builtin command aliases */
-	void	(*f[7])(t_shell *, t_cmd *);	/* Array of function pointers */
+	int		(*f[7])(t_shell *, t_cmd *);		/* Array of function pointers */
 }	t_builtin;
 
 typedef struct s_read_info
@@ -29,8 +29,8 @@ typedef struct s_infile
 
 typedef struct s_outfile
 {
-	char	*outfile;		/* Path for infile, if it exists */
-	int		fd;				/* File descriptor for input, set to stdin by default */
+	char	*outfile;	 	/* Path for oufile, if it exists */
+	int		fd;				/* File descriptor for output, set to stdout by default */
 	bool	append_mode;	/* Determines whether the redir is '>' or '>>' */
 }	t_outfile;
 
@@ -76,7 +76,8 @@ struct s_shell
 	pid_t		*pids;			/* Array of pid for managing waits */
 	int			nb_cmds;		/* Number of commands parsed */
 	int			ret_val;		/* Return value of last executed command */
-	t_builtin	builtins;     /* Builtin command struct */
+	t_builtin	builtins;    	 /* Builtin command struct */
+	char		*prompt;
 };
 
 

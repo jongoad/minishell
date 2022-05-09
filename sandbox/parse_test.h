@@ -7,7 +7,7 @@
 
 # define BUFFSIZE 4194304
 # define WHITESPACES "\n \t"
-# define PARSE_SPEC_CH "<>\"\'$|"	// to add: &()
+# define PARSE_SPEC_CH "<>\"\'|"	// to add: &()
 
 // STRUCTS
 typedef struct s_read_info
@@ -19,9 +19,15 @@ typedef struct s_read_info
 	int			nb_bytes_read;
 }	t_read_info;
 
+typedef struct s_clarg
+{
+	char	**args;
+	int		n_args;
+}	t_clarg;
+
 typedef struct s_infile
 {
-	char	*infiles;		/* Path for infile, if it exists */
+	char	*infile;		/* Path for infile, if it exists */
 	char	*delimiter;		/* Delimiter for heredocs. NULL if infile is not a heredoc. */
 	int		fd;				/* File descriptor for input, set to stdin by default */
 }	t_infile;
@@ -32,13 +38,6 @@ typedef struct s_outfile
 	int		fd;				/* File descriptor for input, set to stdin by default */
 	bool	append_mode;	/* Determines whether the redir is '>' or '>>' */
 }	t_outfile;
-
-typedef struct s_io
-{
-	char	**outfiles;		/* Path for outfile, if it exists */
-	int		out;			/* File descriptor for output, set to stdout by default */
-	int		open_mode;		/* O_APPEND | O_RDWR | O_RDONLY | O_WRONLY | HEREDOC */
-}	t_io;
 
 typedef struct s_env
 {
@@ -52,8 +51,8 @@ typedef struct s_env
 
 typedef struct s_cmd
 {
-	t_infile	*in;		/* in_files from parsing */
-	t_outfile	*out;		/* out_files from parsing */
+	t_infile	*ins;		/* in_files from parsing */
+	t_outfile	*outs;		/* out_files from parsing */
 	char		**args;		/* Input arguments for the command, element 0 is the command path */
 	char		**envp;		/* Environment path for the current shell */
 	char		*filepath;	/* Path to command */
@@ -81,8 +80,8 @@ typedef struct s_shell
 // FUNCTIONS
 //	parse.c
 void	skip_whitespaces(char **line);
-int		parse_test(t_shell *sh);
-char	*get_token(char **line);
+int		parse_test(t_shell *sh, char *rem_line);
+char	*get_cl_tok(char **line);
 
 //	cmd_utils.c
 void	add_cmd_arg(t_cmd *cmd, char *arg);

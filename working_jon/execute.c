@@ -6,49 +6,44 @@
 /*   By: jgoad <jgoad@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/05/02 15:43:30 by jgoad             #+#    #+#             */
-/*   Updated: 2022/05/04 16:32:34 by jgoad            ###   ########.fr       */
+/*   Updated: 2022/05/09 18:23:39 by jgoad            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/minishell.h"
 
+/* -------- TODO FOR EXECUTION --------
+
+	- Deal with expansion of variables
+	- Deal with closing file descriptors to prevent leaks
+
+	- Ensure cmd->errnum is initialized to 0 for all commands prior to execution
+
+
+*/
+
 /* Control function for executing commands */
 void	execute(t_shell *sh)
 {
 	int	i;
-	int builtin;
 
 	i = 0;
 	while (i < sh->nb_cmds)
 	{
-		builtin = check_builtins(sh, sh->cmds[i]);
-		if (sh->nb_cmds == 1 && sh->cmds[i]->builtin >= 0)					/* If there is only one command and it is a builtin, run it without forkin */
+		check_builtins(sh, sh->cmds[i]);									/* Check if command is builtin, and if so get the function index */
+		if (sh->nb_cmds == 1 && sh->cmds[i]->builtin >= 0)					/* If there is only one command and it is a builtin, run it without forking */
 			sh->ret_val = run_builtin_parent(sh, sh->cmds[i], i);
 		else
-			run_cmd(sh, sh->cmds[i], i);
+			run_cmd(sh, sh->cmds[i], i);									/* Run command(s) in forked processes */
 		i++;
 	}
 	if (sh->nb_cmds > 1 || (sh->nb_cmds == 1 && sh->cmds[0]->builtin < 0))	/* Wait unless there was only one command and it was a builtin */
 	{
 		while (wait(&sh->ret_val) > 0)
-			sh->ret_val >>= 8;
+			sh->ret_val >>= 8;												/* Update return value from each forked process */
 	}
-	clean_cmds(sh);	//Clear cmd data
-	return ;
+	clean_cmds(sh);															/* Clear command data before returning to main shell loop*/
 }
-
-/* Run export, unset, or exit without forking */
-int	run_builtin_parent(t_shell *sh, t_cmd *cmd, int i)
-{
-	sh->builtins.f[cmd->builtin](sh, cmd);
-	if (cmd->errnum)
-		msg_err_ret(cmd->errnum, cmd->errname);
-	sh->pids[i] == 0; //Check what this pid value needs to be
-	return (cmd->errnum);
-}
-//When running a command this way, the PID array will be incremented without a pid being assigned.
-//Need to either handle pid incrementing, or just preset PID memory beforehand
-
 
 /* Fork process and run a command */
 void	run_cmd(t_shell *sh, t_cmd *cmd, int i)
@@ -56,27 +51,26 @@ void	run_cmd(t_shell *sh, t_cmd *cmd, int i)
 	sh->pids[i] = fork();
 	if (sh->pids[i] == 0)
 	{
-		if (init_io(sh, cmd))						/* Check IO */
+		if (init_io(sh, cmd))												/* Check IO */
 		{
 			msg_err_return();
 			exit(cmd->errnum);
 		}
-		else if (cmd->builtin < 0)					/* If system command run with execve */
+		else if (cmd->builtin < 0)											/* If system command run with execve */
 		{
-			build_path();							/* Build file path for command */
+			build_path();													/* Build file path for command */
 			execve(cmd->filepath, cmd->args, sh->env.envp);
 		}
-		else										/* If built in command run in current process */
+		else																/* If built in command run in current process */
 		{
-			sh->builtins.f[cmd->builtin](sh, cmd);
+			cmd->errnum = sh->builtins.f[cmd->builtin](sh, cmd);
 			if (cmd->errnum)
 				msg_err_ret(cmd->errnum, cmd->errname);
 		}
-		cleanup(sh);
+		clean_fork(sh, cmd);														/* If built in function, clear memory before exit */
 		exit(cmd->errnum);
 	}
 }
-
 
 /* Init builtin commands struct */
 void	init_builtins(t_shell *sh)
@@ -122,7 +116,14 @@ int	check_builtins(t_shell *sh, t_cmd *cmd)
 	return (cmd->builtin = -1);
 }
 
-
+/* Run builtin command without forking */
+int	run_builtin_parent(t_shell *sh, t_cmd *cmd, int i)
+{
+	sh->builtins.f[cmd->builtin](sh, cmd);
+	if (cmd->errnum)
+		msg_err_ret(cmd->errnum, cmd->errname);
+	return (cmd->errnum);
+}
 
 /* Check input and output files and set up file descriptors */
 int init_io(t_shell *sh, t_cmd *cmd)
@@ -152,4 +153,16 @@ int init_io(t_shell *sh, t_cmd *cmd)
 			return (cmd->errnum);
 		}
 	}
+}
+
+/* Clear all command data before leaving execution */
+void	clean_cmds(t_shell *sh)
+{
+
+}
+
+/* Clear local copy of data in fork before exiting */
+void	clean_fork(t_shell *sh, t_cmd *cmd)
+{
+
 }

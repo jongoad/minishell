@@ -16,6 +16,7 @@ int	main(int argc, char *argv[], char *envp[])
 
 
 
+/* Container function for one iteration (loop) of shell */
 int	minishell(t_shell *sh)
 {
 	char *buf;
@@ -23,10 +24,4 @@ int	minishell(t_shell *sh)
 	parse();
 	execute();
 	return (sh->ret_val);
-}
-
-
-int	parse()
-{
-
 }

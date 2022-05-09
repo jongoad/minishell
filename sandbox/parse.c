@@ -9,8 +9,7 @@ void	skip_whitespaces(char **line)
 }
 
 /**
- *
- *	Parsing logic has changed!
+ *	@brief Parsing logic has changed!
  *
  *		Expansion cannot happen at parse time.
  *
@@ -23,9 +22,30 @@ void	skip_whitespaces(char **line)
  *			- multiple special characters
  *			- redirection character without an associated target
  *
+ *	CHALLENGES:
+ *		1.Parse conditions can get quite complex quite quickly. 
+ *			Making sure that every outcome is systematically taken care of is a complexity challenge
+ *		2.`'`, `"`, `<`, `>`, `|` seem to be my only conditions for breaking parsing so far
+ *		3. Managing expansions and parse errors with repeats of `>>>` or `||` for now
+ *
+ *	PLAN:
+ *		1. Parse into strings.
+ *		2. Print the parsed string array
+ *		3. Assign strings to respective buckets
+ *
+ *	NOTES:
+ *		- tokenize groups (separated by either a whitespace or a PARSE_SPEC_CH)
+ *		- "expand" quotes, as in group them together
+ *		- I need to have special parse statuses that tell me where I am in my parsing. 
+ *		- Expansion parsing is CRUCIAL for env var parsing
+ *
+ *	DECISION:
+ *		- expansion happens at parse time except for env variables, prepended by c == 26
+ *		- everything else will be parsed and expanded as shell variables
+ *		- `$` on a single line will be converted to `\26` (SUB)
+ *
  */
-
-char	*get_token(char **line)
+char	*get_cl_tok(char **line)
 {
 	char	*word;
 	int		word_len;
@@ -35,7 +55,8 @@ char	*get_token(char **line)
 	word_len = 0;
 	while (*line[word_len] && !is_set(*line[word_len], WHITESPACES))
 	{
-
+		if (*line[word_len] == '|')
+			break ;
 		word_len++;
 	}
 	if (!word_len)
@@ -51,31 +72,26 @@ char	*get_token(char **line)
 	return (word);
 }
 
-int	parse_test(t_shell *sh)
+int	parse_test(t_shell *sh, char *rem_line)
 {
 	t_cmd	*curr_cmd;
 	char	*line;
 
+	if (!*rem_line)
+		return (EXIT_SUCCESS);
 	curr_cmd = add_cmd(sh);
-	line = sh->line;
+	line = rem_line;
 	skip_whitespaces(&line);
 	if (*line && is_set(*line, PARSE_SPEC_CH))
-		parse_special_chars(curr_cmd, &line);
-	curr_cmd->filepath = get_token(&line);
-	if (!curr_cmd->filepath)
-	{
-		curr_cmd->errname = ft_strncpy(curr_cmd->errname, &line, 1);
-		curr_cmd->errnum = 12; // E_PARSE
-		return (curr_cmd->errnum);
-	}
-	while (*line)
+		get_cl(curr_cmd, &line);
+	while (*line && !is_set(*line, "|"))
 	{
 		skip_whitespaces(&line);
 		if (*line && is_set(*line, PARSE_SPEC_CH))
 			parse_special_chars(curr_cmd, &line);
 		if (!*line || is_set(*line, "|"))
 			return (EXIT_SUCCESS);
-		add_cmd_arg(curr_cmd, get_token(&line));
+		add_cmd_arg(curr_cmd, get_cl_tok(&line));
 	}
 	return (EXIT_SUCCESS);
 }

@@ -29,7 +29,6 @@ int	is_set_ret(char const c, char const *set)
 	return (-1);
 }
 
-
 void	free_split(void **split)
 {
 	int	i;

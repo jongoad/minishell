@@ -4,20 +4,10 @@
 #include <errno.h>
 #include <string.h>
 
-
 int main(void)
 {
-	char path[] = "./thingstuff";
-	// char *buf;
-	// buf = malloc(500);
-
-	// buf = getcwd(buf, 500);
-	// printf("%s\n", buf);
-
-	if (chdir(path))
-		perror(path);
-
-	// buf = getcwd(buf, 500);
-	// printf("%s\n", buf);
-
+	long long num;
+	num =  (long long)9223372036854775807;
+	unsigned int c = (unsigned char)num;
+	printf("%u\n", c);
 }

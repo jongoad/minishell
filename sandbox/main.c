@@ -10,7 +10,7 @@ int	main(void)
  	sh->line = get_line(fd);
 	while (sh->line)
 	{
-		parse_test(sh);
+		parse_test(sh, sh->line);
 		free(sh->line);
  		sh->line = get_line(fd);
 	}
