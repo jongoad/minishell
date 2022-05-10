@@ -1,0 +1,12 @@
+
+----------------------------------
+
+echo lol | <test.txt cat
+
+if test.txt contains "something"
+the output will be
+something
+
+first command does not print
+This makes sense, input stream gets redirected from STDIN to test.txt 
+----------------------------------

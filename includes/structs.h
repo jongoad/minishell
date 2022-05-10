@@ -71,7 +71,8 @@ struct s_shell
 {
 	t_env		env;			/* Environment variables struct */
 	int			*pipes;			/* Array of ints to hold pipe data */
-	int			nb_pipes;
+	int			nb_pipes;		/* Number of pipes created */
+	int			cmd_iter;		/* Iterator for commands array (must start at 1 not 0, or needs to be dealth with for pipes)*/
 	char		*line;			/* Buffer for line return from readlin */
 	t_cmd		**cmds;			/* Array of command structs */
 	pid_t		*pids;			/* Array of pid for managing waits */

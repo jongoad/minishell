@@ -66,7 +66,11 @@ bool check_env_var(char *str, bool unset);
 bool	env_var_cmp(char *arg_str, char *env_str);
 void	init_builtins(t_shell *sh);
 
-
+/* Pipe functions */
+int		init_pipes(t_shell *sh);
+void	close_pipes(t_shell *sh);
+void	update_pipes(int p1, int p2);
+void	manage_pipes(t_shell *sh, t_cmd *cmd);
 
 
 /* Utility functions */

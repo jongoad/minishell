@@ -6,7 +6,7 @@
 /*   By: jgoad <jgoad@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/05/02 15:43:30 by jgoad             #+#    #+#             */
-/*   Updated: 2022/05/10 16:54:15 by jgoad            ###   ########.fr       */
+/*   Updated: 2022/05/10 18:00:23 by jgoad            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,11 +15,9 @@
 /* -------- TODO FOR EXECUTION --------
 
 	- Deal with expansion of variables
-	- Deal with closing file descriptors to prevent leaks
-
 	- Ensure cmd->errnum is initialized to 0 for all commands prior to execution
-
-	- Set up pipes
+	- Ensure all fds are initialized to -1
+	- Ensure all array are null terminated??
 
 */
 
@@ -29,6 +27,12 @@ void	execute(t_shell *sh)
 	int	i;
 
 	i = 0;
+	sh->cmd_iter = 1;														/* Iterator for pipe control */
+	if (init_pipes(sh))
+	{
+		clean_cmds(sh);	//Prob also want to set ret value
+		return;
+	}
 	while (i < sh->nb_cmds)
 	{
 		check_builtins(sh, sh->cmds[i]);									/* Check if command is builtin, and if so get the function index */
@@ -37,6 +41,7 @@ void	execute(t_shell *sh)
 		else
 			run_cmd(sh, sh->cmds[i], i);									/* Run command(s) in forked processes */
 		i++;
+		sh->cmd_iter++;
 	}
 	if (sh->nb_cmds > 1 || (sh->nb_cmds == 1 && sh->cmds[0]->builtin < 0))	/* Wait unless there was only one command and it was a builtin */
 	{
@@ -52,23 +57,22 @@ void	run_cmd(t_shell *sh, t_cmd *cmd, int i)
 	sh->pids[i] = fork();
 	if (sh->pids[i] == 0)
 	{
-		if (init_io(sh, cmd))												/* Check IO */
+		manage_pipes(sh, cmd);
+		if (!init_io(sh, cmd))													/* Check IO */
 		{
-			msg_err_return();
-			exit(cmd->errnum);
+			if (cmd->builtin < 0)												/* If system command run with execve */
+			{
+				build_path();													/* Build file path for command */
+				execve(cmd->filepath, cmd->args, sh->env.envp);
+			}
+			else																/* If built in command run in current process */
+			{
+				cmd->errnum = sh->builtins.f[cmd->builtin](sh, cmd);
+				if (cmd->errnum)
+					put_err_msg(sh->sh_name, cmd->filepath, NULL, NULL);		/* Check getting correct error message here */
+			}
 		}
-		else if (cmd->builtin < 0)											/* If system command run with execve */
-		{
-			build_path();													/* Build file path for command */
-			execve(cmd->filepath, cmd->args, sh->env.envp);
-		}
-		else																/* If built in command run in current process */
-		{
-			cmd->errnum = sh->builtins.f[cmd->builtin](sh, cmd);
-			if (cmd->errnum)
-				msg_err_ret(cmd->errnum, cmd->errname);
-		}
-		clean_fork(sh, cmd);														/* If built in function, clear memory before exit */
+		clean_fork(sh, cmd);													/* If built in function, clear memory before exit */
 		exit(cmd->errnum);
 	}
 }
@@ -95,14 +99,30 @@ int	check_builtins(t_shell *sh, t_cmd *cmd)
 /* Run builtin command without forking */
 int	run_builtin_parent(t_shell *sh, t_cmd *cmd, int i)
 {
-	sh->builtins.f[cmd->builtin](sh, cmd);
-	if (cmd->errnum)
-		msg_err_ret(cmd->errnum, cmd->errname);
+	if (init_io(sh, cmd))
+		return (cmd->errnum);
+	else
+	{
+		sh->builtins.f[cmd->builtin](sh, cmd);
+		if (cmd->errnum)
+			put_err_msg(sh->sh_name, cmd->filepath, NULL, NULL);		/* Check getting correct error message here */
+	}
 	return (cmd->errnum);
 }
 
 /* Check input and output files and set up file descriptors */
 int init_io(t_shell *sh, t_cmd *cmd)
+{
+	if (init_ins(sh, cmd))
+		return (cmd->errnum);
+	if (init_outs(sh, cmd))
+		return (cmd->errnum);
+	return (cmd->errnum);
+}
+//All file descriptors should be initialized to -1 to start so we know what needs to be closed when error occurs
+
+/* Check input redirections and set up file descriptor */
+int	init_ins(t_shell *sh, t_cmd *cmd)
 {
 	int i;
 
@@ -113,9 +133,21 @@ int init_io(t_shell *sh, t_cmd *cmd)
 		if (!cmd->errnum)
 			cmd->errnum = access(cmd->ins[i].infile, R_OK);
 		if (cmd->errnum)
+		{
+			put_err_msg(sh->sh_name, cmd->ins[i].infile, NULL, strerror(cmd->errnum));
+			close_files(cmd); //Maybe move
 			return (cmd->errnum);
+		}
 	}
-	cmd->ins[i].fd = open(cmd->ins[i - 1].infile, O_RDONLY);
+	cmd->ins[i - 1].fd = open(cmd->ins[i - 1].infile, O_RDONLY);
+	return (cmd->errnum);
+}
+
+/* Intialize outfiles */
+int	init_outs(t_shell *sh, t_cmd *cmd)
+{
+	int	i;
+
 	i = -1;
 	while (++i < cmd->nb_outs)
 	{
@@ -126,19 +158,44 @@ int init_io(t_shell *sh, t_cmd *cmd)
 		if (cmd->outs[i].fd < 0)
 		{
 			cmd->errnum = errno;
+			put_err_msg(sh->sh_name, cmd->ins[i].infile, NULL, strerror(cmd->errnum));
+			close_files(cmd); //Maybe move
 			return (cmd->errnum);
 		}
+	}
+	return (cmd->errnum);
+}
+
+/* Close all open file descriptors */
+void	close_files(t_cmd *cmd)
+{
+	int i;
+
+	i = 0;
+	while (i < cmd->nb_ins)
+	{
+		if (cmd->ins[i].fd != -1)
+			close(cmd->ins[i].fd);
+		i++;
+	}
+	i = 0;
+	while (i < cmd->nb_outs)
+	{
+		if (cmd->outs[i].fd != -1)
+			close(cmd->outs[i].fd);
+		i++;
 	}
 }
 
 /* Clear all command data before leaving execution */
 void	clean_cmds(t_shell *sh)
 {
-
+	close_pipes(sh);
 }
 
 /* Clear local copy of data in fork before exiting */
 void	clean_fork(t_shell *sh, t_cmd *cmd)
 {
-
+	close_files(cmd);							/* Close all open file descriptors */
+	cleanup(sh);								/* Free all memory allocated in shell struct and its child structs */
 }
