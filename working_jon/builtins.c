@@ -88,14 +88,36 @@ int	builtin_export(t_shell *sh, t_cmd *cmd)
 	i = 0;
 	while (cmd->args[i])
 	{
-		
+		if (check_env_var(cmd->args[i], false))		/* Check each argument and add to env array if valid */
+			add_env_var(&sh->env, cmd->args[i]);
+		i++;
 	}
 }
 
 /* Unset env var for current shell instance */
 int	builtin_unset(t_shell *sh, t_cmd *cmd)
 {
+	int	i;
+	int j;
 
+	i = 0;
+	while (cmd->args[i])
+	{
+		j = 0;
+		while (sh->env.envp[j])
+		{
+			if (!check_env_var(cmd->args[i], true))				/* If arg to be unset does not pass env var naming conventions print error */
+			{
+				put_err_msg(sh->sh_name, cmd->filepath, cmd->args[i], "No such file or directory");
+				cmd->errnum = 1;
+			}
+			else if (env_var_cmp(cmd->args[i], sh->env.envp[i]))
+				remove_env_var(&sh->env, i);
+			j++;
+		}
+		i++;
+	}
+	return (cmd->errnum);
 }
 
 /* Print out env vars for current shell instance */
@@ -146,58 +168,4 @@ int	builtin_exit(t_shell *sh, t_cmd *cmd)
 	cleanup(sh);						/* Cleanup ALL shell memory before exit */
 	exit(ret);
 	return (0); /* Return value just for consitency with other function prototypes */
-}
-
-/* Convert a value held in a string to an int and check if valid */
-long long	atoll(const char *str, bool *is_valid)
-{
-	long long	num;
-	long long	sign;
-	long long	prev;
-
-	num = 0;
-	sign = 1;
-	*is_valid = true;
-	if (*str == '+' || *str == '-')
-	{
-		if (*str == '-')
-			sign = -1;
-		str++;
-	}
-	while (*str)
-	{
-		if (*str < '0' || *str > '9')
-			*is_valid = false;
-		prev = num;
-		num = (num * 10) + (*str - '0');
-		str++;
-		if (abs_val(num * sign) < prev)
-			*is_valid = false;
-	}
-	return (num * sign);
-}
-
-/* Add a new environment variable to the envp array */
-void	add_env_var(t_env *env, char *str)
-{
-	int	i;
-	char **tmp;
-
-	i = 0;
-	while (env->envp[i])					/* Get count of envp array */
-		i++;
-	tmp = (char **)malloc(sizeof(char *) * i + 2);
-	i = 0;
-	while (env->envp[i])
-	{
-		tmp[i] = ft_strdup(env->envp[i]);
-		i++;
-	}
-	tmp[i] = ft_strdup(str);
-	tmp[i + 1] = NULL;
-	i = -1;
-	while (env->envp[++i])
-		free(env->envp[i]);
-	free(env->envp);
-	env->envp = tmp;
 }

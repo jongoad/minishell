@@ -10,7 +10,7 @@ int main(void)
 
 	buf = readline(prompt);
 
-	printf("You entered: %s\n", buf);
+	printf("You entered: %s", buf);
 }
 
 // MUST COMPILEWITH -lreadline

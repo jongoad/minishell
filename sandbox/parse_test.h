@@ -20,6 +20,17 @@ typedef struct s_read_info
 	int			nb_bytes_read;
 }	t_read_info;
 
+//NEW
+typedef struct s_arglst	t_arglst;
+struct s_arglst
+{
+	char		*str;
+	bool		is_expandable;
+	t_arglst	*next;
+};
+
+//END OF NEW
+
 typedef struct s_clarg
 {
 	char	**args;
@@ -106,5 +117,11 @@ size_t	strlen_c(char *s, char c);
 
 //	utils.c
 void	free_split(void **split);
+
+//	arg_list.c
+void		ms_lstadd(t_arglst **lst, t_arglst *new);
+t_arglst	*ms_lstnew(char *str, bool is_expandable);
+void		ms_lstclear(t_arglst **lst);
+void		ft_lstdelone(t_arglst *lst);
 
 #endif

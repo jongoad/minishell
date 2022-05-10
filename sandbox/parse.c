@@ -76,11 +76,12 @@ int	parse_redir(t_cmd *cmd, char *line)
 {
 	//	Handle in/out
 
-	//	Handle error
+	//	Handle error '>>>' etc
 
 	//	Assign file
 
 	//	get_cl_tok
+
 }
 
 int	check_parse(t_shell *sh, t_cmd *cmd, char *line)
@@ -107,8 +108,11 @@ int	parse_test(t_shell *sh, char *line)
 	skip_whitespaces(&line);
 	while (*line && *line != '|')
 	{
-		if (is_set(*line, "<>") && parse_redir(curr_cmd, &line))
-			return (EXIT_FAILURE);
+		if (is_set(*line, "<>"))
+		{
+			if (parse_redir(curr_cmd, &line) == EXIT_FAILURE)
+				return (EXIT_FAILURE);
+		}
 		else
 			add_cmd_arg(curr_cmd, get_cl_tok(&line)); //assigns cmd vs cmd_arg
 		skip_whitespaces(&line);

@@ -6,7 +6,7 @@
 /*   By: jgoad <jgoad@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/05/02 15:43:30 by jgoad             #+#    #+#             */
-/*   Updated: 2022/05/09 18:23:39 by jgoad            ###   ########.fr       */
+/*   Updated: 2022/05/10 16:54:15 by jgoad            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,6 +19,7 @@
 
 	- Ensure cmd->errnum is initialized to 0 for all commands prior to execution
 
+	- Set up pipes
 
 */
 
@@ -70,31 +71,6 @@ void	run_cmd(t_shell *sh, t_cmd *cmd, int i)
 		clean_fork(sh, cmd);														/* If built in function, clear memory before exit */
 		exit(cmd->errnum);
 	}
-}
-
-/* Init builtin commands struct */
-void	init_builtins(t_shell *sh)
-{
-	int	i;
-
-	i = 0;
-	/* Init alias strings */
-	sh->builtins.alias[0] = "echo";
-	sh->builtins.alias[1] = "cd";
-	sh->builtins.alias[2] = "pwd";
-	sh->builtins.alias[3] = "export";
-	sh->builtins.alias[4] = "unset";
-	sh->builtins.alias[5] = "env";
-	sh->builtins.alias[6] = "exit";
-
-	/*Init fucntion pointer array */
-	sh->builtins.f[0] = &builtin_echo;
-	sh->builtins.f[1] = &builtin_cd;
-	sh->builtins.f[2] = &builtin_pwd;
-	sh->builtins.f[3] = &builtin_export;
-	sh->builtins.f[4] = &builtin_unset;
-	sh->builtins.f[5] = &builtin_env;
-	sh->builtins.f[6] = &builtin_exit;
 }
 
 /* Check if command is builtin */

@@ -70,14 +70,16 @@ struct s_cmd
 struct s_shell
 {
 	t_env		env;			/* Environment variables struct */
-	int			*pipe;			/* Array of ints to hold pipe data */
+	int			*pipes;			/* Array of ints to hold pipe data */
+	int			nb_pipes;
 	char		*line;			/* Buffer for line return from readlin */
 	t_cmd		**cmds;			/* Array of command structs */
 	pid_t		*pids;			/* Array of pid for managing waits */
 	int			nb_cmds;		/* Number of commands parsed */
 	int			ret_val;		/* Return value of last executed command */
-	t_builtin	builtins;    	 /* Builtin command struct */
-	char		*prompt;
+	t_builtin	builtins;    	/* Builtin command struct */
+	char		*prompt;		/* Prompt for current shell */
+	char		*sh_name;		/* Name of current shell */
 };
 
 
