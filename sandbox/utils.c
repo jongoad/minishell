@@ -2,7 +2,7 @@
 
 int	is_set(char const c, char const *set)
 {
-	if (!set)
+	if (!set || !c)
 		return (0);
 	while (*set)
 	{
@@ -20,7 +20,7 @@ int	is_set_ret(char const c, char const *set)
 	int	i;
 
 	i = 0;
-	while (set[i])
+	while (set && set[i])
 	{
 		if (set[i] == c)
 			return (i);

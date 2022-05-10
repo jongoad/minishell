@@ -6,8 +6,6 @@ t_cmd	*get_new_cmd(void)
 
 	cmd = ft_xalloc(sizeof(t_cmd));
 	cmd->args = ft_xalloc(sizeof(char *));
-	cmd->io.infiles = ft_xalloc(sizeof(char *));
-	cmd->io.outfiles = ft_xalloc(sizeof(char *));
 	return (cmd);
 }
 
@@ -39,14 +37,18 @@ void	add_cmd_arg(t_cmd *cmd, char *arg)
 	t_cmd	*new_arg;
 	int		i;
 
+	if (!arg)
+		return ;
+	if (!cmd->filepath)
+	{
+		cmd->filepath = arg;
+		return ;
+	}
 	cmd->nb_args++;
 	new_array = ft_xalloc((cmd->nb_args + 1) * sizeof(char *));
-	i = 0;
-	while (i < cmd->nb_args)
-	{
+	i = -1;
+	while (++i < cmd->nb_args)
 		new_array[i] = cmd->args[i];
-		i++;
-	}
 	new_array[i++] = new_arg;
 	new_array[i] = NULL;
 	free(cmd->args);

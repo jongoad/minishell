@@ -34,7 +34,7 @@ void	skip_whitespaces(char **line)
  *		3. Assign strings to respective buckets
  *
  *	NOTES:
- *		- tokenize groups (separated by either a whitespace or a PARSE_SPEC_CH)
+ *		- tokenize groups (separated by either a whitespace or a CL_SPEC_CH)
  *		- "expand" quotes, as in group them together
  *		- I need to have special parse statuses that tell me where I am in my parsing. 
  *		- Expansion parsing is CRUCIAL for env var parsing
@@ -47,51 +47,73 @@ void	skip_whitespaces(char **line)
  */
 char	*get_cl_tok(char **line)
 {
-	char	*word;
-	int		word_len;
+	char	*token;
+	int		tok_len;
 
 	if (!line || !*line)
 		return (NULL);
-	word_len = 0;
-	while (*line[word_len] && !is_set(*line[word_len], WHITESPACES))
+	tok_len = 0;
+	while (*line[tok_len] && !is_set(*line[tok_len], WHITESPACES))
 	{
-		if (*line[word_len] == '|')
+		if (is_set(*line[tok_len], ""))
 			break ;
-		word_len++;
+		tok_len++;
 	}
-	if (!word_len)
+	if (!tok_len)
 		return (NULL);
-	word = ft_xalloc(word_len * sizeof(char));
-	word_len = 0;
-	while (*line[word_len] && !is_set(**line, WHITESPACES))
+	token = ft_xalloc(tok_len * sizeof(char));
+	tok_len = 0;
+	while (*line[tok_len] && !is_set(**line, WHITESPACES))
 	{
-		word[word_len] = **line;
-		word_len++;
+		token[tok_len] = **line;
+		tok_len++;
 		*line += 1;
 	}
-	return (word);
+	return (token);
 }
 
-int	parse_test(t_shell *sh, char *rem_line)
+int	parse_redir(t_cmd *cmd, char *line)
+{
+	//	Handle in/out
+
+	//	Handle error
+
+	//	Assign file
+
+	//	get_cl_tok
+}
+
+int	check_parse(t_shell *sh, t_cmd *cmd, char *line)
+{
+	if (!(cmd->ins && cmd->ins->infiles)
+		&& !(cmd->outs && cmd->outs->outfiles)
+		&& !(cmd->filepath))
+		return (EXIT_FAILURE);
+	skip_whitespaces(&line);
+	if (!line)
+		return (EXIT_FAILURE);
+	return (parse_test(sh, line));
+}
+
+int	parse_test(t_shell *sh, char *line)
 {
 	t_cmd	*curr_cmd;
-	char	*line;
+	bool	is_first_tok;
 
-	if (!*rem_line)
+	if (!line || !*line)
 		return (EXIT_SUCCESS);
 	curr_cmd = add_cmd(sh);
-	line = rem_line;
+	is_first_tok = true;
 	skip_whitespaces(&line);
-	if (*line && is_set(*line, PARSE_SPEC_CH))
-		get_cl(curr_cmd, &line);
-	while (*line && !is_set(*line, "|"))
+	while (*line && *line != '|')
 	{
+		if (is_set(*line, "<>") && parse_redir(curr_cmd, &line))
+			return (EXIT_FAILURE);
+		else
+			add_cmd_arg(curr_cmd, get_cl_tok(&line)); //assigns cmd vs cmd_arg
 		skip_whitespaces(&line);
-		if (*line && is_set(*line, PARSE_SPEC_CH))
-			parse_special_chars(curr_cmd, &line);
-		if (!*line || is_set(*line, "|"))
-			return (EXIT_SUCCESS);
-		add_cmd_arg(curr_cmd, get_cl_tok(&line));
 	}
+	if (*line == '|')
+		return (check_parse(sh, curr_cmd, line));
 	return (EXIT_SUCCESS);
 }

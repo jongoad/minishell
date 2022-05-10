@@ -7,7 +7,8 @@
 
 # define BUFFSIZE 4194304
 # define WHITESPACES "\n \t"
-# define PARSE_SPEC_CH "<>\"\'|"	// to add: &()
+# define CL_SPEC_CH "<>\"\'|"	// to add: &()
+# define CL_TOK_LIM "<>|"		// to add: &
 
 // STRUCTS
 typedef struct s_read_info
@@ -27,14 +28,14 @@ typedef struct s_clarg
 
 typedef struct s_infile
 {
-	char	*infile;		/* Path for infile, if it exists */
+	char	*infiles;		/* Path for infile, if it exists */
 	char	*delimiter;		/* Delimiter for heredocs. NULL if infile is not a heredoc. */
 	int		fd;				/* File descriptor for input, set to stdin by default */
 }	t_infile;
 
 typedef struct s_outfile
 {
-	char	*infiles;		/* Path for infile, if it exists */
+	char	*outfiles;		/* Path for infile, if it exists */
 	int		fd;				/* File descriptor for input, set to stdin by default */
 	bool	append_mode;	/* Determines whether the redir is '>' or '>>' */
 }	t_outfile;
