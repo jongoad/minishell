@@ -1,7 +1,7 @@
 #include "../includes/minishell.h"
 
 /* Convert a value held in a string to an int and check if valid */
-long long	atoll(const char *str, bool *is_valid)
+long long	ft_atoll(const char *str, bool *is_valid)
 {
 	long long	num;
 	long long	sign;
@@ -50,6 +50,28 @@ void	add_env_var(t_env *env, char *str)
 		free(env->envp[i]);
 	free(env->envp);
 	env->envp = tmp;
+}
+/* Change value of an environment variable */
+int	change_env_var(t_env *env, char *arg)
+{
+	int	i;
+	char **split;
+
+	i = 0;
+	split = ft_split(arg, '=');
+	while (env->envp[i])
+	{
+		if (!ft_strncmp(split[0], env->envp[i], ft_strlen(split[0])) &&
+			env->envp[i][ft_strlen(split[0])] == '=')
+		{
+			free(env->envp[i]);
+			env->envp[i] = ft_strjoin(ft_strjoin(split[0], "="), split[1]);
+			free_array((void **)split);
+			return (1);
+		}
+		i++;
+	}
+	return (0);
 }
 
 /* Remove an env variable */
@@ -120,27 +142,17 @@ bool	env_var_cmp(char *arg_str, char *env_str)
 	return (false);
 }
 
-/* Init builtin commands struct */
-void	init_builtins(t_shell *sh)
+/* Print path to current directory */
+char	*pwd_to_str(void)
 {
-	int	i;
+	char	*buf;
+	char	*tmp;
 
-	i = 0;
-	/* Init alias strings */
-	sh->builtins.alias[0] = "echo";
-	sh->builtins.alias[1] = "cd";
-	sh->builtins.alias[2] = "pwd";
-	sh->builtins.alias[3] = "export";
-	sh->builtins.alias[4] = "unset";
-	sh->builtins.alias[5] = "env";
-	sh->builtins.alias[6] = "exit";
-
-	/*Init fucntion pointer array */
-	sh->builtins.f[0] = &builtin_echo;
-	sh->builtins.f[1] = &builtin_cd;
-	sh->builtins.f[2] = &builtin_pwd;
-	sh->builtins.f[3] = &builtin_export;
-	sh->builtins.f[4] = &builtin_unset;
-	sh->builtins.f[5] = &builtin_env;
-	sh->builtins.f[6] = &builtin_exit;
+	buf = (char *)malloc(sizeof(char) * 1025);
+	ft_memset((void*)buf, 0, 1025);
+	buf = getcwd(buf, 1025);
+	tmp = ft_strdup(buf);
+	free(buf);
+	return (tmp);
 }
+//FIX check error management

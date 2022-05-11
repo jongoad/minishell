@@ -1,5 +1,7 @@
 #include "../includes/minishell.h"
 
+//PROBABLY DONT NEED THESE!!
+
 t_shell *get_data(void)
 {
 	static t_shell *sh;

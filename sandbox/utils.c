@@ -21,7 +21,7 @@ int	is_set(char const c, char const *set)
 	return (0);
 }
 
-// If c was found in the set, returns the index in the set.
+// If c was found in the set, returns its index.
 // If not found, returns -1
 int	is_set_ret(char const c, char const *set)
 {
@@ -37,11 +37,11 @@ int	is_set_ret(char const c, char const *set)
 	return (-1);
 }
 
-void	free_split(void **split)
+void	free_split(char **split)
 {
 	int	i;
 
-	if (!split)
+	if (!split || !*split)
 		return ;
 	i = 0;
 	while (split[i])

@@ -7,7 +7,7 @@ int	parse_error(char err_char)
 		write(2, "newline", 7);	
 	else
 		write(2, &err_char, 1);	
-	write(2, "\'", 1);
+	write(2, "\'\n", 2);
 	return (err_char);
 }
 
@@ -29,6 +29,7 @@ int	main(void)
 		free(sh->line);
  		sh->line = get_line(fd);
 	}
+	print_cmds_info(sh);
 	close(fd);
 	cleanup_shell(sh);
 	return (err_char);

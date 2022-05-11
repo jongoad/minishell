@@ -5,13 +5,16 @@ int	main(int argc, char *argv[], char *envp[])
 {
 	t_shell	*sh;
 
-	sh = get_data();
-	init_shell(&sh, envp);
+	sh = NULL;
+	sh = init_shell(sh, argc, argv, envp);
+	
 
-	while (minishell(sh))
-		;
+
+	minishell(sh);
+	// while (minishell(sh))
+	// 	;
 		
-	clean(sh);
+	// clean(sh);
 }
 
 
@@ -19,9 +22,11 @@ int	main(int argc, char *argv[], char *envp[])
 /* Container function for one iteration (loop) of shell */
 int	minishell(t_shell *sh)
 {
-	char *buf;
-	buf = readline();
-	parse();
-	execute();
+	// char *buf;
+	// buf = readline(sh->prompt);
+	// parse();
+
+	setup_debug_execute(sh);
+	execute(sh);
 	return (sh->ret_val);
 }

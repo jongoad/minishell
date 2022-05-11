@@ -43,13 +43,13 @@ void	add_cmd_arg(t_cmd *cmd, char *new_arg)
 		cmd->filepath = new_arg;
 		return ;
 	}
-	cmd->nb_args++;
-	new_array = ft_xalloc((cmd->nb_args + 1) * sizeof(char *));
+	new_array = ft_xalloc((cmd->nb_args + 2) * sizeof(char *));
 	i = -1;
 	while (++i < cmd->nb_args)
 		new_array[i] = cmd->args[i];
 	new_array[i++] = new_arg;
 	new_array[i] = NULL;
+	cmd->nb_args++;
 	free(cmd->args);
 	cmd->args = new_array;
 	return ;
