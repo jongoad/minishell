@@ -7,7 +7,7 @@ void	cleanup_shell(t_shell *sh)
 	i = 0;
 	while (i < sh->nb_cmds)
 	{
-		free_split(sh->cmds[i]->args);
+		free_split((void **)sh->cmds[i]->args);
 		free(sh->cmds[i]->filepath);
 		free(sh->cmds[i]->errname);
 	}

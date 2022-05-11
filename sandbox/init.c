@@ -7,3 +7,5 @@ t_shell	*init_shell(void)
 	shell = ft_xalloc(sizeof(t_shell));
 	return (shell);
 }
+
+

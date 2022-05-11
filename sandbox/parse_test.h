@@ -1,9 +1,11 @@
 #ifndef PARSE_TEST_H
 # define PARSE_TEST_H
 
-# include "../includes/structs.h"
-# include "../includes/minishell.h"
-# include "../includes/enums.h"
+# include <stdio.h>
+# include <stdlib.h>
+# include <stdbool.h>
+# include <unistd.h>
+# include <fcntl.h>
 
 # define BUFFSIZE 4194304
 # define WHITESPACES "\n \t"
@@ -117,11 +119,15 @@ size_t	strlen_c(char *s, char c);
 
 //	utils.c
 void	free_split(void **split);
+void	ft_putstr_fd(char *str, int fd);
+int		is_set(char const c, char const *set);
+int		is_set_ret(char const c, char const *set);
+void	ft_bzero(void *s, size_t n);
 
 //	arg_list.c
 void		ms_lstadd(t_arglst **lst, t_arglst *new);
 t_arglst	*ms_lstnew(char *str, bool is_expandable);
 void		ms_lstclear(t_arglst **lst);
-void		ft_lstdelone(t_arglst *lst);
+void		ms_lstdelone(t_arglst *lst);
 
 #endif

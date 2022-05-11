@@ -31,17 +31,16 @@ t_cmd	*add_cmd(t_shell *sh)
 	return (new_cmd);
 }
 
-void	add_cmd_arg(t_cmd *cmd, char *arg)
+void	add_cmd_arg(t_cmd *cmd, char *new_arg)
 {
-	t_cmd	**new_array;
-	t_cmd	*new_arg;
+	char	**new_array;
 	int		i;
 
-	if (!arg)
+	if (!new_arg)
 		return ;
 	if (!cmd->filepath)
 	{
-		cmd->filepath = arg;
+		cmd->filepath = new_arg;
 		return ;
 	}
 	cmd->nb_args++;
@@ -53,5 +52,5 @@ void	add_cmd_arg(t_cmd *cmd, char *arg)
 	new_array[i] = NULL;
 	free(cmd->args);
 	cmd->args = new_array;
-	return (new_arg);
+	return ;
 }

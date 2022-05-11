@@ -1,4 +1,12 @@
-#include "./parse_test.c"
+#include "./parse_test.h"
+
+void	ft_putstr_fd(char *str, int fd)
+{
+	if (!str)
+		return ;
+	write(fd, str, ft_strlen(str));
+	return ;
+}
 
 int	is_set(char const c, char const *set)
 {
@@ -44,4 +52,13 @@ void	free_split(void **split)
 	free(split[i]);
 	free(split);
 	return ;
+}
+
+void	ft_bzero(void *s, size_t n)
+{
+	unsigned char	*ptr;
+
+	ptr = s;
+	while (n--)
+		*ptr++ = 0;
 }

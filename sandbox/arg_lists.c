@@ -47,7 +47,7 @@ void	ms_lstclear(t_arglst **lst)
 	*lst = NULL;
 }
 
-void	ft_lstdelone(t_arglst *lst)
+void	ms_lstdelone(t_arglst *lst)
 {
 	if (!lst)
 		return ;
