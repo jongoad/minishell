@@ -49,6 +49,8 @@ void	parse_in(t_cmd *cmd, char *cl_tok, bool is_double)
 	else
 		new_in->infile = cl_tok;
 	add_infile(cmd, new_in);
+	// if (is_double)
+	// 	new_in->fd = read_heredoc();
 }
 
 void	parse_out(t_cmd *cmd, char *cl_tok, bool is_double)

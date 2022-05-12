@@ -77,22 +77,21 @@ void	update_pipes(int p1, int p2)
 /* Manage pipes for each child process */
 void	manage_pipes(t_shell *sh, t_cmd *cmd)
 {
-	if (cmd->ins->fd != -1)															/* If there is a redirect for input set first pipe to fd of redirect, else set first pipe to STDIN */
-		update_pipes(cmd->ins->fd, sh->pipes[2 * sh->cmd_iter + 1]);
-	if (cmd->outs->fd != -1) 														/*If there is a redirect for output set output pipe to fd, else set to STDOUT */
-		update_pipes(sh->pipes[2 * sh->cmd_iter - 2], cmd->outs->fd);
+	/* Handle input */
+	if (cmd->fd_in > 0)
+		dup2(cmd->fd_in, 0);
+	else if (sh->cmd_iter == 0)
+		dup2(STDIN_FILENO, 0);
 	else
-		update_pipes(sh->pipes[2 * sh->cmd_iter - 2], sh->pipes[2 * sh->cmd_iter + 1]); 	/* If there is no redirect, connect pipes normally*/
-	
-	// if (sh->cmd_iter == 1)
-	// 	update_pipes(STDIN_FILENO, sh->pipes[1]);
-	// if (sh->cmd_iter == 2)
-	// 	update_pipes(sh->pipes[0], STDOUT_FILENO);
+		dup2(sh->pipes[2 * sh->cmd_iter - 2], 0);
+
+	/* Handle output */
+	if (cmd->fd_out > 1)
+		dup2(cmd->fd_out, 1);
+	else if (sh->cmd_iter == sh->nb_cmds - 1)
+		dup2(STDOUT_FILENO, 1);
+	else
+		dup2(sh->pipes[2 * sh->cmd_iter + 1], 1);
+
 	close_pipes(sh);
 }
-
-/* 
-	- Redirection handled individually for each pipe 
-	- If a pipe has an input redirect, anything on STDIN is discarded
-	- File descriptors should be set to -1 if there is no redirection
-*/

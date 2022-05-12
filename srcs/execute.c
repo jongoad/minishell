@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   execute.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: iyahoui- <iyahoui-@student.42quebec.com    +#+  +:+       +#+        */
+/*   By: jgoad <jgoad@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/05/02 15:43:30 by jgoad             #+#    #+#             */
-/*   Updated: 2022/05/11 23:24:11 by iyahoui-         ###   ########.fr       */
+/*   Updated: 2022/05/12 18:39:24 by jgoad            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,17 +22,13 @@
 */
 
 
-
-
-
-
 /* Control function for executing commands */
 void	execute(t_shell *sh)
 {
 	int	i;
 
 	i = 0;
-	sh->cmd_iter = 1;														/* Iterator for pipe control */
+	sh->cmd_iter = 0;														/* Iterator for pipe control */
 	if (init_pipes(sh))
 	{
 		clean_cmds(sh);	//Prob also want to set ret value
@@ -48,6 +44,7 @@ void	execute(t_shell *sh)
 		i++;
 		sh->cmd_iter++;
 	}
+	close_pipes(sh);
 	if (sh->nb_cmds > 1 || (sh->nb_cmds == 1 && sh->cmds[0]->builtin < 0))	/* Wait unless there was only one command and it was a builtin */
 	{
 		while (wait(&sh->ret_val) > 0)
@@ -62,12 +59,14 @@ void	run_cmd(t_shell *sh, t_cmd *cmd, int i)
 	sh->pids[i] = fork();
 	if (sh->pids[i] == 0)
 	{
-		manage_pipes(sh, cmd);
 		if (!init_io(sh, cmd))													/* Check IO */
 		{
+			manage_pipes(sh, cmd);
+			// printf("in fd: %i\n", cmd->fd_in);
+			// printf("out fd: %i\n", cmd->fd_out);
 			if (cmd->builtin < 0)												/* If system command run with execve */
 			{
-				execve(build_cmd_path(sh->env.path, cmd->exe), cmd->args, sh->env.envp);
+				execve(build_cmd_path(sh->env.path, cmd->exe), cmd->args, cmd->envp);
 			}
 			else																/* If built in command run in current process */
 			{
@@ -146,8 +145,13 @@ int	init_ins(t_shell *sh, t_cmd *cmd)
 			return (cmd->errnum);
 		}
 	}
-	cmd->ins[i - 1].fd = open(cmd->ins[i - 1].infile, O_RDONLY);
-	cmd->fd_in = cmd->ins[i - 1].fd;
+	if (i)
+	{
+		cmd->ins[i - 1].fd = open(cmd->ins[i - 1].infile, O_RDONLY);
+		cmd->fd_in = cmd->ins[i - 1].fd;
+	}
+	else
+		cmd->fd_in = 0;
 	return (cmd->errnum);
 }
 
@@ -160,9 +164,9 @@ int	init_outs(t_shell *sh, t_cmd *cmd)
 	while (++i < cmd->nb_outs)
 	{
 		if (cmd->outs[i].append_mode)
-			cmd->outs[i].fd = open(cmd->outs[i].outfile, O_CREAT | O_APPEND);
+			cmd->outs[i].fd = open(cmd->outs[i].outfile, O_CREAT | O_RDWR | O_APPEND, 0000644);
 		else
-			cmd->outs[i].fd = open(cmd->outs[i].outfile, O_CREAT | O_TRUNC);
+			cmd->outs[i].fd = open(cmd->outs[i].outfile, O_CREAT | O_RDWR | O_TRUNC, 0000644);
 		if (cmd->outs[i].fd < 0)
 		{
 			cmd->errnum = errno;
@@ -174,7 +178,10 @@ int	init_outs(t_shell *sh, t_cmd *cmd)
 		if (i)
 			close (cmd->outs[i - 1].fd);
 	}
-	cmd->fd_out = cmd->outs[i - 1].fd;
+	if (i)
+		cmd->fd_out = cmd->outs[i - 1].fd;
+	else
+		cmd->fd_out = 1;
 	return (cmd->errnum);
 }
 

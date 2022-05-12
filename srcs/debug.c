@@ -7,42 +7,42 @@ void	setup_debug_execute(t_shell *sh)
 {
 	/* Setup commands */
 	char **cmds;
-	cmds = ft_split("ls wc", ' ');
+	cmds = ft_split("cat", ' ');
 	
 	/* Setup args */
-	int nb_args = 2;
-	char ***args = malloc(sizeof(char **) * (nb_args + 1));
-	args[0] = ft_split("-la", ' ');
-	args[1] = ft_split("-l", ' ');
-	args[2] = NULL;
+	int nb_args = 1;
+	char ***args = malloc(sizeof(char **) * (nb_args));
+	args[0] = ft_split("cat", ' ');
+	//args[1] = ft_split("wc -l", ' ');
+	//args[2] = ft_split("wc", ' ');
 
 	/* Setup infiles */
-	char ***in = malloc(sizeof(char **) * nb_args + 1);
-	// in[nb_args] = NULL;
-	// in[0] = ft_split("test1 test2", ' ');
+	char ***in = malloc(sizeof(char **) * 1);
+	in[0] = ft_split("tests.txt", ' ');
 	// in[1] = ft_split("test1 test2", ' ');
-	in[1] = malloc(sizeof(char *));
-	in[1] = NULL;
-	in[0] = malloc(sizeof(char *));
-	in[0] = NULL;
-	in[2] = malloc(sizeof(char *));
-	in[2] = NULL;
+	// in[2] = malloc(sizeof(char *));
+	// in[2] = NULL;
+	// in[1] = malloc(sizeof(char *));
+	// in[1] = NULL;
+	// in[0] = malloc(sizeof(char *));
+	// in[0] = NULL;
+	// in[2] = malloc(sizeof(char *));
+	// in[2] = NULL;
 	/* Setup outfiles */
-	char ***out = malloc(sizeof(char **) * nb_args + 1);
-	// out[nb_args] = NULL;
-	// out[0] = ft_split("test1 test2", ' ');
+	char ***out = malloc(sizeof(char **) * 1);
+	out[0] = ft_split("out.txt", ' ');
 	// out[1] = ft_split("test1 test2", ' ');
-	out[0] = malloc(sizeof(char *));
-	out[0] = NULL;
-	out[1] = malloc(sizeof(char *));
-	out[1] = NULL;
-	out[2] = malloc(sizeof(char *));
-	out[2] = NULL;
+	// out[0] = malloc(sizeof(char *));
+	// out[0] = NULL;
+	// out[1] = malloc(sizeof(char *));
+	// out[1] = NULL;
+	// out[2] = malloc(sizeof(char *));
+	// out[2] = NULL;
+	// out[2] = malloc(sizeof(char *));
+	// out[2] = NULL;
 
 	debug_execute(sh, cmds, args, in, out);
 }
-
-
 
 /* Set up test inputs for execution */
 void	debug_execute(t_shell *sh, char **cmds, char ***args, char ***in, char ***out)
@@ -90,6 +90,7 @@ t_cmd *create_command(t_shell *sh, char *cmd, char **args, char **in, char **out
 	/* Setup outfiles */
 	while (in && *out)
 	{
+		res->outs[j].append_mode = 0;
 		res->outs[j].outfile = *out;
 		res->outs[j].fd = -1;
 		j++;
@@ -98,15 +99,48 @@ t_cmd *create_command(t_shell *sh, char *cmd, char **args, char **in, char **out
 	res->outs[j].fd = -1;
 	res->nb_outs = j;
 
-
-	i = 0;
-	while (res->args[i])
-	{
-		printf("%s\n", res->args[i]);
-		i++;
-	}
-	printf("\n\n\n\n\n");
 	return (res);
 }
 // Dont worry about here_doc or multiple redirects for now
 // make sure all input arrays are null terminated
+
+
+void	print_debug_data(t_shell *sh)
+{
+	int j = 0;
+	int k;
+	printf("Number of commands: %i\n", sh->nb_cmds);
+
+	while (j < sh->nb_cmds)
+	{
+		printf("Command #: %i\n", j + 1);
+		printf("Command name/path: %s\n", sh->cmds[j]->exe);
+
+		printf("Command arguments:\n");
+		k = 0;
+		while (k < sh->cmds[j]->nb_args)
+		{
+			printf("Arg %i: %s\n", k, sh->cmds[j]->args[k]);
+			k++;
+		}
+		//printf("\n\n");
+		printf("Infiles:\n");
+		k = 0;
+		while (k < sh->cmds[j]->nb_ins)
+		{
+			printf("%s\n", sh->cmds[j]->ins[k].infile);
+			k++;
+		}
+		//printf("\n\n");
+		printf("Outfiles:\n");
+		k = 0;
+		while (k < sh->cmds[j]->nb_outs)
+		{
+			printf("%s\n", sh->cmds[j]->outs[k].outfile);
+			k++;
+		}
+		//printf("\n\n");
+		j++;
+	}
+
+}

@@ -112,5 +112,6 @@ void		cleanup(t_shell *sh);
 void	debug_execute(t_shell *sh, char **cmds, char ***args, char ***in, char ***out);
 t_cmd *create_command(t_shell *sh, char *cmd, char **args, char **in, char **out);
 void	setup_debug_execute(t_shell *sh);
+void	print_debug_data(t_shell *sh);
 
 #endif

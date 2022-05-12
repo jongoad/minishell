@@ -10,10 +10,10 @@ int	builtin_echo(t_shell *sh, t_cmd *cmd)
 	int	i;
 	int	fd;
 
-	i = 0;
+	i = 1;
 	if (!ft_strncmp(cmd->args[0], "-n", 3))
 		return (builtin_echo_n(sh, cmd));
-	fd = cmd->outs[cmd->nb_ins - 1].fd; /* Get the fd of the last outfile only */
+	fd = cmd->fd_out;
 	while (cmd->args[i])
 	{
 		putstr_fd(cmd->args[i], fd);
@@ -31,8 +31,8 @@ int	builtin_echo_n(t_shell *sh, t_cmd *cmd)
 	int	i;
 	int fd;
 
-	i = 0;
-	fd = cmd->outs[cmd->nb_outs - 1].fd;
+	i = 1;
+	fd = cmd->fd_out;
 	while (cmd->args[i])
 	{
 		putstr_fd(cmd->args[i], fd);
@@ -88,7 +88,7 @@ int	builtin_export(t_shell *sh, t_cmd *cmd)
 {
 	int	i;
 	
-	i = 0;
+	i = 1;
 	while (cmd->args[i])
 	{
 		if (check_env_var(cmd->args[i], false))		/* Check each argument and add to env array if valid */
@@ -107,7 +107,7 @@ int	builtin_unset(t_shell *sh, t_cmd *cmd)
 	int	i;
 	int j;
 
-	i = 0;
+	i = 1;
 	while (cmd->args[i])
 	{
 		j = 0;
@@ -153,7 +153,7 @@ int	builtin_exit(t_shell *sh, t_cmd *cmd)
 	ret = 0;
 	if (cmd->args[0])
 	{
-		ret = ft_atoll(cmd->args[0], &is_valid);
+		ret = ft_atoll(cmd->args[1], &is_valid);
 		if (is_valid && cmd->args[1])
 		{
 			putstr_fd("exit\n", 2);
