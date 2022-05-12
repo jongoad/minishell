@@ -53,7 +53,7 @@ struct s_cmd
 	t_outfile	*outs;		/* out_files from parsing */
 	char		**args;		/* Input arguments for the command, element 0 is the command path */
 	char		**envp;		/* Environment path for the current shell */
-	char		*filepath;	/* Path to command */
+	char		*exe;	/* Path to command */
 	char		*errname;	/* Name or path associated with error */
 	int			errnum;		/* Error status (set during parsing) */
 	int			builtin;	/* Built in command or sys command */

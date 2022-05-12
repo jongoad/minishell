@@ -38,9 +38,9 @@ void	add_cmd_arg(t_cmd *cmd, char *new_arg)
 
 	if (!new_arg)
 		return ;
-	if (!cmd->filepath)
+	if (!cmd->exe)
 	{
-		cmd->filepath = new_arg;
+		cmd->exe = new_arg;
 		return ;
 	}
 	new_array = ft_xalloc((cmd->nb_args + 2) * sizeof(char *));

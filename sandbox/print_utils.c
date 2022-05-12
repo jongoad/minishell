@@ -62,8 +62,8 @@ void	print_cmds_info(t_shell *sh)
 	while (i < sh->nb_cmds)
 	{
 		printf(CYAN);
-		if (sh->cmds[i]->filepath)
-			printf("\n\tcmd #%i: \"%s\"\n", i + 1, sh->cmds[i]->filepath);
+		if (sh->cmds[i]->exe)
+			printf("\n\tcmd #%i: \"%s\"\n", i + 1, sh->cmds[i]->exe);
 		else
 			printf("*** NO CMD_FILEPATH*** \n");
 		printf(RESET_COL);

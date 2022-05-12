@@ -115,7 +115,7 @@ int	builtin_unset(t_shell *sh, t_cmd *cmd)
 		{
 			if (!check_env_var(cmd->args[i], true))				/* If arg to be unset does not pass env var naming conventions print error */
 			{
-				put_err_msg(sh->sh_name, cmd->filepath, cmd->args[i], "No such file or directory");
+				put_err_msg(sh->sh_name, cmd->exe, cmd->args[i], "No such file or directory");
 				cmd->errnum = 1;
 			}
 			else if (env_var_cmp(cmd->args[i], sh->env.envp[i]))

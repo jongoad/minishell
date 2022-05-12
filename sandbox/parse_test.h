@@ -28,7 +28,7 @@ typedef struct s_arglst	t_arglst;
 struct s_arglst
 {
 	char		*str;
-	bool		is_expandable;
+	bool		is_env_var;
 	t_arglst	*next;
 };
 
@@ -41,16 +41,19 @@ typedef struct s_cl_tok
 
 typedef struct s_infile
 {
-	char	*infile;		/* Path for infile, if it exists */
-	char	*delimiter;		/* Delimiter for heredocs. NULL if infile is not a heredoc. */
-	int		fd;				/* File descriptor for input, set to stdin by default */
+	char		*infile;	/* Path for infile, if it exists */
+	t_arglst	*in_tok;	/* Linked list of the env_vars and expanded strings */
+	char		*delimiter;	/* Delimiter for heredocs. NULL if infile is not a heredoc. */
+	t_arglst	*del_tok;	/* Linked list of the env_vars and expanded strings */
+	int			fd;			/* File descriptor for input, set to stdin by default */
 }	t_infile;
 
 typedef struct s_outfile
 {
-	char	*outfile;		/* Path for infile, if it exists */
-	int		fd;				/* File descriptor for input, set to stdin by default */
-	bool	append_mode;	/* Determines whether the redir is '>' or '>>' */
+	char		*outfile;	/* Path for infile, if it exists */
+	t_arglst	*out_tok;	/* Linked list of the env_vars and expanded strings */
+	int			fd;			/* File descriptor for input, set to stdin by default */
+	bool		append_mode;/* Determines whether the redir is '>' or '>>' */
 }	t_outfile;
 
 typedef struct s_env
@@ -68,8 +71,10 @@ typedef struct s_cmd
 	t_infile	**ins;		/* in_files from parsing */
 	t_outfile	**outs;		/* out_files from parsing */
 	char		**args;		/* Input arguments for the command, element 0 is the command path */
+	t_arglst	**args_tok;	/* Linked list of the env_vars and expanded strings */
 	char		**envp;		/* Environment path for the current shell */
-	char		*filepath;	/* Path to command */
+	char		*exe;		/* Path to command */
+	t_arglst	*exe_tok;	/* Linked list of the env_vars and expanded strings */
 	char		*errname;	/* Name or path associated with error */
 	int			errnum;		/* Error status (set during parsing) */
 	int			builtin;	/* Built in command or sys command */

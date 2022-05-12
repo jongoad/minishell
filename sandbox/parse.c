@@ -4,7 +4,7 @@ int	check_parse(t_shell *sh, t_cmd *cmd, char *line)
 {
 	printf("entered check_parse\n");
 	printf("line : \"%s\"\n", line);
-	if (!cmd->ins && !cmd->outs && !cmd->filepath)
+	if (!cmd->ins && !cmd->outs && !cmd->exe)
 		return (EXIT_FAILURE);
 	skip_whitespaces(&line);
 	if (*line == '|')

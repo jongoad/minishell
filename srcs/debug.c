@@ -65,7 +65,7 @@ t_cmd *create_command(t_shell *sh, char *cmd, char **args, char **in, char **out
 	t_cmd *res;
 
 	res = malloc(sizeof(t_cmd));		/* Allocate a new command */
-	res->filepath = cmd;				/* Set cmd name/path */
+	res->exe = cmd;				/* Set cmd name/path */
 	res->envp = sh->env.envp;			/* Initialize envp */
 	res->errnum = 0;					/* Initialize errnum to 0 */
 	res->args = args;					/* Set args array to input */

@@ -17,7 +17,7 @@ void	ms_lstadd(t_arglst **lst, t_arglst *new)
 		*lst = new;
 }
 
-t_arglst	*ms_lstnew(char *str, bool is_expandable)
+t_arglst	*ms_lstnew(char *str, bool is_env_var)
 {
 	t_arglst	*new_node;
 
@@ -25,7 +25,7 @@ t_arglst	*ms_lstnew(char *str, bool is_expandable)
 	if (!new_node)
 		return (NULL);
 	new_node->str = str;
-	new_node->is_expandable = is_expandable;
+	new_node->is_env_var = is_env_var;
 	new_node->next = NULL;
 	return (new_node);
 }

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   execute.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jgoad <jgoad@student.42.fr>                +#+  +:+       +#+        */
+/*   By: iyahoui- <iyahoui-@student.42quebec.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/05/02 15:43:30 by jgoad             #+#    #+#             */
-/*   Updated: 2022/05/11 18:38:30 by jgoad            ###   ########.fr       */
+/*   Updated: 2022/05/11 23:24:11 by iyahoui-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -67,13 +67,13 @@ void	run_cmd(t_shell *sh, t_cmd *cmd, int i)
 		{
 			if (cmd->builtin < 0)												/* If system command run with execve */
 			{
-				execve(build_cmd_path(sh->env.path, cmd->filepath), cmd->args, sh->env.envp);
+				execve(build_cmd_path(sh->env.path, cmd->exe), cmd->args, sh->env.envp);
 			}
 			else																/* If built in command run in current process */
 			{
 				cmd->errnum = sh->builtins.f[cmd->builtin](sh, cmd);
 				if (cmd->errnum)
-					put_err_msg(sh->sh_name, cmd->filepath, NULL, ERR_PIPE);		/* Check getting correct error message here */
+					put_err_msg(sh->sh_name, cmd->exe, NULL, ERR_PIPE);		/* Check getting correct error message here */
 			}
 		}
 		clean_fork(sh, cmd);													/* If built in function, clear memory before exit */
@@ -88,7 +88,7 @@ int	check_builtins(t_shell *sh, t_cmd *cmd)
 	int		i;
 
 	i = 0;
-	tmp = ft_strdup(cmd->filepath);			/* Create a local copy of command name/path */
+	tmp = ft_strdup(cmd->exe);			/* Create a local copy of command name/path */
 	tmp = str_to_lower(tmp);				/* Set to lowercase for comparison */
 
 	while (i < 7)
@@ -112,7 +112,7 @@ int	run_builtin_parent(t_shell *sh, t_cmd *cmd)
 	{
 		sh->builtins.f[cmd->builtin](sh, cmd);
 		if (cmd->errnum)
-			put_err_msg(sh->sh_name, cmd->filepath, NULL, NULL);		/* Check getting correct error message here */
+			put_err_msg(sh->sh_name, cmd->exe, NULL, NULL);		/* Check getting correct error message here */
 	}
 	return (cmd->errnum);
 }
