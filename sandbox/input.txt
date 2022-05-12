@@ -1,1 +1,1 @@
-cmd1 arg1_1 arg1_2 arg1_3 | cmd2 arg2_1 arg2_2 arg2_3 | cmd1 arg3_1 arg3_2 arg3_3 arg 3_4
+> out_1_1_s > out_1_2_s >> out1_3_d < in1_1_s << in1_2_d cmd1 arg1_1 arg1_2 arg1_3 | cmd2 arg2_1 arg2_2 arg2_3 | cmd3 arg3_1 arg3_2 arg3_3 arg 3_4 >< out_3_1_s > out_3_2_s >> out3_3_d < in3_1_s << in3_2_d

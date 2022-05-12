@@ -33,12 +33,11 @@ struct s_arglst
 };
 
 //END OF NEW
-
-typedef struct s_clarg
+typedef struct s_cl_tok
 {
 	char	**args;
 	int		n_args;
-}	t_clarg;
+}	t_cl_tok;
 
 typedef struct s_infile
 {
@@ -66,8 +65,8 @@ typedef struct s_env
 
 typedef struct s_cmd
 {
-	t_infile	*ins;		/* in_files from parsing */
-	t_outfile	*outs;		/* out_files from parsing */
+	t_infile	**ins;		/* in_files from parsing */
+	t_outfile	**outs;		/* out_files from parsing */
 	char		**args;		/* Input arguments for the command, element 0 is the command path */
 	char		**envp;		/* Environment path for the current shell */
 	char		*filepath;	/* Path to command */
@@ -94,13 +93,24 @@ typedef struct s_shell
 
 // FUNCTIONS
 //	parse.c
-void	skip_whitespaces(char **line);
 int		parse_test(t_shell *sh, char *rem_line);
+
+//	get_cl_tok.c
 char	*get_cl_tok(char **line);
+
+//	parse_utils.c
+void	skip_whitespaces(char **line);
+
+//	parse_redir.c
+int		parse_redir(t_cmd *cmd, char **line);
+void	add_infile(t_cmd *cmd, t_infile *new_in);
+void	add_outfile(t_cmd *cmd, t_outfile *new_out);
+void	parse_in(t_cmd *cmd, char *cl_tok, bool is_double);
+void	parse_out(t_cmd *cmd, char *cl_tok, bool is_double);
 
 //	cmd_utils.c
 void	add_cmd_arg(t_cmd *cmd, char *arg);
-t_cmd	*add_cmd(t_shell *sh);
+t_cmd	*add_new_cmd(t_shell *sh);
 t_cmd	*get_new_cmd(void);
 
 //	init_test.c

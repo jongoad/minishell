@@ -23,6 +23,7 @@ int	main(void)
 	err_char = 0;
 	while (sh->line)
 	{
+		printf("#### original string: \n%s\n\n", sh->line);
 		err_char = parse_test(sh, sh->line);
 		if (err_char && parse_error(err_char))
 			break;
@@ -32,5 +33,5 @@ int	main(void)
 	print_cmds_info(sh);
 	close(fd);
 	cleanup_shell(sh);
-	return (err_char);
+	exit (err_char);
 }

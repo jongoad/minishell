@@ -9,7 +9,7 @@ t_cmd	*get_new_cmd(void)
 	return (cmd);
 }
 
-t_cmd	*add_cmd(t_shell *sh)
+t_cmd	*add_new_cmd(t_shell *sh)
 {
 	t_cmd	**new_arr;
 	t_cmd	*new_cmd;
