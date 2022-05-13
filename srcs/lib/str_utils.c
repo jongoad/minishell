@@ -1,42 +1,4 @@
-#include "../includes/minishell.h"
-
-int putchar_fd(char c, int fd)
-{
-	write(fd, &c, sizeof(c));
-	return (sizeof(c));
-}
-
-int putstr_fd(char *str, int fd)
-{
-	int count;
-
-	count = 0;
-	while (*str)
-	{
-		count += putchar_fd(*str, fd);
-		str++;
-	}
-	return (count);
-}
-
-/* Count the number of elements in a 2d array that is null terminated */
-int	count_array(void **array)
-{
-	int count;
-
-	count = 0;
-	while (array && array[count])
-		count++;
-	return (count);
-}
-
-/* Return the absolute value of an integer */
-int	abs_val(int n)
-{
-	if (n < 0)
-		return (-n);
-	return (n);
-}
+#include "../../includes/minishell.h"
 
 /* Return a malloced copy of a strin */
 char	*ft_strdup(const char *s1)
@@ -44,6 +6,8 @@ char	*ft_strdup(const char *s1)
 	unsigned int	i;
 	char			*str;
 
+	if (!s1)
+		return (0);
 	i = 0;
 	str = (char *)malloc(sizeof(char) * (ft_strlen(s1) + 1));
 	if (!str)
@@ -65,6 +29,8 @@ int	ft_strncmp(const char *s1, const char *s2, size_t n)
 {
 	unsigned int	i;
 
+	if (!s1 || !s2)
+		return (0);
 	i = 0;
 	while ((s1[i] || s2[i]) && i < n)
 	{
@@ -114,17 +80,6 @@ size_t	ft_strlen(const char *s)
 	return (i);
 }
 
-/* Set memory to a specified value */
-void	*ft_memset(void *b, int c, size_t len)
-{
-	unsigned char	*p;
-
-	p = (unsigned char *)b;
-	while (len--)
-		*p++ = c;
-	return (b);
-}
-
 /* Convert a string to lower case */
 char	*str_to_lower(char *str)
 {
@@ -138,4 +93,82 @@ char	*str_to_lower(char *str)
 		i++;
 	}
 	return (str);
+}
+
+int	is_set(char const c, char const *set)
+{
+	if (!set || !c)
+		return (0);
+	while (*set)
+	{
+		if (*set == c)
+			return (1);
+		set++;
+	}
+	return (0);
+}
+
+// If c was found in the set, returns its index.
+// If not found, returns -1
+int	is_set_ret(char const c, char const *set)
+{
+	int	i;
+
+	i = 0;
+	while (set && set[i])
+	{
+		if (set[i] == c)
+			return (i);
+		i++;
+	}
+	return (-1);
+}
+
+void	ft_bzero(void *s, size_t n)
+{
+	unsigned char	*ptr;
+
+	ptr = s;
+	while (n--)
+		*ptr++ = 0;
+}
+
+char	*ft_strncpy(char *dest, char *src, size_t n)
+{
+	size_t	i;
+
+	i = 0;
+	if (!src)
+		return (dest);
+	while (src[i] != 0 && i < n)
+	{
+		dest[i] = src[i];
+		i++;
+	}
+	dest[i] = 0;
+	return (dest);
+}
+
+char	*get_last_token(char *string, char delimiter)
+{
+	size_t	str_len;
+	char	*last_token;
+	size_t	i;
+	size_t	j;
+
+	str_len = ft_strlen(string);
+	i = str_len;
+	if (!string)
+		return (NULL);
+	while (string[i] != delimiter && i >= 0)
+		i--;
+	last_token = malloc(str_len - i + 1);
+	j = 0;
+	while (i++ < str_len)
+	{
+		last_token[j] = string[i];
+		j++;
+	}
+	last_token[j] = 0;
+	return (last_token);
 }

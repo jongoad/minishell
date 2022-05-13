@@ -37,6 +37,15 @@ int	is_set_ret(char const c, char const *set)
 	return (-1);
 }
 
+void	ft_bzero(void *s, size_t n)
+{
+	unsigned char	*ptr;
+
+	ptr = s;
+	while (n--)
+		*ptr++ = 0;
+}
+
 void	free_split(char **split)
 {
 	int	i;
@@ -52,13 +61,4 @@ void	free_split(char **split)
 	free(split[i]);
 	free(split);
 	return ;
-}
-
-void	ft_bzero(void *s, size_t n)
-{
-	unsigned char	*ptr;
-
-	ptr = s;
-	while (n--)
-		*ptr++ = 0;
 }

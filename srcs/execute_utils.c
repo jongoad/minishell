@@ -1,5 +1,4 @@
-#include "../includes/minishell.h"
-
+#include "minishell.h"
 
 /* Build a path for a specific command */
 char	*build_cmd_path(char **cmd_path, char *cmd)
@@ -26,4 +25,26 @@ char	*build_cmd_path(char **cmd_path, char *cmd)
 		cmd_path++;
 	}
 	return (NULL);
+}
+
+/* Check if command is builtin */
+int	check_builtins(t_shell *sh, t_cmd *cmd)
+{
+	char	*tmp;
+	int		i;
+
+	i = 0;
+	tmp = ft_strdup(cmd->exe);				/* Create a local copy of command name/path */
+	tmp = str_to_lower(tmp);				/* Set to lowercase for comparison */
+
+	while (i < 7)
+	{
+		if (!ft_strncmp(tmp, sh->builtins.alias[i], ft_strlen(sh->builtins.alias[i])))
+		{
+			if (!tmp[ft_strlen(sh->builtins.alias[i])])
+				return (cmd->builtin = i);
+		}
+		i++;	
+	}
+	return (cmd->builtin = -1);
 }

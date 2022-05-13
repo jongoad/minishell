@@ -32,13 +32,6 @@ struct s_arglst
 	t_arglst	*next;
 };
 
-//END OF NEW
-typedef struct s_cl_tok
-{
-	char	**args;
-	int		n_args;
-}	t_cl_tok;
-
 typedef struct s_infile
 {
 	char		*infile;	/* Path for infile, if it exists */

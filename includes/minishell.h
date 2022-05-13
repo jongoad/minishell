@@ -24,15 +24,17 @@
 # include <errno.h>
 
 /* User includes */
+# include "colors.h"
 # include "enums.h"
 # include "structs.h"
+# include "library.h"
+# include "error.h"
+# include "get_next_line.h"
 
-/* Macro defines */
-
-/* Error defines */
-# define ERR_EXIT_ARGS_NUM ": too many arguments"
-# define ERR_EXIT_NON_NUMERIC ": numeric argument required"
-# define ERR_PIPE "unable to allocate pipes"
+/* Parse defines */
+# define WHITESPACES "\n \t"
+# define CL_SPEC_CH "<>\"\'|"	// to add: &()
+# define CL_TOK_LIM "<>|"		// to add: &
 
 /* Function prototypes */
 
@@ -54,11 +56,9 @@ int			init_io(t_shell *sh, t_cmd *cmd);
 int			init_ins(t_shell *sh, t_cmd *cmd);
 int			init_outs(t_shell *sh, t_cmd *cmd);
 void		close_files(t_cmd *cmd);
-void		clean_cmds(t_shell *sh);
-void		clean_fork(t_shell *sh, t_cmd *cmd);
 
 /*Execution utilities */
-char	*build_cmd_path(char **cmd_path, char *cmd);
+char		*build_cmd_path(char **cmd_path, char *cmd);
 
 /* Builtin commands */
 int			builtin_echo(t_shell *sh, t_cmd *cmd);
@@ -71,7 +71,6 @@ int			builtin_env(t_shell *sh, t_cmd *cmd);
 int			builtin_exit(t_shell *sh, t_cmd *cmd);
 
 /* Builtin command utilities */
-long long	ft_atoll(const char *str, bool *is_valid);
 void		add_env_var(t_env *env, char *str);
 void		remove_env_var(t_env *env, int n);
 bool		check_env_var(char *str, bool unset);
@@ -82,36 +81,57 @@ int			change_env_var(t_env *env, char *arg);
 /* Pipe functions */
 int			init_pipes(t_shell *sh);
 void		close_pipes(t_shell *sh);
-void		update_pipes(int p1, int p2);
 void		manage_pipes(t_shell *sh, t_cmd *cmd);
 
-
-/* Utility functions */
-int			putchar_fd(char c, int fd);
-int			putstr_fd(char *str, int fd);
-void		put_err_msg(char *sh_name, char *cmd, char *arg, char *msg);
-int			count_array(void **array);
-int			abs_val(int n);
-char		*ft_strdup(const char *s1);
-int			ft_strncmp(const char *s1, const char *s2, size_t n);
-char		*ft_strjoin(char const *s1, char const *s2);
-void		free_array(void **array);
-char		**ft_split(char const *s, char c);
-size_t		ft_strlen(const char *s);
-void		*ft_memset(void *b, int c, size_t len);
-char		*str_to_lower(char *str);
-
 /* Error handling */
+void		put_err_msg(char *sh_name, char *cmd, char *arg, char *msg);
 int			msg_err_ret(int errnum, char *errname);
 char		*get_err_msg(int errnum);
+int			parse_error(char err_char);
 
 /* Memory management functions */
 void		cleanup(t_shell *sh);
+void		clean_cmds(t_shell *sh);
+void		clean_fork(t_shell *sh, t_cmd *cmd);
+void		reset_shell(t_shell *sh);
 
-/* Debug functions */
-void	debug_execute(t_shell *sh, char **cmds, char ***args, char ***in, char ***out);
-t_cmd *create_command(t_shell *sh, char *cmd, char **args, char **in, char **out);
-void	setup_debug_execute(t_shell *sh);
-void	print_debug_data(t_shell *sh);
+/* Parsing function */
+
+//	parse.c
+int		parse(t_shell *sh, char *rem_line);
+int		check_parse(t_shell *sh, t_cmd *cmd, char *line);
+
+//	get_cl_tok.c
+char	*get_cl_tok(char **line);
+
+//	parse_utils.c
+void	skip_whitespaces(char **line);
+
+//	parse_redir.c
+int		parse_redir(t_cmd *cmd, char **line);
+void	add_infile(t_cmd *cmd, t_infile *new_in);
+void	add_outfile(t_cmd *cmd, t_outfile *new_out);
+void	parse_in(t_cmd *cmd, char *cl_tok, bool is_double);
+void	parse_out(t_cmd *cmd, char *cl_tok, bool is_double);
+
+//	cmd_utils.c
+void	add_cmd_arg(t_cmd *cmd, char *arg);
+t_cmd	*add_new_cmd(t_shell *sh);
+t_cmd	*get_new_cmd(void);
+
+//	print_utils.c
+void	print_redirs(t_cmd *cmd);
+void	print_cmd_args(t_cmd *cmd);
+void	print_cmds_info(t_shell *sh);
+
+//	arg_list.c
+void		ms_lstadd(t_arglst **lst, t_arglst *new);
+t_arglst	*ms_lstnew(char *str, bool is_expandable);
+void		ms_lstclear(t_arglst **lst);
+void		ms_lstdelone(t_arglst *lst);
+
+/* Readline functions */
+char	*rl_getline(t_shell *sh);
+void	init_history(t_shell *sh);
 
 #endif

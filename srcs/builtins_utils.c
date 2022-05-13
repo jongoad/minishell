@@ -1,4 +1,4 @@
-#include "../includes/minishell.h"
+#include "minishell.h"
 
 /* Convert a value held in a string to an int and check if valid */
 long long	ft_atoll(const char *str, bool *is_valid)
@@ -17,7 +17,7 @@ long long	ft_atoll(const char *str, bool *is_valid)
 		str++;
 	}
 	while (*str)
-	{
+	{	
 		if (*str < '0' || *str > '9')
 			*is_valid = false;
 		prev = num;

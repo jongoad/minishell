@@ -1,8 +1,7 @@
-#include "../includes/minishell.h"
+#include "minishell.h"
 
- 
+
 //Echo needs to handle expansion, should probably just expand as each command is run
-
 
 /* Echo string */
 int	builtin_echo(t_shell *sh, t_cmd *cmd)
@@ -71,8 +70,8 @@ int	builtin_pwd(t_shell *sh, t_cmd *cmd)
 		cmd->errnum = errno;
 	else
 	{
-		putstr_fd(buf, cmd->outs[cmd->nb_outs - 1].fd);
-		putchar_fd('\n', cmd->outs[cmd->nb_outs - 1].fd);
+		putstr_fd(buf, cmd->fd_out);
+		putchar_fd('\n', cmd->fd_out);
 	}
 	free(buf);
 	if (cmd->errnum)
@@ -133,15 +132,13 @@ int	builtin_env(t_shell *sh, t_cmd *cmd)
 	int	i;
 
 	i = 0;
-	if (cmd->errnum)
-		exit (msg_err_ret(cmd->errnum, cmd->errname));
 	while (sh->env.envp[i])
 	{
-		putstr_fd(sh->env.envp[i], cmd->outs[cmd->nb_outs - 1].fd);
-		putchar_fd('\n', cmd->outs[cmd->nb_outs - 1].fd);
+		putstr_fd(sh->env.envp[i], cmd->fd_out);
+		putchar_fd('\n', cmd->fd_out);
 		i++;
 	}
-	exit(cmd->errnum);
+	return (cmd->errnum);
 }
 
 /* Exit current shell instance */

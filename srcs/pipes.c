@@ -1,4 +1,4 @@
-#include "../includes/minishell.h"
+#include "minishell.h"
 
 /* Initialize pipes using number of commands and open them */
 int	init_pipes(t_shell *sh)
@@ -25,35 +25,6 @@ int	init_pipes(t_shell *sh)
 	return (0);
 }
 
-// int	init_pipes(t_shell *sh)
-// {
-// 	t_cmd	*cmd_i;
-// 	size_t	i;
-// 	int		pipe_fds[2];
-
-// 	if (pipe(pipe_fds))
-// 		return (E_PIPE);
-// 	cmd_i = sh->cmds[0];
-//	cmd_i->fd_in = STDIN_FILENO;
-//	cmd_i->fd_out = pipe_fds[1];
-// 	i = 1;
-// 	while (i < sh->nb_cmds - 1)
-// 	{
-// 		cmd_i = first_cmd + i;
-// 		cmd_i->in_fd = pipe_fds[0];
-// 		if (pipe(pipe_fds))
-// 			return (E_PIPE);
-// 		if (i != nb_cmds - 1)
-// 			cmd_i->out_fd = pipe_fds[1];
-// 		i++;
-// 	}
-// 	cmd_i = first_cmd + i;
-// 	cmd_i->in_fd = pipe_fds[0];
-// 	cmd_i->out_fd = STDOUT_FILENO;
-// 	return (0);
-// }
-
-
 /* Close all pipes */
 void	close_pipes(t_shell *sh)
 {
@@ -65,13 +36,6 @@ void	close_pipes(t_shell *sh)
 		close(sh->pipes[i]);
 		i++;
 	}
-}
-
-/* Update a single set of pipes */
-void	update_pipes(int p1, int p2)
-{
-	dup2(p1, 0);
-	dup2(p2, 1);
 }
 
 /* Manage pipes for each child process */
@@ -92,6 +56,5 @@ void	manage_pipes(t_shell *sh, t_cmd *cmd)
 		dup2(STDOUT_FILENO, 1);
 	else
 		dup2(sh->pipes[2 * sh->cmd_iter + 1], 1);
-
 	close_pipes(sh);
 }

@@ -25,7 +25,7 @@ void	put_err_msg(char *sh_name, char *cmd, char *arg, char *msg)
 	if (arg)
 	{
 		putstr_fd("'", 2);
-		putstr_fd("arg", 2);
+		putstr_fd(arg, 2);
 		putstr_fd("'", 2);
 		putstr_fd(": ", 2);
 	}
@@ -34,4 +34,15 @@ void	put_err_msg(char *sh_name, char *cmd, char *arg, char *msg)
 		putstr_fd(msg, 2);
 		putstr_fd("\n", 2);
 	}
+}
+
+int	parse_error(char err_char)
+{
+	putstr_fd("minishell: syntax error near unexpected token `", 2);
+	if (err_char == '\n')
+		write(2, "newline", 7);	
+	else
+		write(2, &err_char, 1);	
+	write(2, "\'\n", 2);
+	return (err_char);
 }
