@@ -1,17 +1,28 @@
 NAME			:= minishell
 
-SRCS			:=	./srcs/builtins_utils.c ./srcs/builtins.c ./srcs/cleanup.c ./srcs/error.c ./srcs/execute_utils.c \
-					./srcs/execute.c ./srcs/init.c ./srcs/io.c ./srcs/minishell.c ./srcs/pipes.c ./srcs/readline.c \
-					./srcs/lib/get_next_line/get_next_line_utils.c ./srcs/lib/get_next_line/get_next_line.c \
-					srcs/lib/array.c srcs/lib/math.c srcs/lib/memory.c srcs/lib/split.c \
-					srcs/lib/str_utils.c srcs/lib/write.c \
-					srcs/parse/args_list.c srcs/parse/cmd_utils.c srcs/parse/get_cl_tok.c srcs/parse/parse_redir.c \
-					srcs/parse/parse_utils.c srcs/parse/parse.c srcs/parse/print_utils.c 
+CFILES			:=	builtins_utils.c	builtins.c	cleanup.c	error.c				execute_utils.c \
+					execute.c 			init.c		io.c 		minishell.c			pipes.c \
+					readline.c \
+					lib/get_next_line/get_next_line_utils.c		lib/get_next_line/get_next_line.c \
+					lib/array.c			lib/math.c				lib/memory.c		lib/split.c \
+					lib/str_utils.c		lib/write.c \
+					parse/args_list.c	parse/cmd_utils.c		parse/get_cl_tok.c	parse/parse_redir.c \
+					parse/parse_utils.c	parse/parse.c			parse/print_utils.c 
 
-OBJS			:= $(SRCS:.c=.o)
+INC		= ./includes
+
+SRC_DIR	= ./srcs
+SRCS	= $(addprefix $(SRC_DIR)/, $(CFILES))
+
+OBJ_DIR	= ./obj
+OBJS	= $(addprefix $(OBJ_DIR)/, $(CFILES:.c=.o))
+
+$(OBJ_DIR)/%.o:	$(SRC_DIR)/%.c
+	@mkdir -p $(@D)
+	$(CC) $(CFLAGS) -I$(INC) -o $@ -c $<
 
 CC				= gcc
-RM				= rm -f
+RM				= rm -rf
 CFLAGS			= -Wall -Wextra -Werror -I./includes/
 
 all:			$(NAME)
@@ -20,7 +31,7 @@ $(NAME):		$(OBJS)
 				$(CC) $(CFLAGS) -o $(NAME) $(OBJS) -lreadline
 
 clean:
-				$(RM) $(OBJS)
+				$(RM) $(OBJ_DIR)
 
 fclean:			clean
 				$(RM) $(NAME)
