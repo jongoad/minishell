@@ -1,5 +1,7 @@
-
 #include "minishell.h"
+#include <stdio.h>
+
+int	test_minishell(t_shell *sh);
 
 int	main(int argc, char *argv[], char **envp)
 {
@@ -7,9 +9,29 @@ int	main(int argc, char *argv[], char **envp)
 
 	sh = NULL;
 	sh = init_shell(sh, argc, argv, envp);
-	minishell(sh);
+	if (argc > 1)
+		test_minishell(sh);
+	else
+		minishell(sh);
+	return (sh->ret_val);
 }
 
+int	test_minishell(t_shell *sh)
+{
+	char	err_char;
+
+	sh->line = ft_strdup("cat");
+	printf("line = %s\n", sh->line);
+	err_char = parse(sh, sh->line);
+	if (err_char)
+		parse_error(err_char);
+	cmds_lst_to_str(sh);
+	print_cmds_info(sh);
+	// sh->pids = malloc(sizeof(pid_t) * sh->nb_cmds);
+	// execute(sh);
+	free (sh->line);
+	return (0);
+}
 
 /* Container function for one iteration (loop) of shell */
 int	minishell(t_shell *sh)
@@ -28,21 +50,24 @@ int	minishell(t_shell *sh)
 	{
 		sh->line = rl_getline(sh);
 		// sh->line = ft_strdup("echo this");
-		printf("line = %s\n", sh->line);
 		if (!sh->line)
-			exit(0) ;
+		{
+			rl_redisplay();
+			putstr_fd("exit", STDERR_FILENO);
+			exit(0);
+		}
+		printf("line = %s\n", sh->line);
 		err_char = parse(sh, sh->line);
 		if (err_char)
 			parse_error(err_char);
+		cmds_lst_to_str(sh);
 		print_cmds_info(sh);
 		execute(sh);
-
 		int i = 0;
 		while (i < sh->nb_cmds)
 		{
 			free(sh->cmds[i]);
 			i++;
-
 		}
 		reset_shell(sh);
 	}

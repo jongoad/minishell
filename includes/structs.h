@@ -46,7 +46,7 @@ typedef struct s_infile
 /* Outfile redirection data */ 
 typedef struct s_outfile
 {
-	char		*outfile;		/* Path for infile, if it exists */
+	char		*outfile;		/* Path for outfile */
 	t_arglst	*out_tok;		/* Linked list of the env_vars and expanded strings */
 	int			fd;				/* File descriptor for input, set to stdin by default */
 	bool		append_mode;	/* Determines whether the redir is '>' or '>>' */
@@ -86,12 +86,12 @@ struct s_shell
 {
 	t_env		env;			/* Environment variables struct */
 	t_builtin	builtins;    	/* Builtin command struct */
+	t_cmd		**cmds;			/* Array of command structs - MUST FREE */
 	pid_t		*pids;			/* Array of pid for managing waits - MUST FREE */
 	char		*line;			/* Buffer for line return from readlin - MUST FREE */
 	char		*prompt;		/* Prompt for current shell - MUST FREE */
 	char		*sh_name;		/* Name of current shell - MUST FREE */
 	int			*pipes;			/* Array of ints to hold pipe data - MUST FREE */
-	t_cmd		**cmds;			/* Array of command structs - MUST FREE */
 	int			nb_cmds;		/* Number of commands parsed */
 	int			nb_pipes;		/* Number of pipes created */
 	int			ret_val;		/* Return value of last executed command */

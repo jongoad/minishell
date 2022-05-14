@@ -28,27 +28,43 @@ t_cmd	*add_new_cmd(t_shell *sh)
 	return (new_cmd);
 }
 
-void	add_cmd_arg(t_cmd *cmd, char *new_arg)
+void	add_cmd_arg(t_cmd *cmd, char **line)
 {
-	char	**new_array;
-	int		i;
+	t_arglst	**new_arr;
+	t_arglst	*lst;
+	int			i;
 
-	if (!new_arg)
+	if (!*line)
 		return ;
-	if (!cmd->exe)
+	if (!cmd->exe_tok)
 	{
-		cmd->exe = new_arg;
-		add_cmd_arg(cmd, new_arg);
-		return ;
+		set_cl_tok(&cmd->exe_tok, line);
+		*line -= ft_strlen(cmd->exe_tok->str);
+		return (add_cmd_arg(cmd, line));
 	}
-	new_array = ft_xalloc((cmd->nb_args + 2) * sizeof(char *));
+	new_arr = ft_xalloc((cmd->nb_args + 2) * sizeof(t_arglst *));
 	i = -1;
 	while (++i < cmd->nb_args)
-		new_array[i] = cmd->args[i];
-	new_array[i++] = new_arg;
-	new_array[i] = NULL;
+		new_arr[i] = cmd->args_tok[i];
+	lst = NULL;
+	if (i > 0)
+		lst = cmd->args_tok[i];
+	set_cl_tok(&lst, line);
+	new_arr[i++] = lst;
+	new_arr[i] = NULL;
+	free(cmd->args_tok);
+	cmd->args_tok = new_arr;
 	cmd->nb_args++;
-	free(cmd->args);
-	cmd->args = new_array;
+
+	// char	**new_array;
+	// int		i;
+	// new_array = ft_xalloc((cmd->nb_args + 2) * sizeof(char *));
+	// i = -1;
+	// while (++i < cmd->nb_args)
+	// 	new_array[i] = cmd->args[i];
+	// new_array[i++] = new_arg;
+	// new_array[i] = NULL;
+	// free(cmd->args);
+	// cmd->args = new_array;
 	return ;
 }

@@ -3,23 +3,20 @@
 int	parse(t_shell *sh, char *line)
 {
 	t_cmd	*curr_cmd;
-	int		loop_i;
 
 	if (!line || !*line)
 		return (EXIT_SUCCESS);
 	curr_cmd = add_new_cmd(sh);
 	skip_whitespaces(&line);
-	loop_i = 0;
 	while (*line && *line != '|')
 	{
 		if (is_set(*line, "<>"))
 			curr_cmd->errnum = parse_redir(curr_cmd, &line);
 		else
-			add_cmd_arg(curr_cmd, get_cl_tok(&line)); //assigns cmd vs cmd_arg
+			add_cmd_arg(curr_cmd, &line); //assigns cmd vs cmd_arg
 		if (curr_cmd->errnum)
 			return (curr_cmd->errnum);
 		skip_whitespaces(&line);
-		loop_i++;
 	}
 	if (*line == '|')
 		return (check_parse(sh, curr_cmd, ++line));
@@ -28,7 +25,7 @@ int	parse(t_shell *sh, char *line)
 
 int	check_parse(t_shell *sh, t_cmd *cmd, char *line)
 {
-	if (!cmd->ins && !cmd->outs && !cmd->exe)
+	if (!cmd->ins && !cmd->outs && !cmd->exe_tok)
 		return (EXIT_FAILURE);
 	skip_whitespaces(&line);
 	if (*line == '|')

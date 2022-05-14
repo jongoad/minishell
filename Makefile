@@ -6,8 +6,8 @@ CFILES			:=	builtins_utils.c	builtins.c	cleanup.c	error.c				execute_utils.c \
 					lib/get_next_line/get_next_line_utils.c		lib/get_next_line/get_next_line.c \
 					lib/array.c			lib/math.c				lib/memory.c		lib/split.c \
 					lib/str_utils.c		lib/write.c \
-					parse/args_list.c	parse/cmd_utils.c		parse/get_cl_tok.c	parse/parse_redir.c \
-					parse/parse_utils.c	parse/parse.c			parse/print_utils.c 
+					parse/args_list.c	parse/cmd_utils.c		parse/cl_tok.c		parse/lst_to_str.c \
+					parse/parse_redir.c	parse/parse_utils.c		parse/parse.c		parse/print_utils.c
 
 INC		= ./includes
 
@@ -19,11 +19,11 @@ OBJS	= $(addprefix $(OBJ_DIR)/, $(CFILES:.c=.o))
 
 $(OBJ_DIR)/%.o:	$(SRC_DIR)/%.c
 	@mkdir -p $(@D)
-	$(CC) $(CFLAGS) -I$(INC) -o $@ -c $<
+	$(CC) $(CFLAGS) -o $@ -c $<
 
 CC				= gcc
 RM				= rm -rf
-CFLAGS			= -Wall -Wextra -Werror -I./includes/
+CFLAGS			= -Wall -Wextra -Werror -I./includes/ -g
 
 all:			$(NAME)
 

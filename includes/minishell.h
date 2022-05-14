@@ -97,20 +97,28 @@ int		check_parse(t_shell *sh, t_cmd *cmd, char *line);
 
 //	get_cl_tok.c
 void	set_cl_tok(t_arglst **lst, char **line);
-int		get_tok_len(char *token, char *delimiters);
+void	add_token(t_arglst **lst, char **line, char *delimiter, bool is_env_var);
+void	parse_dquotes(t_arglst **lst, char **line);
+void	parse_squotes(t_arglst **lst, char **line);
+
+//	lst_to_str.c
+char	*lst_to_str(t_env *env, t_arglst *lst);
+char	**lst_arr_to_str_arr(t_env *env, t_arglst **arglst, int nb_elems);
+void	cmds_lst_to_str(t_shell *sh);
 
 //	parse_utils.c
 void	skip_whitespaces(char **line);
+int		get_tok_len(char *token, char *delimiters);
 
 //	parse_redir.c
 int		parse_redir(t_cmd *cmd, char **line);
 void	add_infile(t_cmd *cmd, t_infile *new_in);
 void	add_outfile(t_cmd *cmd, t_outfile *new_out);
-void	parse_in(t_cmd *cmd, char *cl_tok, bool is_double);
-void	parse_out(t_cmd *cmd, char *cl_tok, bool is_double);
+void	parse_in(t_cmd *cmd, char **line, bool is_double);
+void	parse_out(t_cmd *cmd, char **line, bool is_double);
 
 //	cmd_utils.c
-void	add_cmd_arg(t_cmd *cmd, char *arg);
+void	add_cmd_arg(t_cmd *cmd, char **line);
 t_cmd	*add_new_cmd(t_shell *sh);
 t_cmd	*get_new_cmd(void);
 

@@ -37,7 +37,6 @@ void	free_split(char **split)
 		free(split[i]);
 		i++;
 	}
-	free(split[i]);
 	free(split);
 	return ;
 }

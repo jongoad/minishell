@@ -10,8 +10,12 @@ t_shell *init_shell(t_shell *sh, int argc, char **argv, char **envp)
 	init_history(sh);
 	sh->ret_val = 0;
 	sh->line = (char *)NULL;
-	if (argc > 1)							/* If a command is passed with shell, need to send it to be parsed as first command string */
-		return (NULL);
+	
+	/* Ismael: Commented out temporatily */
+	// if (argc > 1)							/* If a command is passed with shell, need to send it to be parsed as first command string */
+	// 	return (NULL);
+	
+	(void)argc;
 	return (sh);
 }
 //FIX error handling

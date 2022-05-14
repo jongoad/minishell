@@ -38,38 +38,36 @@ void	add_outfile(t_cmd *cmd, t_outfile *new_out)
 	cmd->outs = new_arr;
 }
 
-void	parse_in(t_cmd *cmd, char *cl_tok, bool is_double)
+void	parse_in(t_cmd *cmd, char **line, bool is_double)
 {
 	t_infile	*new_in;
 
 	new_in = ft_xalloc(sizeof(t_infile));
 	new_in->fd = -1;
 	if (is_double)
-		new_in->delimiter = cl_tok;
+		set_cl_tok(&new_in->del_tok, line);
 	else
-		new_in->infile = cl_tok;
+		set_cl_tok(&new_in->in_tok, line);
 	add_infile(cmd, new_in);
 	// if (is_double)
 	// 	new_in->fd = read_heredoc();
 }
 
-void	parse_out(t_cmd *cmd, char *cl_tok, bool is_double)
+void	parse_out(t_cmd *cmd, char **line, bool is_double)
 {
 	t_outfile	*new_out;
 
 	new_out = ft_xalloc(sizeof(t_outfile));
 	new_out->fd = -1;
-	new_out->outfile = cl_tok;		
+	set_cl_tok(&new_out->out_tok, line);	
 	new_out->append_mode = is_double;
 	add_outfile(cmd, new_out);
 }
 
 int	parse_redir(t_cmd *cmd, char **line)
 {
-	char	*ptr;
-	char	*cl_tok;
-	bool	is_double;
-
+	char		*ptr;
+	bool		is_double;
 
 	is_double = false;
 	ptr = *line + 1;
@@ -79,18 +77,14 @@ int	parse_redir(t_cmd *cmd, char **line)
 		ptr++;
 	}
 	skip_whitespaces(&ptr);
-	if (!*ptr || is_set(*ptr, "<>|"))
-	{
-		if (is_set(*ptr, "<>|"))
-			return (*ptr);			// Returns the problem char
-		else if (!*ptr)
-			return ('\n');			// To handle `newline' output in error msg
-	}
-	cl_tok = get_cl_tok(&ptr);
+	if (!*ptr)
+		return ('\n');			// To handle `newline' output in error msg
+	else if (is_set(*ptr, "<>|"))
+		return (*ptr);			// Returns the problem char
 	if (**line == '<')
-		parse_in(cmd, cl_tok, is_double);
+		parse_in(cmd, &ptr, is_double);
 	else if (**line == '>')
-		parse_out(cmd, cl_tok, is_double);
+		parse_out(cmd, &ptr, is_double);
 	*line = ptr;
 	return (0);
 }
