@@ -1,6 +1,12 @@
 #ifndef ENUMS_H
 # define ENUMS_H
 
+/* Parse defines */
+# define WHITESPACES " \n\t"
+# define CL_SPEC_CH "\"\'$"
+# define CL_TOK_LIM " \n\t<>|"		// to add: &()
+# define CL_ENV_VAR_LIM " \n\t<>|\"\'$"
+
 /* Parsing result flags */
 enum parse
 {

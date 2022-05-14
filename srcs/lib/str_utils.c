@@ -172,3 +172,27 @@ char	*get_last_token(char *string, char delimiter)
 	last_token[j] = 0;
 	return (last_token);
 }
+
+char	*ft_strjoin_free(char *s1, char const *s2)
+{
+	size_t	tot_len;
+	char	*s_joined;
+	int		i;
+
+	i = 0;
+	tot_len = ft_strlen(s1) + ft_strlen(s2) + 1;
+	s_joined = malloc(tot_len);
+	if (!s_joined)
+		return (NULL);
+	if (s1)
+	{
+		while (s1[i])
+			*s_joined++ = s1[i++];
+		free (s1);
+	}
+	if (s2)
+		while (*s2)
+			*s_joined++ = *s2++;
+	*s_joined++ = 0;
+	return (s_joined - tot_len);
+}

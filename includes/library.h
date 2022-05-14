@@ -16,7 +16,7 @@ int			is_set_ret(char const c, char const *set);
 void		ft_bzero(void *s, size_t n);
 char		*ft_strncpy(char *dest, char *src, size_t n);
 char		*get_last_token(char *string, char delimiter);
-
+char		*ft_strjoin_free(char *s1, char const *s2);
 
 /* Writing utilities */
 int			putchar_fd(char c, int fd);

@@ -31,13 +31,7 @@
 # include "error.h"
 # include "get_next_line.h"
 
-/* Parse defines */
-# define WHITESPACES "\n \t"
-# define CL_SPEC_CH "<>\"\'|"	// to add: &()
-# define CL_TOK_LIM "<>|"		// to add: &
-
 /* Function prototypes */
-
 /* Main control functions */
 int			minishell(t_shell *sh);
 
@@ -95,14 +89,15 @@ void		clean_cmds(t_shell *sh);
 void		clean_fork(t_shell *sh, t_cmd *cmd);
 void		reset_shell(t_shell *sh);
 
-/* Parsing function */
+/* Parsing functions */
 
 //	parse.c
 int		parse(t_shell *sh, char *rem_line);
 int		check_parse(t_shell *sh, t_cmd *cmd, char *line);
 
 //	get_cl_tok.c
-char	*get_cl_tok(char **line);
+void	set_cl_tok(t_arglst **lst, char **line);
+int		get_tok_len(char *token, char *delimiters);
 
 //	parse_utils.c
 void	skip_whitespaces(char **line);
@@ -124,7 +119,7 @@ void	print_redirs(t_cmd *cmd);
 void	print_cmd_args(t_cmd *cmd);
 void	print_cmds_info(t_shell *sh);
 
-//	arg_list.c
+//	args_list.c
 void		ms_lstadd(t_arglst **lst, t_arglst *new);
 t_arglst	*ms_lstnew(char *str, bool is_expandable);
 void		ms_lstclear(t_arglst **lst);
