@@ -11,7 +11,7 @@ t_shell *init_shell(t_shell *sh, int argc, char **argv, char **envp)
 	sh->ret_val = 0;
 	sh->line = (char *)NULL;
 	
-	/* Ismael: Commented out temporatily */
+	/* Ismael: Commented out temporarily for debugging */
 	// if (argc > 1)							/* If a command is passed with shell, need to send it to be parsed as first command string */
 	// 	return (NULL);
 	
