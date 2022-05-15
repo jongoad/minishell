@@ -5,10 +5,9 @@ void	add_infile(t_cmd *cmd, t_infile *new_in)
 	t_infile	**new_arr;
 	int			i;
 
-	cmd->nb_ins++;
-	new_arr = ft_xalloc((cmd->nb_ins + 1) * sizeof(t_infile *));
+	new_arr = ft_xalloc((cmd->nb_ins + 2) * sizeof(t_infile *));
 	i = 0;
-	while (i < cmd->nb_ins - 1)
+	while (i < cmd->nb_ins)
 	{
 		new_arr[i] = cmd->ins[i];
 		i++;
@@ -24,10 +23,9 @@ void	add_outfile(t_cmd *cmd, t_outfile *new_out)
 	t_outfile	**new_arr;
 	int			i;
 
-	cmd->nb_outs++;
-	new_arr = ft_xalloc((cmd->nb_outs + 1) * sizeof(t_outfile *));
+	new_arr = ft_xalloc((cmd->nb_outs + 2) * sizeof(t_outfile *));
 	i = 0;
-	while (i < cmd->nb_outs - 1)
+	while (i < cmd->nb_outs)
 	{
 		new_arr[i] = cmd->outs[i];
 		i++;
@@ -48,9 +46,10 @@ void	parse_in(t_cmd *cmd, char **line, bool is_double)
 		set_cl_tok(&new_in->delim_lst, line);
 	else
 		set_cl_tok(&new_in->in_lst, line);
+	if (is_double)
+		parse_heredoc(cmd, new_in);
 	add_infile(cmd, new_in);
-	// if (is_double)
-	// 	new_in->fd = read_heredoc();
+	cmd->nb_ins++;
 }
 
 void	parse_out(t_cmd *cmd, char **line, bool is_double)
@@ -62,6 +61,7 @@ void	parse_out(t_cmd *cmd, char **line, bool is_double)
 	set_cl_tok(&new_out->out_lst, line);	
 	new_out->append_mode = is_double;
 	add_outfile(cmd, new_out);
+	cmd->nb_outs++;
 }
 
 int	parse_redir(t_cmd *cmd, char **line)

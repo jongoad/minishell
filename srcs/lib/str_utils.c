@@ -74,6 +74,9 @@ size_t	ft_strlen(const char *s)
 {
 	unsigned int	i;
 
+	/* Added by Ismael: sorry, but it makes it easier for me below */
+	if (!s)
+		return (0);
 	i = 0;
 	while (s[i] != '\0')
 		i++;
@@ -198,10 +201,6 @@ char	*ft_strjoin_free(char *s1, char const *s2)
 	char	*s_joined;
 	int		i;
 
-	if (!s1)
-		return ((char *)s2);
-	else if (!s2)
-		return (s1);
 	tot_len = ft_strlen(s1) + ft_strlen(s2) + 1;
 	s_joined = malloc(tot_len);
 	if (!s_joined)

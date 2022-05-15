@@ -6,8 +6,9 @@ CFILES			:=	builtins_utils.c	builtins.c	cleanup.c	error.c				execute_utils.c \
 					lib/get_next_line/get_next_line_utils.c		lib/get_next_line/get_next_line.c \
 					lib/array.c			lib/math.c				lib/memory.c		lib/split.c \
 					lib/str_utils.c		lib/write.c \
-					parse/args_list.c	parse/cmd_utils.c		parse/cl_tok.c		parse/lst_to_str.c \
-					parse/parse_redir.c	parse/parse_utils.c		parse/parse.c		parse/print_utils.c
+					parse/args_list.c	parse/cmd_utils.c		parse/cl_tok.c		parse/heredoc.c \
+					parse/lst_to_str.c	parse/parse_redir.c		parse/parse_utils.c	parse/parse.c \
+					parse/print_utils.c
 
 INC		= ./includes
 

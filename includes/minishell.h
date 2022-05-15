@@ -101,9 +101,14 @@ void	add_token(t_arglst **lst, char **line, char *delim, bool is_env_var);
 void	parse_dquotes(t_arglst **lst, char **line);
 void	parse_squotes(t_arglst **lst, char **line);
 
+//	heredoc.c
+void	parse_heredoc(t_cmd *cmd, t_infile *in);
+
 //	lst_to_str.c
-char	*lst_to_str(t_env *env, t_arglst *lst);
-char	**lst_arr_to_str_arr(t_env *env, t_arglst **arglst, int nb_elems);
+char	*expand_env_var(char **envp, char *var_name);
+char	*lst_to_str(char **envp, t_arglst *lst);
+char	*lst_to_str_no_exp(t_arglst *lst);
+char	**lst_arr_to_str_arr(char **envp, t_arglst **arglst, int nb_elems);
 void	cmds_lst_to_str(t_shell *sh);
 
 //	parse_utils.c
