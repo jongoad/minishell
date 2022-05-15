@@ -65,12 +65,10 @@ struct s_cmd
 {
 	t_infile	**ins;			/* in_files from parsing */
 	t_outfile	**outs;			/* out_files from parsing */
-	// IMPORTANT: args[0] needs to be set as char *exe
 	char		**args;			/* Input arguments for the command, element 0 is the command path */
-	t_arglst	**args_tok;		/* Linked list of the env_vars and pure string tokens */
+	t_arglst	**args_lst;		/* Array of linked lists representing the command line token */
 	char		**envp;			/* Environment path for the current shell */
 	char		*exe;			/* Path to command */
-	t_arglst	*exe_tok;		/* Linked list of the env_vars and pure string tokens */
 	char		*errname;		/* Name or path associated with error */
 	int			errnum;			/* Error status (set during parsing) */
 	int			builtin;		/* Built in command or sys command */

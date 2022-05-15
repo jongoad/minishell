@@ -25,7 +25,7 @@ int	parse(t_shell *sh, char *line)
 
 int	check_parse(t_shell *sh, t_cmd *cmd, char *line)
 {
-	if (!cmd->ins && !cmd->outs && !cmd->exe_tok)
+	if (!cmd->ins && !cmd->outs && !cmd->args_lst)
 		return (EXIT_FAILURE);
 	skip_whitespaces(&line);
 	if (*line == '|')

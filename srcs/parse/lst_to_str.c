@@ -1,31 +1,23 @@
 #include "minishell.h"
 
-char	*expand_env_var(t_env *env, char *var_name)
+/**
+ * @brief 
+ * 			We need to decide how we want to store $?
+ * 			In practice, expand_env_vars should be called at exec_time
+ */
+char	*expand_env_var(char **envp, char *var_name)
 {
-	char	*curr_var;
-	char	*env_var;
-	int		curr_strlen;
-	int		var_strlen;
+	int		var_len;
 	int		i;
 
-	if (!env || !var_name)
+	if (!envp || !var_name)
 		return (NULL);
-	var_strlen = ft_strlen(var_name);
-	env_var = NULL;
-	i = 0;
-	while (env->envp[i])
-	{
-		curr_var = get_first_token(env->envp[i], '=');
-		curr_strlen = ft_strlen(curr_var);
-		if (var_strlen == curr_strlen && !ft_strncmp(curr_var, var_name, var_strlen))
-		{
-			env_var = ft_strdup(&(env->envp[i][curr_strlen + 1]));
-			break ;
-		}
-		free(curr_var);
-		i++;
-	}
-	return (env_var);
+	var_len = ft_strlen(var_name);
+	i = -1;
+	while (envp[++i])
+		if (!ft_strncmp(envp[i], var_name, var_len) && envp[i][var_len] == '=')
+			return (ft_strdup(&(envp[i][var_len + 1])));
+	return (NULL);
 }
 
 char	*lst_to_str(t_env *env, t_arglst *lst)
@@ -41,7 +33,7 @@ char	*lst_to_str(t_env *env, t_arglst *lst)
 	while (ptr)
 	{
 		if (ptr->is_env_var)
-			curr_arg = expand_env_var(env, ptr->str);
+			curr_arg = expand_env_var(env->envp, ptr->str);
 		else
 			curr_arg = ft_strdup(ptr->str);
 		str = ft_strjoin_free(str, curr_arg);
@@ -50,18 +42,18 @@ char	*lst_to_str(t_env *env, t_arglst *lst)
 	return (str);
 }
 
-char	**lst_arr_to_str_arr(t_env *env, t_arglst **arglst, int nb_elems)
+char	**lst_arr_to_str_arr(t_env *env, t_arglst **lst_arr, int nb_elems)
 {
 	char	**str_arr;
 	int		i;
 
-	if (!arglst || !*arglst || nb_elems < 1)
+	if (!lst_arr || !*lst_arr || nb_elems < 1)
 		return (NULL);
 	str_arr = ft_xalloc((nb_elems + 1) * sizeof(char *));
 	i = 0;
 	while (i < nb_elems)
 	{
-		str_arr[i] = lst_to_str(env, arglst[i]);
+		str_arr[i] = lst_to_str(env, lst_arr[i]);
 		i++;
 	}
 	return (str_arr);
@@ -77,8 +69,12 @@ void	cmds_lst_to_str(t_shell *sh)
 	while (i < sh->nb_cmds)
 	{
 		cmd = sh->cmds[i];
-		cmd->exe = lst_to_str(&sh->env, cmd->exe_tok);
-		cmd->args = lst_arr_to_str_arr(&sh->env, cmd->args_tok, cmd->nb_args);
+		cmd->exe = lst_to_str(&sh->env, cmd->args_lst[0]);
+		cmd->args = lst_arr_to_str_arr(&sh->env, cmd->args_lst, cmd->nb_args);
+		// cmd->args = 
+		// j = -1;
+		// while (++j < cmd->nb_args)
+		// 	cmd->args[j] = lst_to_str(&sh->env, cmd->args[j]->in_lst);
 		j = -1;
 		while (++j < cmd->nb_ins)
 			cmd->ins[j]->infile = lst_to_str(&sh->env, cmd->ins[j]->in_lst);

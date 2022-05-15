@@ -72,7 +72,6 @@ int	minishell(t_shell *sh)
 		}
 		reset_shell(sh);
 	}
-	
 	return (sh->ret_val);
 }
 

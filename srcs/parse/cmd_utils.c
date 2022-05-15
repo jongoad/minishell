@@ -28,22 +28,6 @@ t_cmd	*add_new_cmd(t_shell *sh)
 	return (new_cmd);
 }
 
-/**!
- * 	NOTE: do we want arg[0] to be dupped, or do we simply want argll
- * 			to be converted to cmd->exe at lst_to_str() ?
- * 
- * 			It doesn't make sense to parse the line twice
- * 	
- */
-void	add_cmd_exe(t_cmd *cmd, char **line)
-{
-	set_cl_tok(&cmd->exe_tok, line);
-	cmd->args_tok = ft_xalloc(2 * sizeof(t_arglst *));
-	cmd->args_tok[0] = cmd->exe_tok;
-	cmd->args_tok[1] = NULL;
-	cmd->nb_args++;
-}
-
 void	add_cmd_arg(t_cmd *cmd, char **line)
 {
 	t_arglst	**new_arr;
@@ -52,31 +36,16 @@ void	add_cmd_arg(t_cmd *cmd, char **line)
 
 	if (!*line)
 		return ;
-	if (!cmd->exe_tok)
-		return (add_cmd_exe(cmd, line));
 	new_arr = ft_xalloc((cmd->nb_args + 2) * sizeof(t_arglst *));
 	i = -1;
 	while (++i < cmd->nb_args)
-		new_arr[i] = cmd->args_tok[i];
+		new_arr[i] = cmd->args_lst[i];
 	lst = NULL;
-	// if (i > 0)
-	// 	lst = cmd->args_tok[i];
 	set_cl_tok(&lst, line);
 	new_arr[i++] = lst;
 	new_arr[i] = NULL;
-	free(cmd->args_tok);
-	cmd->args_tok = new_arr;
+	free(cmd->args_lst);
+	cmd->args_lst = new_arr;
 	cmd->nb_args++;
-
-	// char	**new_array;
-	// int		i;
-	// new_array = ft_xalloc((cmd->nb_args + 2) * sizeof(char *));
-	// i = -1;
-	// while (++i < cmd->nb_args)
-	// 	new_array[i] = cmd->args[i];
-	// new_array[i++] = new_arg;
-	// new_array[i] = NULL;
-	// free(cmd->args);
-	// cmd->args = new_array;
 	return ;
 }

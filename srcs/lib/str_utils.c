@@ -124,15 +124,6 @@ int	is_set_ret(char const c, char const *set)
 	return (-1);
 }
 
-void	ft_bzero(void *s, size_t n)
-{
-	unsigned char	*ptr;
-
-	ptr = s;
-	while (n--)
-		*ptr++ = 0;
-}
-
 char	*ft_strncpy(char *dest, char *src, size_t n)
 {
 	size_t	i;
@@ -238,4 +229,41 @@ int	ft_isalnum(int c)
 		return (1);
 	else
 		return (0);
+}
+
+/* Goes with ft_itoa */
+static int	power_calc(int base, int power)
+{
+	if (power < 0)
+		return (0);
+	else if (power == 0)
+		return (1);
+	return (base * power_calc(base, power - 1));
+}
+
+char	*ft_itoa(int n)
+{
+	char	*n_to_a;
+	long	n_to_long;
+	int		magnitude;
+	int		len;
+
+	n_to_long = n;
+	len = 0;
+	while (n && ++len)
+		n /= 10;
+	n_to_a = ft_xalloc(len + 2);
+	if (n_to_long < 0)
+	{
+		n_to_a[n++] = '-';
+		n_to_long *= -1;
+	}
+	while (len--)
+	{
+		magnitude = power_calc(10, len);
+		n_to_a[n++] = (n_to_long / magnitude) + '0';
+		n_to_long %= magnitude;
+	}
+	n_to_a[n] = 0;
+	return (n_to_a);
 }
