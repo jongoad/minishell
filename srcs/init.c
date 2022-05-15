@@ -70,6 +70,8 @@ void	init_env_vars(t_shell *sh, char **envp)
 		{
 			sh->env.path = ft_split(*envp + 5, ':');
 		}
+		else if (!ft_strncmp(*envp, "SHLVL=", 6))
+			sh->env.envp[6] += 1;
 		envp++;
 		i++;
 	}

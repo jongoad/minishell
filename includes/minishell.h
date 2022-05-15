@@ -97,7 +97,7 @@ int		check_parse(t_shell *sh, t_cmd *cmd, char *line);
 
 //	get_cl_tok.c
 void	set_cl_tok(t_arglst **lst, char **line);
-void	add_token(t_arglst **lst, char **line, char *delimiter, bool is_env_var);
+void	add_token(t_arglst **lst, char **line, char *delim, bool is_env_var);
 void	parse_dquotes(t_arglst **lst, char **line);
 void	parse_squotes(t_arglst **lst, char **line);
 

@@ -30,7 +30,7 @@ char *rl_getline(t_shell *sh)
 	sh->line = readline (sh->prompt);		/* Get a line from the user. */
 	if (sh->line && *sh->line)				/* If the line has any text in it, save it on the history. */
 	{
-		add_history (sh->line);
+		add_history(sh->line);
 		putendl_fd(sh->line, sh->history_fd);
 	}
 	return (sh->line);

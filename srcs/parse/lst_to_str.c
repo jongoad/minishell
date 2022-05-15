@@ -41,9 +41,9 @@ char	*lst_to_str(t_env *env, t_arglst *lst)
 	while (ptr)
 	{
 		if (ptr->is_env_var)
-			curr_arg = expand_env_var(env, lst->str);
+			curr_arg = expand_env_var(env, ptr->str);
 		else
-			curr_arg = lst->str;
+			curr_arg = ft_strdup(ptr->str);
 		str = ft_strjoin_free(str, curr_arg);
 		ptr = ptr->next;
 	}
@@ -81,10 +81,10 @@ void	cmds_lst_to_str(t_shell *sh)
 		cmd->args = lst_arr_to_str_arr(&sh->env, cmd->args_tok, cmd->nb_args);
 		j = -1;
 		while (++j < cmd->nb_ins)
-			cmd->ins[j]->infile = lst_to_str(&sh->env, cmd->ins[j]->in_tok);
+			cmd->ins[j]->infile = lst_to_str(&sh->env, cmd->ins[j]->in_lst);
 		j = -1;
 		while (++j < cmd->nb_outs)
-			cmd->outs[j]->outfile = lst_to_str(&sh->env, cmd->outs[j]->out_tok);
+			cmd->outs[j]->outfile = lst_to_str(&sh->env, cmd->outs[j]->out_lst);
 		i++;
 	}
 }

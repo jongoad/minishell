@@ -149,7 +149,7 @@ char	*ft_strncpy(char *dest, char *src, size_t n)
 	return (dest);
 }
 
-char	*get_first_token(char *string, char delimiter)
+char	*get_first_token(char *string, char delim)
 {
 	size_t	str_len;
 	char	*first_token;
@@ -162,7 +162,7 @@ char	*get_first_token(char *string, char delimiter)
 	first_token_len = 0;
 	if (!string)
 		return (NULL);
-	while (string[first_token_len] != delimiter && first_token_len < str_len)
+	while (string[first_token_len] != delim && first_token_len < str_len)
 		first_token_len++;
 	first_token = ft_xalloc(first_token_len + 1);
 	i = 0;
@@ -175,7 +175,7 @@ char	*get_first_token(char *string, char delimiter)
 	return (first_token);
 }
 
-char	*get_last_token(char *string, char delimiter)
+char	*get_last_token(char *string, char delim)
 {
 	size_t	str_len;
 	char	*last_token;
@@ -188,7 +188,7 @@ char	*get_last_token(char *string, char delimiter)
 	i = str_len;
 	if (!string)
 		return (NULL);
-	while (string[i] != delimiter && i >= 0)
+	while (string[i] != delim && i >= 0)
 		i--;
 	last_token = ft_xalloc(str_len - i + 1);
 	j = 0;
@@ -211,20 +211,31 @@ char	*ft_strjoin_free(char *s1, char const *s2)
 		return ((char *)s2);
 	else if (!s2)
 		return (s1);
-	i = 0;
 	tot_len = ft_strlen(s1) + ft_strlen(s2) + 1;
 	s_joined = malloc(tot_len);
 	if (!s_joined)
 		return (NULL);
+	i = 0;
 	if (s1)
 	{
 		while (s1[i])
 			*s_joined++ = s1[i++];
 		free (s1);
 	}
+	i = 0;
 	if (s2)
-		while (*s2)
-			*s_joined++ = *s2++;
+		while (s2[i])
+			*s_joined++ = s2[i++];
 	*s_joined++ = 0;
 	return (s_joined - tot_len);
+}
+
+int	ft_isalnum(int c)
+{
+	if ((c >= '0' && c <= '9')
+		|| (c >= 'A' && c <= 'Z')
+		|| (c >= 'a' && c <= 'z'))
+		return (1);
+	else
+		return (0);
 }

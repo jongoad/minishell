@@ -20,7 +20,8 @@ int	test_minishell(t_shell *sh)
 {
 	char	err_char;
 
-	sh->line = ft_strdup("cat");
+	// sh->line = ft_strdup("\"lol\"abc$SHLVL");
+	sh->line = ft_strdup("$SHLVL\"o\"\'ooo\' e\"lol\" \"\"\"lol$HELL\"$SHLVL \'sq\'\"dq\" \"unclosed");
 	printf("line = %s\n", sh->line);
 	err_char = parse(sh, sh->line);
 	if (err_char)
@@ -53,7 +54,7 @@ int	minishell(t_shell *sh)
 		if (!sh->line)
 		{
 			rl_redisplay();
-			putstr_fd("exit", STDERR_FILENO);
+			putendl_fd("exit", STDERR_FILENO);
 			exit(0);
 		}
 		printf("line = %s\n", sh->line);

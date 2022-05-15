@@ -14,8 +14,8 @@ void	print_redirs(t_cmd *cmd)
 	{
 		if (cmd->ins[i]->infile)
 			printf("in[%d]: \"%s\"\n", i, cmd->ins[i]->infile);
-		if (cmd->ins[i]->delimiter)
-			printf(RED"------> in[%d] is HEREDOC; delimiter: \"%s\"\n"GREEN, i, cmd->ins[i]->delimiter);
+		if (cmd->ins[i]->delim)
+			printf(RED"------> in[%d] is HEREDOC; delim: \"%s\"\n"GREEN, i, cmd->ins[i]->delim);
 		i++;
 	}
 	if (cmd->nb_outs)

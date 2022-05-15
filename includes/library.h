@@ -18,6 +18,7 @@ char		*ft_strncpy(char *dest, char *src, size_t n);
 char		*get_first_token(char *string, char delimiter);
 char		*get_last_token(char *string, char delimiter);
 char		*ft_strjoin_free(char *s1, char const *s2);
+int			ft_isalnum(int c);
 
 /* Writing utilities */
 int			putchar_fd(char c, int fd);
