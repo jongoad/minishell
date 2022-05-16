@@ -46,12 +46,29 @@ int	builtin_echo_n(t_shell *sh, t_cmd *cmd)
 /* Change directory */
 int	builtin_cd(t_shell *sh, t_cmd *cmd)
 {
+	char *buf;
+	char *res;
+	
+	buf = (char *)malloc(sizeof(char) * 1025);
+	buf = getcwd(buf, 1025);
+	res = ft_strjoin("OLDPWD=", buf);
+	free(buf);
+	change_env_var(&sh->env, res);
+	free(res);
 	if (chdir(cmd->args[cmd->nb_args - 1]))
 	{
 		cmd->errnum = errno;
 		cmd->errname = ft_strjoin("cd: ", cmd->args[cmd->nb_args - 1]);
 	}
-	change_env_var(&sh->env, ft_strjoin("PATH=", cmd->args[cmd->nb_args - 1]));
+	else
+	{
+		buf = (char *)malloc(sizeof(char) * 1025);
+		buf = getcwd(buf, 1025);
+		res = ft_strjoin("PWD=", buf);
+		free(buf);
+		change_env_var(&sh->env, res);
+		free(res);
+	}
 	return (cmd->errnum);
 }
 //FIX error handling
@@ -86,7 +103,7 @@ int	builtin_pwd(t_shell *sh, t_cmd *cmd)
 int	builtin_export(t_shell *sh, t_cmd *cmd)
 {
 	int	i;
-	
+
 	i = 1;
 	while (cmd->args[i])
 	{
@@ -109,17 +126,20 @@ int	builtin_unset(t_shell *sh, t_cmd *cmd)
 	i = 1;
 	while (cmd->args[i])
 	{
-		j = 0;
-		while (sh->env.envp[j])
+		if (!check_env_var(cmd->args[i], true))				/* If arg to be unset does not pass env var naming conventions print error */
 		{
-			if (!check_env_var(cmd->args[i], true))				/* If arg to be unset does not pass env var naming conventions print error */
+			put_err_msg(sh->sh_name, cmd->exe, cmd->args[i], ERR_IDENTIFER);
+			cmd->errnum = 1;
+		}
+		else
+		{
+			j = 0;
+			while (sh->env.envp[j])
 			{
-				put_err_msg(sh->sh_name, cmd->exe, cmd->args[i], "No such file or directory");
-				cmd->errnum = 1;
+				if (env_var_cmp(cmd->args[i], sh->env.envp[j]))
+					remove_env_var(&sh->env, j);
+				j++;
 			}
-			else if (env_var_cmp(cmd->args[i], sh->env.envp[i]))
-				remove_env_var(&sh->env, i);
-			j++;
 		}
 		i++;
 	}
@@ -148,27 +168,23 @@ int	builtin_exit(t_shell *sh, t_cmd *cmd)
 	long long	ret;
 
 	ret = 0;
-	if (cmd->args[0])
+	if (cmd->args[1])
 	{
 		ret = ft_atoll(cmd->args[1], &is_valid);
-		if (is_valid && cmd->args[1])
+		if (is_valid && cmd->args[2])
 		{
 			putstr_fd("exit\n", 2);
-			putstr_fd(sh->prompt, 2);
-			putstr_fd(": exit", 2);
-			putstr_fd(ERR_EXIT_ARGS_NUM, 2);
+			put_err_msg(sh->sh_name, cmd->args[0], NULL, ERR_EXIT_ARGS_NUM);
 			return (1);
 		}
 		else if (!is_valid)
-		{
-			putstr_fd(sh->prompt, 2);
-			putstr_fd(": exit: ", 2);
-			putstr_fd(cmd->args[0], 2);
-			putstr_fd(ERR_EXIT_NON_NUMERIC, 2);
-		}
+			put_err_msg(sh->sh_name, cmd->args[0], cmd->args[1], ERR_EXIT_NON_NUMERIC);
+
 		else
 			putstr_fd("exit\n", 2);
 	}
+	else
+		putstr_fd("exit\n", 2);
 	cleanup(sh);						/* Cleanup ALL shell memory before exit */
 	exit(ret);
 }

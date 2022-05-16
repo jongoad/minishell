@@ -19,6 +19,7 @@ char		*get_last_token(char *string, char delimiter);
 char		*ft_strjoin_free(char *s1, char const *s2);
 int			ft_isalnum(int c);
 char		*ft_itoa(int n);
+int			ft_atoi(const char *str);
 
 /* Writing utilities */
 int			putchar_fd(char c, int fd);

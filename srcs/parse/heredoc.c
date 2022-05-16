@@ -1,5 +1,10 @@
 #include "minishell.h"
 
+/* Found the issue:
+ *	- expand heredoc should work recursively, or at least the entirety of the tokens parsed
+ *	
+ *	
+ */
 char	*expand_heredoc_tok(char **envp, char *ptr)
 {
 	char	*var_name;
@@ -75,9 +80,10 @@ static void	read_heredoc(t_cmd *cmd, t_infile *in)
 	free (buff);
 
 	//	Right now, expand_heredoc does not seem to work properly
-	// expand_heredoc(cmd, in, heredoc);
 
 	write(in->fd, heredoc, ft_strlen(heredoc));
+	// expand_heredoc(cmd, in, heredoc);
+
 	free (heredoc);
 	close(in->fd);
 	exit (0);
@@ -88,12 +94,12 @@ void	parse_heredoc(t_cmd *cmd, t_infile *in)
 	int		status;
 	pid_t	pid;
 
+	in->infile = ft_strdup("./heredoc");			// Has to be switched to a unique name
 	//	Not sure if assigning in_file is necessary
-	in->infile = ft_strdup("./heredoc");			// To switch to a proper name
-	set_cl_tok(&in->in_lst, &in->infile);
-	in->infile -= ft_strlen("./heredoc");			// hacky bullshit
+	set_cl_tok(&in->in_lst, &in->infile);			// Not sure if needed or just need condition in lst_to_str
+	in->infile -= ft_strlen("./heredoc");			// hacky bullshit to make up for reverse order of operations
 	
-	in->delim = lst_to_str_no_exp(in->delim_lst);	//except without env_var expansion
+	in->delim = lst_to_str_no_exp(in->delim_lst);
 	printf("delim = %s\n", in->delim);
 	in->fd = open(in->infile, O_TRUNC | O_CREAT | O_CLOEXEC | O_RDWR, 0644);
 	pid = fork();

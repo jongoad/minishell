@@ -37,6 +37,7 @@ char	*lst_to_str(char **envp, t_arglst *lst)
 		else
 			curr_arg = ft_strdup(ptr->str);
 		str = ft_strjoin_free(str, curr_arg);
+		free(curr_arg);
 		ptr = ptr->next;
 	}
 	return (str);

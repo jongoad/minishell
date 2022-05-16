@@ -6,7 +6,10 @@ int	parse(t_shell *sh, char *line)
 
 	if (!line || !*line)
 		return (EXIT_SUCCESS);
+	// printf("ms entered parse with nb_cmds == %d\n", sh->nb_cmds);
+	// printf("sh->cmds == %p\n", sh->cmds);
 	curr_cmd = add_new_cmd(sh);
+	// printf("after add_new_cmd, nb_cmds == %d\n", sh->nb_cmds);
 	skip_whitespaces(&line);
 	while (*line && *line != '|')
 	{

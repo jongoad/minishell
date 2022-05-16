@@ -42,9 +42,13 @@ int	check_builtins(t_shell *sh, t_cmd *cmd)
 		if (!ft_strncmp(tmp, sh->builtins.alias[i], ft_strlen(sh->builtins.alias[i])))
 		{
 			if (!tmp[ft_strlen(sh->builtins.alias[i])])
+			{
+				free(tmp);
 				return (cmd->builtin = i);
+			}
 		}
 		i++;	
 	}
+	free(tmp);
 	return (cmd->builtin = -1);
 }

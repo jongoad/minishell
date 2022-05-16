@@ -34,9 +34,8 @@ void	add_env_var(t_env *env, char *str)
 {
 	int	i;
 	char **tmp;
-
 	i = count_array((void **)env->envp);
-	tmp = (char **)malloc(sizeof(char *) * i + 2);
+	tmp = (char **)malloc(sizeof(char *) * (i + 2));
 	i = 0;
 	while (env->envp[i])
 	{
@@ -45,17 +44,22 @@ void	add_env_var(t_env *env, char *str)
 	}
 	tmp[i] = ft_strdup(str);
 	tmp[i + 1] = NULL;
-	i = -1;
-	while (env->envp[++i])
+	i = 0;
+	while (env->envp[i])
+	{
 		free(env->envp[i]);
+		i++;
+	}
 	free(env->envp);
 	env->envp = tmp;
 }
+
 /* Change value of an environment variable */
 int	change_env_var(t_env *env, char *arg)
 {
 	int	i;
 	char **split;
+	char *tmp;
 
 	i = 0;
 	split = ft_split(arg, '=');
@@ -65,7 +69,9 @@ int	change_env_var(t_env *env, char *arg)
 			env->envp[i][ft_strlen(split[0])] == '=')
 		{
 			free(env->envp[i]);
-			env->envp[i] = ft_strjoin(ft_strjoin(split[0], "="), split[1]);
+			tmp = ft_strjoin(split[0], "=");
+			env->envp[i] = ft_strjoin(tmp, split[1]);
+			free(tmp);
 			free_array((void **)split);
 			return (1);
 		}
@@ -97,9 +103,13 @@ void	remove_env_var(t_env *env, int n)
 			j++;
 		}
 	}
-	i = -1;
-	while (env->envp[++i])
+	//FIX this free is causing problems
+	i = 0;
+	while (env->envp[i])
+	{
 		free(env->envp[i]);
+		i++;
+	}
 	free(env->envp);
 	env->envp = tmp;
 }
@@ -114,13 +124,13 @@ bool check_env_var(char *str, bool unset)
 		return (false);
 	while (str[i] && str[i] != '=')					/* Iterate until equals sign is hit */
 	{
-		if (!(str[i] >= '0' && str[i] <= '9')
-			|| !(str[i] >= 'a' && str[i] <= 'z')
-			|| !(str[i] >= 'A' && str[i] <= 'Z') || str[i] != '_')
+		if (!ft_isalnum(str[i]) && str[i] != '_')
 			return (false);
 		i++;
 	}
 	if (!unset && str[i] != '=')								/* If no equals sign is hit, return false */
+		return (false);
+	else if (unset && str[i] != '\0')
 		return (false);
 	return (true);
 }

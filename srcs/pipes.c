@@ -31,10 +31,13 @@ void	close_pipes(t_shell *sh)
 	int	i;
 
 	i = 0;
-	while (i < sh->nb_pipes)
+	if (sh->pipes)
 	{
-		close(sh->pipes[i]);
-		i++;
+		while (i < sh->nb_pipes)
+		{
+			close(sh->pipes[i]);
+			i++;
+		}
 	}
 }
 

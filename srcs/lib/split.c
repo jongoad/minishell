@@ -80,7 +80,7 @@ char	**ft_split(char const *s, char c)
 	if (!s)
 		return (NULL);
 	count = string_count((char *)s, c);
-	array = (char **)malloc(sizeof(char *) * (count) + 1);
+	array = (char **)malloc(sizeof(char *) * (count + 1));
 	if (!array)
 		return (NULL);
 	array[count] = NULL;

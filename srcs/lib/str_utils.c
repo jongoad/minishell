@@ -1,4 +1,4 @@
-#include "../../includes/minishell.h"
+#include "minishell.h"
 
 /* Return a malloced copy of a strin */
 char	*ft_strdup(const char *s1)
@@ -265,4 +265,32 @@ char	*ft_itoa(int n)
 	}
 	n_to_a[n] = 0;
 	return (n_to_a);
+}
+
+/* Convert a string to an int */
+int	ft_atoi(const char *str)
+{
+	long long	num;
+	long long	sign;
+
+	num = 0;
+	sign = 1;
+	while ((*str >= 9 && *str <= 13) || *str == 32)
+		str++;
+	if (*str == '+' || *str == '-')
+	{
+		if (*str == '-')
+			sign = -1;
+		str++;
+	}
+	while (*str >= '0' && *str <= '9')
+	{
+		num = (num * 10) + (*str - '0');
+		str++;
+		if ((num * sign) > INT_MAX)
+			return (-1);
+		if ((num * sign) < INT_MIN)
+			return (0);
+	}
+	return (num * sign);
 }

@@ -17,6 +17,7 @@ t_cmd	*add_new_cmd(t_shell *sh)
 
 	new_arr = ft_xalloc((sh->nb_cmds + 2) * sizeof(t_cmd *));
 	new_cmd = ft_xalloc(sizeof(t_cmd));
+	new_cmd->envp = sh->env.envp;
 	i = -1;
 	while (++i < sh->nb_cmds)
 		new_arr[i] = sh->cmds[i];

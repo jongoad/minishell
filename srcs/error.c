@@ -30,10 +30,8 @@ void	put_err_msg(char *sh_name, char *cmd, char *arg, char *msg)
 		putstr_fd(": ", 2);
 	}
 	if (msg)
-	{
 		putstr_fd(msg, 2);
-		putstr_fd("\n", 2);
-	}
+	putstr_fd("\n", 2);
 }
 
 int	parse_error(char err_char)

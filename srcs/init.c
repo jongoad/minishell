@@ -3,7 +3,7 @@
 /* Initialize shell variables and do preliminary setup */
 t_shell *init_shell(t_shell *sh, int argc, char **argv, char **envp)
 {
-	sh = malloc(sizeof(t_shell));
+	sh = ft_xalloc(sizeof(t_shell));
 	init_shell_prompt(sh, argv[0]);			/* Set shell name and prompt */
 	init_env_vars(sh, envp);				/* Set environment vars array and paths array */
 	init_builtins(sh);						/* Initialize builtin function array and function pointers */
@@ -20,40 +20,12 @@ t_shell *init_shell(t_shell *sh, int argc, char **argv, char **envp)
 }
 //FIX error handling
 
-/* Reset shell */
-void reset_shell(t_shell *sh)
-{
-	free(sh->pids);
-	free(sh->pipes);
-	sh->nb_cmds = 0;
-	sh->cmd_iter = 0;
-	sh->nb_pipes = 0;
-}
+
 /* Initialize prompt and shell name */
 void	init_shell_prompt(t_shell *sh, char *name)
 {
-	// int len;
-	// int	i;
-
-	// i = 0;
-	// len = ft_strlen(name);
-	// sh->prompt = malloc(len + 3);
-	// // while (name[i] == '.' || name[i] == '/')
-	// // 	i++;
-
-
 	sh->sh_name = get_last_token(name, '/');
 	sh->prompt = ft_strjoin(sh->sh_name, "-> ");
-
-	// while (name[i])
-	// {
-	// 	sh->prompt[i] = name[i];
-	// 	i++;
-	// }
-	// sh->prompt[i] = '-';
-	// sh->prompt[i + 1] = '>';
-	// sh->prompt[i + 2] = '\0';
-	// sh->sh_name = ft_strdup(name);
 }
 
 /* Initialize environment variables */
@@ -62,7 +34,8 @@ void	init_env_vars(t_shell *sh, char **envp)
 	int i;
 
 	i = 0;
-	sh->env.envp = (char **)malloc(sizeof(char *) * (count_array((void **)envp) + 1));
+	sh->env.envp = ft_xalloc(sizeof(char *) * (count_array((void **)envp) + 1));
+	sh->env.envp[count_array((void **)envp)] = NULL;
 	while (*envp)
 	{
 		sh->env.envp[i] = ft_strdup(*envp);
@@ -71,11 +44,30 @@ void	init_env_vars(t_shell *sh, char **envp)
 			sh->env.path = ft_split(*envp + 5, ':');
 		}
 		else if (!ft_strncmp(*envp, "SHLVL=", 6))
-			sh->env.envp[6] += 1;
+		{
+			free(sh->env.envp[i]);
+			sh->env.envp[i] = increment_shlvl(*envp);
+		}
 		envp++;
 		i++;
 	}
-	sh->env.envp[i] = NULL;
+}
+
+/* Update shell level for current shell */
+char	*increment_shlvl(char *str)
+{
+	char	*tmp;
+	char	*num;
+
+	while (*str && *str != '=')
+		str++;
+	str++;
+
+	num = ft_itoa(ft_atoi(str) + 1);
+	tmp = ft_strjoin("SHLVL=", num);
+	free(num);
+	return (tmp);
+	
 }
 
 /* Init builtin commands struct */

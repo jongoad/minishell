@@ -14,12 +14,15 @@ int	count_array(void **array)
 /* Free a null terminated 2d array */
 void	free_array(void **array)
 {
+	int	i;
+
+	i = 0;
 	if (array)
 	{
-		if (array[0])
+		while(array[i])
 		{
-			free(array[1]);
-			free(array[0]);
+			free(array[i]);
+			i++;
 		}
 		free(array);
 	}

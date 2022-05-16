@@ -1,12 +1,5 @@
 #include "minishell.h"
 
-/* -------- TODO FOR EXECUTION --------
-	- Deal with expansion of variables
-	- Ensure that close_files() is being run when needed
-	- Ensure clean_fork() is being run in any situation where execve() is not called
-	- Ensure clean_cmds() is being run before returning to readline loop
-*/
-
 /* Control function for executing commands */
 void	execute(t_shell *sh)
 {
@@ -16,10 +9,7 @@ void	execute(t_shell *sh)
 	sh->cmd_iter = 0;														/* Iterator for pipe control */
 	sh->pids = malloc(sizeof(pid_t) * sh->nb_cmds);
 	if (init_pipes(sh))
-	{
-		//clean_cmds(sh);	//Prob also want to set ret value
 		return;
-	}
 	while (i < sh->nb_cmds)
 	{
 		check_builtins(sh, sh->cmds[i]);									/* Check if command is builtin, and if so get the function index */
@@ -27,6 +17,7 @@ void	execute(t_shell *sh)
 			sh->ret_val = run_builtin_parent(sh, sh->cmds[i]);
 		else
 			run_cmd(sh, sh->cmds[i], i);									/* Run command(s) in forked processes */
+		close_files(sh->cmds[i]);
 		i++;
 		sh->cmd_iter++;
 	}
@@ -36,7 +27,6 @@ void	execute(t_shell *sh)
 		while (wait(&sh->ret_val) > 0)
 			sh->ret_val >>= 8;												/* Update return value from each forked process */
 	}
-	//clean_cmds(sh);															/* Clear command data before returning to main shell loop*/
 }
 
 /* Fork process and run a command */
@@ -49,7 +39,7 @@ void	run_cmd(t_shell *sh, t_cmd *cmd, int i)
 		{
 			manage_pipes(sh, cmd);
 			if (cmd->builtin < 0)												/* If system command run with execve */
-				execve(build_cmd_path(sh->env.path, cmd->exe), cmd->args, cmd->envp);
+				execve(build_cmd_path(sh->env.path, cmd->exe), cmd->args, sh->env.envp);
 			else																/* If built in command run in current process */
 			{
 				cmd->errnum = sh->builtins.f[cmd->builtin](sh, cmd);
@@ -57,7 +47,8 @@ void	run_cmd(t_shell *sh, t_cmd *cmd, int i)
 					put_err_msg(sh->sh_name, cmd->exe, NULL, ERR_PIPE);			/* Check getting correct error message here */
 			}
 		}
-		//clean_fork(sh, cmd);													/* If built in function, clear memory before exit */
+		close_files(cmd);
+		cleanup(sh);
 		exit(cmd->errnum);
 	}
 }

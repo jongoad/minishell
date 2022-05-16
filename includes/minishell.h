@@ -22,6 +22,7 @@
 # include <sys/resource.h>
 # include <stdbool.h>
 # include <errno.h>
+# include <limits.h>
 
 /* User includes */
 # include "colors.h"
@@ -39,6 +40,7 @@ int			minishell(t_shell *sh);
 t_shell		*init_shell(t_shell *sh, int argc, char **argv, char **envp);
 void		init_shell_prompt(t_shell *sh, char *name);
 void		init_env_vars(t_shell *sh, char **envp);
+char		*increment_shlvl(char *str);
 void		init_builtins(t_shell *sh);
 
 /* Execution functions */
@@ -85,6 +87,8 @@ int			parse_error(char err_char);
 
 /* Memory management functions */
 void		cleanup(t_shell *sh);
+void		clean_env(t_shell *sh);
+void		clean_single_cmd(t_cmd *cmd);
 void		clean_cmds(t_shell *sh);
 void		clean_fork(t_shell *sh, t_cmd *cmd);
 void		reset_shell(t_shell *sh);

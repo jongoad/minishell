@@ -28,7 +28,7 @@ char *get_line(char *line)
     	free(line);
     	line = (char *)NULL;
   	}
-	line = readline ("");		/* Get a line from the user. */
+	line = readline ("test-> ");		/* Get a line from the user. */
 	if (line && *line)		/* If the line has any text in it, save it on the history. */
 		add_history (line);
   return (line);
@@ -41,6 +41,11 @@ int	main(void)
 	while (1)
 	{
 		line = get_line(line);
+		if (!line)
+		{
+			printf("exit\n");
+			exit(0);
+		}
 		printf("Line: %s\n", line);
 	}
 
