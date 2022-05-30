@@ -2,7 +2,7 @@ NAME			:= minishell
 
 CFILES			:=	builtins_utils.c	builtins.c	cleanup.c	error.c				execute_utils.c \
 					execute.c 			init.c		io.c 		minishell.c			pipes.c \
-					readline.c \
+					readline.c			signal.c \
 					lib/get_next_line/get_next_line_utils.c		lib/get_next_line/get_next_line.c \
 					lib/array.c			lib/math.c				lib/memory.c		lib/split.c \
 					lib/str_utils.c		lib/write.c \
@@ -24,18 +24,20 @@ $(OBJ_DIR)/%.o:	$(SRC_DIR)/%.c
 
 CC				= gcc
 RM				= rm -rf
-CFLAGS			= -Wall -Wextra -Werror -I./includes/ -g
+CFLAGS			= -Wall -Wextra -Werror -I./includes/ -I./readline-8.1 -g -D READLINE_LIBRARY=1
 
 all:			$(NAME)
 
 $(NAME):		$(OBJS)
-				$(CC) $(CFLAGS) -o $(NAME) $(OBJS) -lreadline
+				cp .inputrc ~/
+				$(CC) $(CFLAGS) -o $(NAME) $(OBJS) -Lreadline-8.1 -lreadline -lcurses
+
 
 clean:
 				$(RM) $(OBJ_DIR)
 
 fclean:			clean
-				$(RM) $(NAME)
+				$(RM) $(NAME) ~/.inputrc
 
 re:				fclean $(NAME)
 

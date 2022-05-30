@@ -34,9 +34,10 @@ int	check_builtins(t_shell *sh, t_cmd *cmd)
 	int		i;
 
 	i = 0;
+	if(!cmd->exe)							/* If there is no command return -1 here to prevent segfault */
+		return (cmd->builtin = -1);
 	tmp = ft_strdup(cmd->exe);				/* Create a local copy of command name/path */
 	tmp = str_to_lower(tmp);				/* Set to lowercase for comparison */
-
 	while (i < 7)
 	{
 		if (!ft_strncmp(tmp, sh->builtins.alias[i], ft_strlen(sh->builtins.alias[i])))

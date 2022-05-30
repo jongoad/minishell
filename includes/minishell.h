@@ -7,8 +7,8 @@
 # include <term.h>
 # include <stdlib.h>
 # include <unistd.h>
-# include <readline/readline.h>
-# include <readline/history.h>
+// # include <readline/readline.h>
+// # include <readline/history.h>
 # include <sys/types.h>
 # include <stdio.h>
 # include <sys/stat.h>
@@ -24,6 +24,10 @@
 # include <errno.h>
 # include <limits.h>
 
+/* Readline includes */
+# include "readline.h"
+# include "history.h"
+
 /* User includes */
 # include "colors.h"
 # include "enums.h"
@@ -33,6 +37,10 @@
 # include "get_next_line.h"
 
 /* Function prototypes */
+void	signal_handler(int signum);
+t_shell	*get_data(void);
+void readline_exit(t_shell *sh);
+
 /* Main control functions */
 int			minishell(t_shell *sh);
 
@@ -52,6 +60,10 @@ int			init_io(t_shell *sh, t_cmd *cmd);
 int			init_ins(t_shell *sh, t_cmd *cmd);
 int			init_outs(t_shell *sh, t_cmd *cmd);
 void		close_files(t_cmd *cmd);
+
+/* Command line exectution */
+bool		command_line_input(t_shell *sh, int argc, char **argv);
+void		run_single_command(t_shell *sh);
 
 /*Execution utilities */
 char		*build_cmd_path(char **cmd_path, char *cmd);

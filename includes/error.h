@@ -8,5 +8,5 @@
 # define ERR_EXIT_NON_NUMERIC "numeric argument required"
 # define ERR_PIPE "unable to allocate pipes"
 # define ERR_IDENTIFER	"not a valid identifier" 
-
+# define ERR_CMD "command not found"
 #endif

@@ -95,6 +95,8 @@ struct s_shell
 	int			ret_val;		/* Return value of last executed command */
 	int			cmd_iter;		/* Iterator for commands array */
 	int			history_fd;		/* File descriptory */
+	bool		cmd_line;		/* Store presence of a command line input on program launch */
+	char		err_char;		/* Error character for parse error handling */
 };
 
 #endif

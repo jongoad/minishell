@@ -1,15 +1,26 @@
 #include "minishell.h"
 
+/* Singleton to get shell struct */
+t_shell	*get_data(void)
+{
+	static t_shell	*sh;
+
+	if (!sh)
+		sh = ft_xalloc(sizeof(t_shell));
+	return (sh);
+}
+
 /* Initialize shell variables and do preliminary setup */
 t_shell *init_shell(t_shell *sh, int argc, char **argv, char **envp)
 {
-	sh = ft_xalloc(sizeof(t_shell));
+	sh = get_data();
 	init_shell_prompt(sh, argv[0]);			/* Set shell name and prompt */
 	init_env_vars(sh, envp);				/* Set environment vars array and paths array */
 	init_builtins(sh);						/* Initialize builtin function array and function pointers */
 	init_history(sh);
 	sh->ret_val = 0;
 	sh->line = (char *)NULL;
+	sh->cmd_line = false;
 	
 	/* Ismael: Commented out temporarily for debugging */
 	// if (argc > 1)							/* If a command is passed with shell, need to send it to be parsed as first command string */

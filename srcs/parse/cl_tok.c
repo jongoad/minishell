@@ -13,6 +13,17 @@ void	add_token(t_arglst **lst, char **line, char *delim, bool is_env_var)
 	return ;
 }
 
+void	add_token_by_len(t_arglst **lst, char **line, int tok_len, bool is_env_var)
+{
+	char	*token;
+
+	token = ft_xalloc((tok_len + 1) * sizeof(char));
+	token = ft_strncpy(token, *line, tok_len);
+	ms_lstadd(lst, ms_lstnew(token, is_env_var));
+	*line += tok_len;
+	return ;
+}
+
 /**!
  * 	@brief	If unclosed, treats the token as without quotes
  * 			Otherwise, tokenizes content of dquotes into:
@@ -79,6 +90,8 @@ void	set_cl_tok(t_arglst **lst, char **line)
 	else if (**line == '$')
 	{
 		*line += 1;
+		if (**line == '?')
+			add_token_by_len(lst, line, 1, true);
 		add_token(lst, line, CL_TOK_LIM, true);
 	}
 	else

@@ -7,11 +7,17 @@
  */
 char	*expand_env_var(char **envp, char *var_name)
 {
+	t_shell	*sh;
 	int		var_len;
 	int		i;
 
 	if (!envp || !var_name)
 		return (NULL);
+	/* Expand error return */
+	sh = get_data();
+	if (var_name[0] == '?' && !var_name[1])
+		return (ft_itoa(sh->ret_val));
+	/* Search for the variable */
 	var_len = ft_strlen(var_name);
 	i = -1;
 	while (envp[++i])
@@ -92,8 +98,11 @@ void	cmds_lst_to_str(t_shell *sh)
 	while (i < sh->nb_cmds)
 	{
 		cmd = sh->cmds[i];
-		cmd->exe = lst_to_str(sh->env.envp, cmd->args_lst[0]);
-		cmd->args = lst_arr_to_str_arr(sh->env.envp, cmd->args_lst, cmd->nb_args);
+		if (cmd->args_lst)		/* If args_lst is null there is no command, do not attempt to access */
+		{
+			cmd->exe = lst_to_str(sh->env.envp, cmd->args_lst[0]);
+			cmd->args = lst_arr_to_str_arr(sh->env.envp, cmd->args_lst, cmd->nb_args);
+		}
 		j = -1;
 		while (++j < cmd->nb_ins)
 			cmd->ins[j]->infile = lst_to_str(sh->env.envp, cmd->ins[j]->in_lst);

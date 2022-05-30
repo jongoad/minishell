@@ -28,6 +28,10 @@ void	execute(t_shell *sh)
 			sh->ret_val >>= 8;												/* Update return value from each forked process */
 	}
 }
+t_cmd * convert(t_cmd *sd)
+{
+	
+}
 
 /* Fork process and run a command */
 void	run_cmd(t_shell *sh, t_cmd *cmd, int i)
@@ -35,11 +39,14 @@ void	run_cmd(t_shell *sh, t_cmd *cmd, int i)
 	sh->pids[i] = fork();
 	if (sh->pids[i] == 0)
 	{
-		if (!init_io(sh, cmd))													/* Check IO */
+		if (!init_io(sh, cmd) && cmd->exe)										/* Check IO and presence of a command */
 		{
 			manage_pipes(sh, cmd);
 			if (cmd->builtin < 0)												/* If system command run with execve */
-				execve(build_cmd_path(sh->env.path, cmd->exe), cmd->args, sh->env.envp);
+			{
+				cmd->errnum = execve(build_cmd_path(sh->env.path, cmd->exe), cmd->args, sh->env.envp);
+				put_err_msg(sh->sh_name, cmd->exe, NULL, ERR_CMD);
+			}
 			else																/* If built in command run in current process */
 			{
 				cmd->errnum = sh->builtins.f[cmd->builtin](sh, cmd);
