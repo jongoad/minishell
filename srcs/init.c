@@ -64,6 +64,27 @@ void	init_env_vars(t_shell *sh, char **envp)
 	}
 }
 
+/* Reinit path every time a function is called */
+void	init_path(t_shell *sh)
+{
+	int	i;
+
+	i = 0;
+	if (sh->env.path)
+	{
+		free(sh->env.path);
+		sh->env.path = NULL;
+	}
+	while (sh->env.envp[i])
+	{
+		if (!ft_strncmp(sh->env.envp[i], "PATH=", 5))
+		{
+			sh->env.path = ft_split(sh->env.envp[i] + 5, ':');
+		}
+		i++;
+	}
+}
+
 /* Update shell level for current shell */
 char	*increment_shlvl(char *str)
 {

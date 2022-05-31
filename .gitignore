@@ -53,3 +53,10 @@ dkms.conf
 
 #VSCODE
 .vscode
+
+#MISC
+minishell
+!minishell/
+*history
+
+

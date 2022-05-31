@@ -98,6 +98,7 @@ char	*str_to_lower(char *str)
 	return (str);
 }
 
+/* Find if a character exists in a string */
 int	is_set(char const c, char const *set)
 {
 	if (!set || !c)
@@ -111,8 +112,7 @@ int	is_set(char const c, char const *set)
 	return (0);
 }
 
-// If c was found in the set, returns its index.
-// If not found, returns -1
+/* Find the position of the first instance of a character in a string. If not found returns -1 */
 int	is_set_ret(char const c, char const *set)
 {
 	int	i;

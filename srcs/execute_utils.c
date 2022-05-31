@@ -14,7 +14,7 @@ char	*build_cmd_path(char **cmd_path, char *cmd)
 			return (ft_strdup(cmd));
 		i++;
 	}
-	while (*cmd_path)
+	while (cmd_path && *cmd_path)
 	{
 		tmp = ft_strjoin(*cmd_path, "/");
 		cmd_res = ft_strjoin(tmp, cmd);

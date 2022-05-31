@@ -28,14 +28,15 @@ void	execute(t_shell *sh)
 			sh->ret_val >>= 8;												/* Update return value from each forked process */
 	}
 }
-t_cmd * convert(t_cmd *sd)
-{
-	
-}
+
+
+
+
 
 /* Fork process and run a command */
 void	run_cmd(t_shell *sh, t_cmd *cmd, int i)
 {
+	init_path(sh);																/* Re-init path to ensure it is up to date */
 	sh->pids[i] = fork();
 	if (sh->pids[i] == 0)
 	{

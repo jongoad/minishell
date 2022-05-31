@@ -50,6 +50,7 @@ void		init_shell_prompt(t_shell *sh, char *name);
 void		init_env_vars(t_shell *sh, char **envp);
 char		*increment_shlvl(char *str);
 void		init_builtins(t_shell *sh);
+void		init_path(t_shell *sh);
 
 /* Execution functions */
 void		execute(t_shell *sh);

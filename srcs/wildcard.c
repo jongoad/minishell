@@ -6,7 +6,7 @@
 /*   By: jgoad <jgoad@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/05/30 16:54:22 by jgoad             #+#    #+#             */
-/*   Updated: 2022/05/30 17:45:56 by jgoad            ###   ########.fr       */
+/*   Updated: 2022/05/31 13:41:18 by jgoad            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -56,3 +56,53 @@ Specific behaviours with functions:
 
 
 */
+
+
+/* Check if any of the arguments of a command contain wildcards and expand */
+t_cmd * check_wildcard(t_cmd *cmd)
+{
+	int	i;
+
+	i = 0;
+	while (cmd->args[i])
+	{
+		if (is_set(cmd->args[i]))	/* Check if a wildcard exists in string */
+			//Expand wildcard and return array of strings.
+			//Insert the array of strings into the original args list at current point
+		i++;
+	}
+
+}
+
+/* If a wildcard is found, expand and return an array of strings containing all results */
+char **expand_wildcard(char *arg)
+{
+	//Start at back of string and check if there are any forward slashes
+	int	i;
+
+	i = 0;
+
+
+	//Seperate and directory movement information from search string, and use to access proper directory
+	//Save this to add back on to results after search
+
+	//Use ft_split to split string into relevant tokens, each token is a section of characters to search in order
+	//Iterate through current directory and check each item, if there is a match add it to an array
+	//Return array of matches
+
+
+
+
+
+
+	/* test*ing*this
+
+	This would match "test" to first 4 chars, "ing" to any characters outside of the first/last 4 chars, and "this" to last 4 chars
+	The shortest possible match to any wildcard search is the exact string without the wildcard characters
+
+	Search can be done from left to right. If any of the tokens fail to find a match, search can stop immediately
+
+
+
+	*/
+}
