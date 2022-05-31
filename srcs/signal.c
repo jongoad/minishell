@@ -3,9 +3,9 @@
 /* Signal handler function */
 void	signal_handler(int signum)
 {
-	t_shell *sh;
+	// t_shell *sh;
 
-	sh = get_data();
+	// sh = get_data();
 	if (signum == SIGINT)
 	{
 		printf("\n");

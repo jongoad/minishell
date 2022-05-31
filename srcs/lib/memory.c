@@ -47,5 +47,6 @@ void	free_split(char **split)
 		i++;
 	}
 	free(split);
+	split = NULL;
 	return ;
 }

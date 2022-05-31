@@ -29,10 +29,6 @@ void	execute(t_shell *sh)
 	}
 }
 
-
-
-
-
 /* Fork process and run a command */
 void	run_cmd(t_shell *sh, t_cmd *cmd, int i)
 {
