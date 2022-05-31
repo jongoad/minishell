@@ -123,7 +123,7 @@ int	minishell(t_shell *sh)
 /* Handle CTRL-D exit from readline */
 void readline_exit(t_shell *sh)
 {
-	//cleanup(sh);
+	cleanup(sh);
 	sh = NULL;
 	printf("exit\n");
 	exit(0);

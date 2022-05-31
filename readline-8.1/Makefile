@@ -31,7 +31,7 @@ PACKAGE_TARNAME = readline
 srcdir = .
 
 top_srcdir = .
-BUILD_DIR = /Users/jgoad/Projects/Cursus/minishell/readline-8.1
+BUILD_DIR = /Users/ismaelyahyaouiracine/projects/minishell/readline-8.1
 
 INSTALL = /usr/bin/install -c
 INSTALL_PROGRAM = ${INSTALL}
@@ -81,7 +81,7 @@ CPPFLAGS =
 DEFS = -DHAVE_CONFIG_H 
 LOCAL_DEFS = 
 
-TERMCAP_LIB = -lcurses
+TERMCAP_LIB = -ltermcap
 
 # For libraries which include headers from other libraries.
 INCLUDES = -I. -I$(srcdir)

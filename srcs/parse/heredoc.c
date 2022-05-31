@@ -20,7 +20,7 @@ char	*expand_heredoc_tok(char **envp, char **ptr)
 		tok_len = get_tok_len(*ptr, "$");
 		printf("tok_len: %d\n", tok_len);
 		token = ft_xalloc((tok_len + 1) * sizeof(char));
-		token = ft_strncpy(token, ptr, tok_len);
+		token = ft_strncpy(token, *ptr, tok_len);
 		printf("token = %s\n", token);
 		*ptr += tok_len;
 		return (token);
@@ -29,7 +29,7 @@ char	*expand_heredoc_tok(char **envp, char **ptr)
 	printf("var to expand: %s\n", *ptr);
 	tok_len = get_tok_len(*ptr, CL_TOK_LIM);
 	printf("tok_len: %d\n", tok_len);
-	var_name = ft_xalloc((tok_len + 1) * sizeof(char));
+	var_name = malloc((tok_len + 1) * sizeof(char));
 	var_name = ft_strncpy(token, *ptr, tok_len);
 	token = expand_env_var(envp, var_name);
 	printf("expanded variable = %s\n", token);
@@ -49,7 +49,8 @@ void	expand_heredoc(t_cmd *cmd, t_infile *in, char *heredoc)
 	ptr = heredoc;
 	while (ptr && *ptr)
 	{
-		token = expand_heredoc_tok(cmd->envp, ptr);
+		token = expand_heredoc_tok(cmd->envp, &ptr);
+		printf("curr_line = %s\n", token);
 
 		tok_len = ft_strlen(token);
 		write(in->fd, token, tok_len);
