@@ -29,6 +29,7 @@ struct s_arglst
 {
 	char		*str;
 	bool		is_env_var;
+	int			*is_wildcard; /* 0 if not wildcard, exists otherwise */
 	t_arglst	*next;
 };
 

@@ -7,16 +7,16 @@
  */
 char	*expand_env_var(char **envp, char *var_name)
 {
-	// t_shell	*sh;
+	t_shell	*sh;
 	int		var_len;
 	int		i;
 
 	if (!envp || !var_name)
 		return (NULL);
 	/* Expand error return */
-	// sh = get_data();
-	// if (var_name[0] == '?' && !var_name[1])
-	// 	return (ft_itoa(sh->ret_val));
+	sh = get_data();
+	if (var_name[0] == '?' && !var_name[1])
+		return (ft_itoa(sh->ret_val));
 	/* Search for the variable */
 	var_len = ft_strlen(var_name);
 	i = -1;

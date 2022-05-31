@@ -7,7 +7,8 @@
 # define CL_TOK_LIM " \n\t<>|$\"\'"		// to add: &()
 # define CL_DQU_LIM " \n\t<>|$\'"		// to add: &()
 # define CL_SQU_LIM " \n\t<>|$\""		// to add: &()
-# define CL_DQU_NOSPEC "$\""		// to add: &()
+# define CL_DQU_NOSPEC "$\""			// to add: &()
+# define HEREDOC_PATH "/tmp/heredoc"	// to add: &()
 
 /* Parsing result flags */
 enum parse

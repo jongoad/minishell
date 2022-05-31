@@ -20,43 +20,48 @@
 # include <errno.h>
 
 
-/* Read a string, and return a pointer to it.  Returns NULL on EOF. */
-char *get_line(char *line)
-{
-	if (line)
-	{
-    	free(line);
-    	line = (char *)NULL;
-  	}
-	line = readline ("test-> ");		/* Get a line from the user. */
-	if (line && *line)		/* If the line has any text in it, save it on the history. */
-		add_history (line);
-  return (line);
-}
+// struct dirent {
+//                ino_t          d_ino;       /* Inode number */
+//                off_t          d_off;       /* Not an offset; see below */
+//                unsigned short d_reclen;    /* Length of this record */
+//                unsigned char  d_type;      /* Type of file; not supported
+//                                               by all filesystem types */
+//                char           d_name[256]; /* Null-terminated filename */
+//            };
+
+
 
 int	main(void)
 {
-	char *line = (char *)NULL;
+	DIR *directory;
+	struct dirent *direct;
 
-	while (1)
+	directory = opendir(".");
+
+	//Check if opened
+	if (!directory)
 	{
-		line = get_line(line);
-		if (!line)
-		{
-			printf("exit\n");
-			exit(0);
-		}
-		printf("Line: %s\n", line);
+		printf("Unable to open directory\n");
+		exit (1);
 	}
-
+	direct = readdir(directory);
+	if (!direct)
+	{
+		printf("Error or empty directory\n");
+		exit(1);
+	}
+	while (direct)
+	{
+		printf("Inode #: %llu\n", direct->d_ino);
+		printf("Size of record: %hu\n", direct->d_reclen);
+		printf("Type of file: %u\n", direct->d_type);
+		printf("Filename: %s\n", direct->d_name);
+		printf("-----------------------------\n\n");
+		direct = readdir(directory); 
+	}
+	closedir(directory);
 }
 
 
-void	rl_clear_history(void);
-
-int	rl_on_new_line(void);
-//Tell the update routines that we have moved onto a new (empty) line, usually after ouputting a newline.
-void rl_redisplay(void);
-//Change what's displayed on the screen to reflect the current contents of rl_line_buffer.
-void	rl_replace_line(const char *text, int clear_undo);
-//Replace the contents of rl_line_buffer with text. The point and mark are preserved, if possible. If clear_undo is non-zero, the undo list associated with the current line is cleared.
+//Type = 4 is a directory
+//Type = 8 is a file

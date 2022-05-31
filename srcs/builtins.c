@@ -10,7 +10,7 @@ int	builtin_echo(t_shell *sh, t_cmd *cmd)
 	int	fd;
 
 	i = 1;
-	if (!ft_strncmp(cmd->args[0], "-n", 3))
+	if (!ft_strncmp(cmd->args[1], "-n", 3))
 		return (builtin_echo_n(sh, cmd));
 	fd = cmd->fd_out;
 	while (cmd->args[i])
@@ -30,7 +30,7 @@ int	builtin_echo_n(t_shell *sh, t_cmd *cmd)
 	int	i;
 	int fd;
 
-	i = 1;
+	i = 2;
 	fd = cmd->fd_out;
 	while (cmd->args[i])
 	{
