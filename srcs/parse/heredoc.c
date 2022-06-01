@@ -26,7 +26,9 @@ char	*expand_heredoc_tok(char **envp, char **ptr)
 	}
 	*ptr += 1;
 	// printf("str to expand: %s\n", *ptr);
-	tok_len = get_tok_len(*ptr, CL_TOK_LIM);
+	tok_len = 0;
+	while (ft_isalnum((*ptr)[tok_len]) || (ptr)[tok_len] == '_')
+		tok_len++;
 	// printf("tok_len: %d\n", tok_len);
 	var_name = ft_xalloc((tok_len + 1) * sizeof(char));
 	// var_name = ft_strncpy(token, *ptr, tok_len);

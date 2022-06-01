@@ -8,6 +8,7 @@
 # define CL_DQU_LIM " \n\t<>|$\'"		// to add: &()
 # define CL_SQU_LIM " \n\t<>|$\""		// to add: &()
 # define CL_DQU_NOSPEC "$\""			// to add: &()
+# define CL_VAR_CHARS "_abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789"
 # define HEREDOC_PATH "/tmp/heredoc"	// to add: &()
 
 /* Parsing result flags */

@@ -65,7 +65,7 @@ void	parse_squotes(t_arglst **lst, char **line)
 	int		tok_len;
 
 	tok_len = get_tok_len(*line + 1, "\'");
-	if (!(*line)[tok_len])
+	if (!(*line)[tok_len + 1])
 		return (add_token(lst, line, CL_SQU_LIM, false));
 	*line += 1;
 	add_token(lst, line, "\'", false);

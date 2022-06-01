@@ -42,5 +42,5 @@ int	parse_error(char err_char)
 	else
 		write(2, &err_char, 1);	
 	write(2, "\'\n", 2);
-	return (err_char);
+	return (1);
 }

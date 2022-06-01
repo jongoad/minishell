@@ -104,14 +104,11 @@ int	minishell(t_shell *sh)
 			readline_exit(sh);
 		sh->err_char = parse(sh, sh->line);
 		if (sh->err_char)					/* Print parse error and set ret value */
-		{
-			parse_error(sh->err_char);
-			sh->ret_val = 1;
-		}
+			sh->ret_val = parse_error(sh->err_char);
 		else
 		{
 			cmds_lst_to_str(sh);
-			//print_cmds_info(sh);
+			// print_cmds_info(sh);
 			if (sh->cmds)
 				execute(sh);
 		}
