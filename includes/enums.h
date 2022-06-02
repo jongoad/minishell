@@ -10,6 +10,7 @@
 # define CL_DQU_NOSPEC "$\""			// to add: &()
 # define CL_VAR_CHARS "_abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789"
 # define HEREDOC_PATH "/tmp/heredoc"	// to add: &()
+# define WILDCARD 26
 
 /* Parsing result flags */
 enum parse
