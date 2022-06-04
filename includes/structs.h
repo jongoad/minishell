@@ -66,7 +66,7 @@ struct s_cmd
 {
 	t_infile	**ins;			/* in_files from parsing */
 	t_outfile	**outs;			/* out_files from parsing */
-	¨			/* Input arguments for the command, element 0 is the command path */
+	char		**args;			/* Input arguments for the command, element 0 is the command path */
 	t_arglst	**args_lst;		/* Array of linked lists representing the command line token */
 	char		**envp;			/* Environment path for the current shell */
 	char		*exe;			/* Path to command */
