@@ -1,19 +1,19 @@
-/* ************************************************************************** */
-/*                                                                            */
-/*                                                        :::      ::::::::   */
-/*   wildcard.c                                         :+:      :+:    :+:   */
-/*                                                    +:+ +:+         +:+     */
-/*   By: iyahoui- <iyahoui-@student.42quebec.com    +#+  +:+       +#+        */
-/*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2022/05/30 16:54:22 by jgoad             #+#    #+#             */
-/*   Updated: 2022/06/06 16:02:42 by iyahoui-         ###   ########.fr       */
-/*                                                                            */
-/* ************************************************************************** */
-
 #include <stdio.h>
 #include <stdlib.h>
 
 #include "library.h"
+
+# include "readline.h"
+# include "history.h"
+
+char	**expand_wildcard(char *arg);
+void	check_ends(char *str, int **ends);
+char	**search_directory(char **direct, char **search, int *ends);
+bool	is_wildcard_match(char *direct, char **search, int *ends);
+int		get_search_tot(char **search);
+char	**read_directory(char *path);
+char	**add_str_array(char **array, char *str);
+void	print_char_arr(char **arr);
 
 //#include "minishell.h"
 /* Wildcard rules:
@@ -82,6 +82,10 @@ Specific behaviours with functions:
 int	main(int argc, char **argv)
 {
 	char **result;
+
+	if (argc < 2)
+		return (0);
+	printf("argv[1] = %s\n", argv[1]);
 	if (is_set('*', argv[1]))
 		result = expand_wildcard(argv[1]);
 	
@@ -91,6 +95,7 @@ int	main(int argc, char **argv)
 		printf("%s\n", result[i]);
 		i++;
 	}
+	return (0);
 }
 
 /* If a wildcard is found, expand and return an array of strings containing all results */
@@ -105,47 +110,43 @@ char **expand_wildcard(char *arg)
 	int		ends[2];
 
 	i = ft_strlen(arg);
-	while (i >= 0)
-	{
+	str = arg;
+	path = NULL;
+	printf("i = %d\n", i);
+	while (i-- > 0)
 		if (arg[i] == '/')
 			break;
-		i--;
-	}
-	/** NOTE:
-	 * 		What happens when ft_strlen == 0 ?
-	 * 
-	 */
-	if (i != -1)	/* If a slash found */
+	if (i > 0)	/* If a slash found */
 	{
 		str = get_last_token(arg, '/');	/* Copy non-path segment */
 		arg[i + 1] = '\0';
-		path = ft_strdup(arg[i]);		/* Copy the path segment */
-		/** NOTE: 
-		 * 	this ft_strdup will always return a single character
-		 * 		should be ft_strdup(arg)
-		 */
+		path = ft_strdup(arg);		/* Copy the path segment */
 	}
-	else
-	{
-		str = arg;
-		path = NULL;
-	}
-
+	printf("path = %s\n", path);
 	/* Check for end wildcards */
-	check_ends(str, &ends);
+	ends[0] = (str[0] == '*');
+	ends[1] = (str[ft_strlen(str) - 1] == '*');
+	// check_ends(str, &ends);
 
 	/* Split remaining string using asterisk */
 	search = ft_split(str, '*');
 
 	/* Open and read directory using path information, return the names of all files/folders */
 	if (path)	/* If there is a relative path use for getting folder */
+	{
+		printf("%s:%d\n", __FUNCTION__, __LINE__);
 		raw = read_directory(path);
+	}
 	else
+	{
+		printf("%s:%d\n", __FUNCTION__, __LINE__);
 		raw = read_directory(".");
+	}
 
-
+	print_char_arr(raw);
 	/* Run search on directory results, return only matching results. If null returned there are no results */
-	raw = search_directory(raw, search, ends)
+	raw = search_directory(raw, search, ends);
+	return (raw);
 }
 
 void	check_ends(char *str, int **ends)
@@ -157,7 +158,7 @@ void	check_ends(char *str, int **ends)
 	/** NOTE:
 	 * 		Why check (str - 1)? Leads to UB in this case.
 	 */
-	if (str && str[ft_strlen(str - 1)] == '*')
+	if (str && str[ft_strlen(str) - 1] == '*')
 		*ends[1] = 1;
 	else
 		*ends[1] = 0;
@@ -172,7 +173,7 @@ char **search_directory(char **direct, char **search, int *ends)
 	i = 0;
 	while (direct[i])
 	{
-		if (is_wildcard_match(direct[i], search, ends);
+		if (is_wildcard_match(direct[i], search, ends))
 			ret = add_str_array(ret, direct[i]);
 		i++;
 	}
@@ -183,12 +184,11 @@ bool	is_wildcard_match(char *direct, char **search, int *ends)
 {
 	int	start;
 	int end;
-	int	search_tot;
 	int arr_size;
 	char	*ret;
 
 	start = 0;
-	end = count_array(search) - 1;
+	end = count_array((void **)search) - 1;
 	//If ends[0] = 0 then match first token ONLY to start
 	//If ends[1] = 0 then match first token ONLY to end
 
@@ -200,7 +200,7 @@ bool	is_wildcard_match(char *direct, char **search, int *ends)
 
 	if (ft_strlen(direct) < get_search_tot(search))					/* If total length of string is not equal to or greater than sum of search strings return false */
 		return (false);
-	arr_size = count_array(search);
+	arr_size = count_array((void **)search);
 
 
 	/*----------------- HANDLE END MATCHES --------------------*/
@@ -217,7 +217,7 @@ bool	is_wildcard_match(char *direct, char **search, int *ends)
 	{
 		if (ft_strncmp(direct + (ft_strlen(direct) - ft_strlen(search[end])), search[end], ft_strlen(search[end])))
 			return (false);
-		str[ft_strlen(direct) - ft_strlen(search[end])] = '\0';		/* Shorten string from back */
+		direct[ft_strlen(direct) - ft_strlen(search[end])] = '\0';		/* Shorten string from back */
 		end--;
 	}
 
@@ -251,9 +251,8 @@ int	get_search_tot(char **search)
 	return (count);
 }
 
-
 /* Open and read directory, returning an array of file names */
-char **read_directory(char *path)
+char	**read_directory(char *path)
 {
 	DIR *fd;
 	struct dirent *direct;
@@ -269,25 +268,27 @@ char **read_directory(char *path)
 	direct = readdir(fd);
 	if (!direct)
 	{
+		printf("%s:%d\n", __FUNCTION__, __LINE__);
 		//Error messaging
 		return (NULL);
 	}
 	while (direct)
 	{
-		add_array(ret, direct->d_name);
+		printf("directory = %s\n", direct->d_name);
+		ret = add_str_array(ret, direct->d_name);
 		direct = readdir(fd);
 	}
 	return (ret);
 }
 
 /* Add a new string to an array of strings */
-char **add_str_array(char **array, char *str)
+char	**add_str_array(char **array, char *str)
 {
 	char **ret;
 	int	i;
 
 	i = 0;
-	ret = (char **)malloc(sizeof(char *) * (count_array(array) + 2));
+	ret = (char **)malloc(sizeof(char *) * (count_array((void **)array) + 2));
 	while (array[i])
 	{
 		ret[i] = ft_strdup(array[i]);
@@ -295,6 +296,19 @@ char **add_str_array(char **array, char *str)
 	}
 	ret[i] = ft_strdup(str);
 	ret[i + 1] = NULL;
-	free_array(array);
+	free_array((void **)array);
 	return (ret);
 }
+
+void	print_char_arr(char **arr)
+{
+	int	i;
+
+	i = 0;
+	while (arr[i])
+	{
+		printf("arr[%d]: \'%s\'\n", i, arr[i]);
+		i++;
+	}
+}
+WE

@@ -32,7 +32,6 @@ void	execute(t_shell *sh)
 /* Fork process and run a command */
 void	run_cmd(t_shell *sh, t_cmd *cmd, int i)
 {
-	init_path(sh);																/* Re-init path to ensure it is up to date */
 	sh->pids[i] = fork();
 	if (sh->pids[i] == 0)
 	{

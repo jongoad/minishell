@@ -101,13 +101,16 @@ char	*str_to_lower(char *str)
 /* Find if a character exists in a string */
 int	is_set(char const c, char const *set)
 {
+	int	i;
+
 	if (!set || !c)
 		return (0);
-	while (*set)
+	i = 0;
+	while (set[i])
 	{
-		if (*set == c)
+		if (set[i] == c)
 			return (1);
-		set++;
+		i++;
 	}
 	return (0);
 }
