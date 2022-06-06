@@ -51,7 +51,7 @@ void	parse_dquotes(t_arglst **lst, char **line)
 		{
 			*line += 1;
 			add_token(lst, line, CL_TOK_LIM, true);
-		}
+		}	
 		else
 			add_token(lst, line, CL_DQU_NOSPEC, false);
 	}
@@ -92,7 +92,8 @@ void	set_cl_tok(t_arglst **lst, char **line)
 		*line += 1;
 		if (**line == '?')
 			add_token_by_len(lst, line, 1, true);
-		add_token(lst, line, CL_TOK_LIM, true);
+		else
+			add_token(lst, line, CL_TOK_LIM, true);
 	}
 	else
 		add_token(lst, line, CL_TOK_LIM, false);
@@ -120,7 +121,8 @@ void	set_cl_tok_bonus(t_arglst **lst, char **line)
 		*line += 1;
 		if (**line == '?')
 			add_token_by_len(lst, line, 1, true);
-		add_token(lst, line, CL_TOK_LIM_BONUS, true);
+		else
+			add_token(lst, line, CL_TOK_LIM_BONUS, true);
 	}
 	else if (**line == '*')
 	{
@@ -131,5 +133,5 @@ void	set_cl_tok_bonus(t_arglst **lst, char **line)
 	else
 		add_token(lst, line, CL_TOK_LIM_BONUS, false);
 	if (is_set(**line, CL_SPEC_CH_BONUS) || ft_isalnum(**line))
-		return (set_cl_tok(lst, line));
+		return (set_cl_tok_bonus(lst, line));
 }

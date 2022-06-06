@@ -24,6 +24,8 @@ int get_tok_len(char *token, char *delimiters)
 		return (-1);
 	tok_len = 0;
 	while (token[tok_len] && !is_set(token[tok_len], delimiters))
+	{
 		tok_len++;
+	}
 	return (tok_len);
 }

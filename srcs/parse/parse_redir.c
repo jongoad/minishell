@@ -42,10 +42,20 @@ void	parse_in(t_cmd *cmd, char **line, bool is_double)
 
 	new_in = ft_xalloc(sizeof(t_infile));
 	new_in->fd = -1;
-	if (is_double)
-		set_cl_tok(&new_in->delim_lst, line);
+	if (BONUS)
+	{
+		if (is_double)
+			set_cl_tok_bonus(&new_in->delim_lst, line);
+		else
+			set_cl_tok_bonus(&new_in->in_lst, line);
+	}
 	else
-		set_cl_tok(&new_in->in_lst, line);
+	{
+		if (is_double)
+			set_cl_tok(&new_in->delim_lst, line);
+		else
+			set_cl_tok(&new_in->in_lst, line);
+	}
 	if (is_double)
 		parse_heredoc(cmd, new_in);
 	add_infile(cmd, new_in);
@@ -58,7 +68,10 @@ void	parse_out(t_cmd *cmd, char **line, bool is_double)
 
 	new_out = ft_xalloc(sizeof(t_outfile));
 	new_out->fd = -1;
-	set_cl_tok(&new_out->out_lst, line);	
+	if (BONUS)
+		set_cl_tok_bonus(&new_out->out_lst, line);	
+	else
+		set_cl_tok(&new_out->out_lst, line);	
 	new_out->append_mode = is_double;
 	add_outfile(cmd, new_out);
 	cmd->nb_outs++;

@@ -108,9 +108,9 @@ int	minishell(t_shell *sh)
 		else
 		{
 			cmds_lst_to_str(sh);
-			print_cmds_info(sh);
-			// if (sh->cmds)
-			// 	execute(sh);
+			// print_cmds_info(sh);
+			if (sh->cmds)
+				execute(sh);
 		}
 		reset_shell(sh);
 	}

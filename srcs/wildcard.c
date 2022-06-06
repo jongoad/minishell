@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   wildcard.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jgoad <jgoad@student.42.fr>                +#+  +:+       +#+        */
+/*   By: iyahoui- <iyahoui-@student.42quebec.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/05/30 16:54:22 by jgoad             #+#    #+#             */
-/*   Updated: 2022/06/02 13:14:22 by jgoad            ###   ########.fr       */
+/*   Updated: 2022/06/06 16:02:42 by iyahoui-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -111,11 +111,19 @@ char **expand_wildcard(char *arg)
 			break;
 		i--;
 	}
+	/** NOTE:
+	 * 		What happens when ft_strlen == 0 ?
+	 * 
+	 */
 	if (i != -1)	/* If a slash found */
 	{
 		str = get_last_token(arg, '/');	/* Copy non-path segment */
 		arg[i + 1] = '\0';
 		path = ft_strdup(arg[i]);		/* Copy the path segment */
+		/** NOTE: 
+		 * 	this ft_strdup will always return a single character
+		 * 		should be ft_strdup(arg)
+		 */
 	}
 	else
 	{
@@ -146,7 +154,9 @@ void	check_ends(char *str, int **ends)
 		*ends[0] = 1;
 	else
 		*ends[0] = 0;
-	
+	/** NOTE:
+	 * 		Why check (str - 1)? Leads to UB in this case.
+	 */
 	if (str && str[ft_strlen(str - 1)] == '*')
 		*ends[1] = 1;
 	else

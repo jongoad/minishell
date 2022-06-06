@@ -9,11 +9,8 @@
 # define CL_SQU_LIM " \n\t<>|$\""		// to add: &()
 # define CL_DQU_NOSPEC "$\""			// to add: &()
 # define CL_VAR_CHARS "_abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789"
-# define CL_TOK_LIM_BONUS "* \n\t<>|$\"\'"		// to add: &()
+# define CL_TOK_LIM_BONUS "* \n\t<>|$\"\'"
 # define CL_SPEC_CH_BONUS "*\"\'$"
-# define CL_TOK_LIM_BONUS "* \n\t<>|$\"\'"		// to add: &()
-# define CL_DQU_LIM_BONUS "* \n\t<>|$\'"		// to add: &()
-# define CL_SQU_LIM_BONUS "* \n\t<>|$\""		// to add: &()
 # define HEREDOC_PATH "/tmp/heredoc"	// to add: &()
 # define WILDCARD 26
 
