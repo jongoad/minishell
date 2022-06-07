@@ -1,0 +1,12 @@
+{
+	"files.associations": {
+		"history.h": "c",
+		"minishell.h": "c",
+		"parse_test.h": "c",
+		"enums.h": "c",
+		"__locale": "c",
+		"ios": "c",
+		"readline.h": "c",
+		"rlstdc.h": "c"
+	}
+}
