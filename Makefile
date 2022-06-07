@@ -45,7 +45,7 @@ RM				= rm -rf
 CFLAGS			= -Wall -Wextra -Werror -I./includes/ -I./readline-8.1 -g -D READLINE_LIBRARY=1
 CFLAGS_BONUS	= -Wall -Wextra -Werror -I./includes/ -I./readline-8.1 -g -D READLINE_LIBRARY=1 -D BONUS=1
 
-all:			$(NAME)
+all:			readline $(NAME)
 
 $(NAME):		$(OBJS)
 				cp .inputrc ~/
@@ -56,6 +56,10 @@ bonus:			$(NAME_BONUS)
 $(NAME_BONUS):	$(OBJS_BONUS)
 				cp .inputrc ~/
 				$(CC) $(CFLAGS_BONUS) -o $(NAME_BONUS) $(OBJS_BONUS) -Lreadline-8.1 -lreadline -lcurses
+
+readline:
+			@cd readline-8.1 && ./configure
+			@make -sC readline-8.1/
 
 
 clean:
