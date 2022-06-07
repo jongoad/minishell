@@ -66,7 +66,7 @@ struct s_cmd
 {
 	t_infile	**ins;			/* in_files from parsing */
 	t_outfile	**outs;			/* out_files from parsing */
-	¨			/* Input arguments for the command, element 0 is the command path */
+	char		**args;			/* Input arguments for the command, element 0 is the command path */
 	t_arglst	**args_lst;		/* Array of linked lists representing the command line token */
 	char		**envp;			/* Environment path for the current shell */
 	char		*exe;			/* Path to command */
@@ -79,6 +79,18 @@ struct s_cmd
 	int			fd_in;			/* Final file descriptor for filestream in */
 	int			fd_out;			/* Final file descriptor for filestream out */
 };
+
+// typedef struct s_job
+// {
+// 	t_cmd	**cmds;				/* Jobs should be self-sufficient. In meantime, cmds represent strict minimum */
+// 	t_expr	*next;
+// 	t_expr	*right;
+// 	t_expr	*left;
+// 	pid_t	*pids;
+// 	char	*operator;
+// 	int		nb_cmds;
+// 	int		ret_val;
+// }	t_job;
 
 /* Main shell data */
 struct s_shell
@@ -118,5 +130,18 @@ typedef struct s_wildcard
 	char	*tmp;
 	char	*p_tmp;
 }	t_wildcard;
+
+typedef struct s_expr	t_expr;
+struct s_expr
+{
+	t_cmd	**cmds;				/* Jobs should be self-sufficient. In meantime, cmds represent strict minimum */
+	t_expr	*next;
+	t_expr	*right;
+	t_expr	*left;
+	pid_t	*pids;
+	char	*operator;
+	int		nb_cmds;
+	int		ret_val;
+};
 
 #endif

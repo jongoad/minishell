@@ -8,6 +8,7 @@
 char	*expand_env_var(char **envp, char *var_name)
 {
 	t_shell	*sh;
+	char	*expanded;
 	int		var_len;
 	int		i;
 
@@ -17,6 +18,14 @@ char	*expand_env_var(char **envp, char *var_name)
 	sh = get_data();
 	if (var_name[0] == '?' && !var_name[1])
 		return (ft_itoa(sh->ret_val));
+	/* Expand wildcards */
+	if (BONUS && var_name[0] == '*' && !var_name[1])
+	{
+		expanded = malloc(2);
+		expanded[0] = WILDCARD;
+		expanded[1] = '\0';
+		return (expanded);
+	}
 	/* Search for the variable */
 	var_len = ft_strlen(var_name);
 	i = -1;

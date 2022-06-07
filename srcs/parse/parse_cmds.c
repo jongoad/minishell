@@ -42,7 +42,10 @@ void	add_cmd_arg(t_cmd *cmd, char **line)
 	while (++i < cmd->nb_args)
 		new_arr[i] = cmd->args_lst[i];
 	lst = NULL;
-	set_cl_tok(&lst, line);
+	if (BONUS)
+		set_cl_tok_bonus(&lst, line);
+	else
+		set_cl_tok(&lst, line);
 	new_arr[i++] = lst;
 	new_arr[i] = NULL;
 	free(cmd->args_lst);
