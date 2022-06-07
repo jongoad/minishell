@@ -159,4 +159,17 @@ void		ms_lstdelone(t_arglst *lst);
 char	*rl_getline(t_shell *sh);
 void	init_history(t_shell *sh);
 
+/* Wildcard functions */
+char	**expand_wildcard(char *arg);
+void	check_ends(char *str, int *ends);
+char	**search_directory(char **direct, char **search, int *ends);
+bool	is_wildcard_match(char *direct, char **search, int *ends);
+int		get_search_tot(char **search);
+char	**read_directory(char *path);
+char	**add_str_array(char **array, char *str);
+void	split_path_wildcard(t_wildcard *wc, char *arg);
+void	add_path_wildcard(char **results, char *path);
+char	*ft_strjoin_free_rev(char *s1, char *s2);
+bool	free_return_bool(char *str, bool ret);
+
 #endif

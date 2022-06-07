@@ -100,4 +100,23 @@ struct s_shell
 	char		err_char;		/* Error character for parse error handling */
 };
 
+typedef struct s_wildcard
+{
+	/* General wildcard variables */
+	char	*str;
+	char	*path;
+	char	**output;
+	char	**search;
+	int		*ends;
+
+	/* Wildcard match variables */
+
+	int		start;
+	int		end;
+	int		search_tot;
+	char	*ret;
+	char	*tmp;
+	char	*p_tmp;
+}	t_wildcard;
+
 #endif

@@ -1,4 +1,3 @@
-
 #include "library.h"
 /* Count the number of elements in a 2d array that is null terminated */
 int	count_array(void **array)
