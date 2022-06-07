@@ -162,6 +162,8 @@ char	*rl_getline(t_shell *sh);
 void	init_history(t_shell *sh);
 
 /* Wildcard functions */
+void	check_wildcard(t_cmd *cmd);
+char	**join_array_array(char **arr1, char **arr2);
 char	**expand_wildcard(char *arg);
 void	check_ends(char *str, int *ends);
 char	**search_directory(char **direct, char **search, int *ends);

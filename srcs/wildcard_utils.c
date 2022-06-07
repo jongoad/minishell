@@ -1,4 +1,4 @@
-#include "../includes/library.h"
+#include "minishell.h"
 
 /* Add a new string to an array of strings */
 char **add_str_array(char **array, char *str)
@@ -39,12 +39,12 @@ int	get_search_tot(char **search)
 /* Check if there are wildcard characters at either the start or end of the string */
 void	check_ends(char *str, int *ends)
 {
-	if (str && str[0] == '*')
+	if (str && str[0] == WILDCARD)
 		ends[0] = 1;
 	else
 		ends[0] = 0;
 	
-	if (str && str[ft_strlen(str) - 1] == '*')
+	if (str && str[ft_strlen(str) - 1] == WILDCARD)
 		ends[1] = 1;
 	else
 		ends[1] = 0;

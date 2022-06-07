@@ -1,4 +1,4 @@
-#include "../includes/library.h"
+#include "minishell.h"
 
 /* If a wildcard is found, expand and return an array of strings containing all results */
 char **expand_wildcard(char *arg)
@@ -8,7 +8,7 @@ char **expand_wildcard(char *arg)
 	split_path_wildcard(&wc, arg);
 	wc.ends = malloc(sizeof(int) * 2);
 	check_ends(wc.str, wc.ends);									/* Check for end wildcards */
-	wc.search = ft_split(wc.str, '*');								/* Split remaining string using asterisk */
+	wc.search = ft_split(wc.str, WILDCARD);								/* Split remaining string using asterisk */
 	if (wc.path)													/* If there is a relative path use for getting folder */
 		wc.output = read_directory(wc.path);
 	else															/* Else open current directory */
@@ -26,6 +26,8 @@ char **expand_wildcard(char *arg)
 	free_array((void **)wc.search);
 	return (wc.output);
 }
+//Need to adjust the return to be NULL if there is no change FIX
+//Change to use 26 instead of *
 
 /* Check for presence of path information */
 void	split_path_wildcard(t_wildcard *wc, char *arg)

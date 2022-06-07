@@ -94,6 +94,7 @@ char	**lst_arr_to_str_arr(char **envp, t_arglst **lst_arr, int nb_elems)
 		str_arr[i] = lst_to_str(envp, lst_arr[i]);
 		i++;
 	}
+	str_arr[i] = NULL;
 	return (str_arr);
 }
 

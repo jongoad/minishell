@@ -1,258 +1,74 @@
-#include <stdio.h>
-#include <stdlib.h>
-
-#include "library.h"
-
-# include "readline.h"
-# include "history.h"
-
-char	**expand_wildcard(char *arg);
-void	check_ends(char *str, int **ends);
-char	**search_directory(char **direct, char **search, int *ends);
-bool	is_wildcard_match(char *direct, char **search, int *ends);
-int		get_search_tot(char **search);
-char	**read_directory(char *path);
-char	**add_str_array(char **array, char *str);
-void	print_char_arr(char **arr);
-
-//#include "minishell.h"
-/* Wildcard rules:
-
-
-- When in between other characters, wildcard will search for variations of ONLY the character it represents
-- When used by itself, wildcard will find ALL results in current directory
-- When used at the start of a string, it will search for all files ending in the exact string
-- When used at the end of string, it will search for all files starting with the exact string
-
-
-- Wildcard can represent any amount of characters, including 0. So "testing" will show up when using test*ing
-
-Redirection:
-- Wildcard CANNOT be used in a redirect
-
-Command names:
-- Wildcard can be used as part of a command name, but will will only attempt to launch the first matching result (even if not a program)
-
-Command arguments:
-- Wildcard will be expanded into all 
-
-
-To implement wildcard search:
-	- Run a string compare that checks either the start of a string, the end, or both. Only the end in question need to match, 
-	any number of characters can be in place of	the asterisk
-
-
-
-
-
-
-Specific behaviours with functions:
-
-- Functions that take an input file as an argument will only use the first result returned.
-
-
-- If wildcard is used by itself it will attempt to run command for only the first result that is valid
-	e.g. "cat *"
-	- This order is based on the order in the directory
-	- This only applies to certain commands. Chmod will apply to ALL files in the directory
-	- ls will list all matching files
-
-
-
-*/
-
-
-// /* Check if any of the arguments of a command contain wildcards and expand */
-// t_cmd * check_wildcard(t_cmd *cmd)
-// {
-// 	int	i;
-
-// 	i = 0;
-// 	while (cmd->args[i])
-// 	{
-// 		if (is_set('*', cmd->args[i]))	/* Check if a wildcard exists in string */
-// 			//Expand wildcard and return array of strings.
-// 			//Insert the array of strings into the original args list at current point
-// 		i++;
-// 	}
-
-// }
-
-/* Check if any of the arguments of a command contain wildcards and expand */
-int	main(int argc, char **argv)
-{
-	char **result;
-
-	if (argc < 2)
-		return (0);
-	printf("argv[1] = %s\n", argv[1]);
-	if (is_set('*', argv[1]))
-		result = expand_wildcard(argv[1]);
-	
-	int i = 0;
-	while (result[i])
-	{
-		printf("%s\n", result[i]);
-		i++;
-	}
-	return (0);
-}
+#include "minishell.h"
 
 /* If a wildcard is found, expand and return an array of strings containing all results */
 char **expand_wildcard(char *arg)
 {
-	//Start at back of string and check if there are any forward slashes
-	int		i;
-	char	*str;
-	char	*path;
-	char	**raw;
-	char	**search;
-	int		ends[2];
+	t_wildcard	wc;
+
+	split_path_wildcard(&wc, arg);
+	wc.ends = malloc(sizeof(int) * 2);
+	check_ends(wc.str, wc.ends);									/* Check for end wildcards */
+	wc.search = ft_split(wc.str, WILDCARD);								/* Split remaining string using asterisk */
+	if (wc.path)													/* If there is a relative path use for getting folder */
+		wc.output = read_directory(wc.path);
+	else															/* Else open current directory */
+		wc.output = read_directory(".");
+	wc.output = search_directory(wc.output, wc.search, wc.ends);	/* Run search on directory results, return only matching results. If null returned there are no results */
+	if (wc.path)
+		add_path_wildcard(wc.output, wc.path);						/* Join path back onto result strings */
+
+	/* Free memory before exit */
+	if (wc.path)
+		free(wc.path);
+	if (wc.str)
+		free(wc.str);
+	free(wc.ends);
+	free_array((void **)wc.search);
+	return (wc.output);
+}
+//Need to adjust the return to be NULL if there is no change FIX
+//Change to use 26 instead of *
+
+/* Check for presence of path information */
+void	split_path_wildcard(t_wildcard *wc, char *arg)
+{
+	int	i;
 
 	i = ft_strlen(arg);
-	str = arg;
-	path = NULL;
-	printf("i = %d\n", i);
-	while (i-- > 0)
+	while (i >= 0)
+	{
 		if (arg[i] == '/')
 			break;
-	if (i > 0)	/* If a slash found */
+		i--;
+	}
+	if (i != -1)							/* If a slash found */
 	{
-		str = get_last_token(arg, '/');	/* Copy non-path segment */
+		wc->str = get_last_token(arg, '/');	/* Copy non-path segment */
 		arg[i + 1] = '\0';
-		path = ft_strdup(arg);		/* Copy the path segment */
-	}
-	printf("path = %s\n", path);
-	/* Check for end wildcards */
-	ends[0] = (str[0] == '*');
-	ends[1] = (str[ft_strlen(str) - 1] == '*');
-	// check_ends(str, &ends);
-
-	/* Split remaining string using asterisk */
-	search = ft_split(str, '*');
-
-	/* Open and read directory using path information, return the names of all files/folders */
-	if (path)	/* If there is a relative path use for getting folder */
-	{
-		printf("%s:%d\n", __FUNCTION__, __LINE__);
-		raw = read_directory(path);
+		wc->path = ft_strdup(arg);			/* Copy the path segment */
 	}
 	else
 	{
-		printf("%s:%d\n", __FUNCTION__, __LINE__);
-		raw = read_directory(".");
+		wc->str = ft_strdup(arg);
+		wc->path = NULL;
 	}
-
-	print_char_arr(raw);
-	/* Run search on directory results, return only matching results. If null returned there are no results */
-	raw = search_directory(raw, search, ends);
-	return (raw);
 }
 
-void	check_ends(char *str, int **ends)
+/* Append path back on to result strings */
+void	add_path_wildcard(char **results, char *path)
 {
-	if (str && str[0] == '*')
-		*ends[0] = 1;
-	else
-		*ends[0] = 0;
-	/** NOTE:
-	 * 		Why check (str - 1)? Leads to UB in this case.
-	 */
-	if (str && str[ft_strlen(str) - 1] == '*')
-		*ends[1] = 1;
-	else
-		*ends[1] = 0;
-}
-
-/* Search the directory array using wildcard search array */
-char **search_directory(char **direct, char **search, int *ends)
-{
-	char	**ret;
 	int	i;
 
 	i = 0;
-	while (direct[i])
+	while (results && results[i])
 	{
-		if (is_wildcard_match(direct[i], search, ends))
-			ret = add_str_array(ret, direct[i]);
+		results[i] = ft_strjoin_free_rev(path, results[i]);
 		i++;
 	}
-	return (ret);
-}
-
-bool	is_wildcard_match(char *direct, char **search, int *ends)
-{
-	int	start;
-	int end;
-	int arr_size;
-	char	*ret;
-
-	start = 0;
-	end = count_array((void **)search) - 1;
-	//If ends[0] = 0 then match first token ONLY to start
-	//If ends[1] = 0 then match first token ONLY to end
-
-	/*---------------- HANDLE NO SEARCH TERMS ------------------*/
-	if (!search[0])
-		return (true);
-	
-	/*---------------- HANDLE INSUFFICIENT LENGTH --------------*/
-
-	if (ft_strlen(direct) < get_search_tot(search))					/* If total length of string is not equal to or greater than sum of search strings return false */
-		return (false);
-	arr_size = count_array((void **)search);
-
-
-	/*----------------- HANDLE END MATCHES --------------------*/
-
-
-	if (ends[0] == 0)												/* If no starting wildcard and no match at start return false */
-	{
-		if (ft_strncmp(direct, search[start], ft_strlen(search[start])))
-			return (false);
-		direct = direct + ft_strlen(search[start]);						/* Shorten string from front */
-		start++;
-	}
-	if (ends[1] == 0)												/* If no ending wildcard and no match end return false */
-	{
-		if (ft_strncmp(direct + (ft_strlen(direct) - ft_strlen(search[end])), search[end], ft_strlen(search[end])))
-			return (false);
-		direct[ft_strlen(direct) - ft_strlen(search[end])] = '\0';		/* Shorten string from back */
-		end--;
-	}
-
-	/*----------------  HANDLE MIDDLE MATCHES ---------------------*/
-	while (start <= end)
-	{
-		//Find a match for the token
-		ret = ft_strnstr(direct, search[start], ft_strlen(direct));
-		if (!ret)
-			return (false);
-		direct = ret;
-		direct = direct + ft_strlen(search[start]);					/* Shorten string */
-		start++;
-	}
-	return (true);
-}
-
-/* Get total string length of all search tokens */
-int	get_search_tot(char **search)
-{
-	int	i;
-	int count;
-
-	i = 0;
-	count = 0;
-	while (search[i])
-	{
-		count += ft_strlen(search[i]);
-		i++;
-	}
-	return (count);
 }
 
 /* Open and read directory, returning an array of file names */
-char	**read_directory(char *path)
+char **read_directory(char *path)
 {
 	DIR *fd;
 	struct dirent *direct;
@@ -263,52 +79,83 @@ char	**read_directory(char *path)
 	if (!fd)
 	{
 		//error messaging
+		/* cat: ../sadsadsd/sadsa*: No such file or directory */
 		return (NULL);
 	}
 	direct = readdir(fd);
 	if (!direct)
 	{
-		printf("%s:%d\n", __FUNCTION__, __LINE__);
+		closedir(fd);
 		//Error messaging
 		return (NULL);
 	}
 	while (direct)
 	{
-		printf("directory = %s\n", direct->d_name);
 		ret = add_str_array(ret, direct->d_name);
 		direct = readdir(fd);
 	}
+	closedir(fd);
 	return (ret);
 }
 
-/* Add a new string to an array of strings */
-char	**add_str_array(char **array, char *str)
+/* Search the directory array using wildcard search array */
+char **search_directory(char **direct, char **search, int *ends)
 {
-	char **ret;
+	char	**ret;
 	int	i;
 
+	ret = NULL;
 	i = 0;
-	ret = (char **)malloc(sizeof(char *) * (count_array((void **)array) + 2));
-	while (array[i])
+	while (direct[i])
 	{
-		ret[i] = ft_strdup(array[i]);
+		if (is_wildcard_match(direct[i], search, ends))
+			ret = add_str_array(ret, direct[i]);
 		i++;
 	}
-	ret[i] = ft_strdup(str);
-	ret[i + 1] = NULL;
-	free_array((void **)array);
+	free_array((void **)direct);
 	return (ret);
 }
 
-void	print_char_arr(char **arr)
-{
-	int	i;
 
-	i = 0;
-	while (arr[i])
+/* Check if a string is a wildcard match */
+bool	is_wildcard_match(char *direct, char **search, int *ends)
+{
+	t_wildcard wc;
+
+	wc.start = 0;
+	wc.end = count_array((void **)search) - 1;
+	wc.tmp = ft_strdup(direct);
+	wc.p_tmp = wc.tmp;
+
+	if (!search[0])															/* If there are search tokens (only wildcard chars were entered) */
+		return (free_return_bool(wc.tmp, true));
+	if (ft_strlen(wc.tmp) < (size_t)get_search_tot(search))					/* If total length of string is not equal to or greater than sum of search strings return false */
+		return (free_return_bool(wc.tmp, false));
+
+	if (ends[0] == 0)														/* If no starting wildcard and no match at start return false */
 	{
-		printf("arr[%d]: \'%s\'\n", i, arr[i]);
-		i++;
+		if (ft_strncmp(wc.tmp, search[wc.start], ft_strlen(search[wc.start])))
+			return (free_return_bool(wc.tmp, false));
+		wc.tmp = wc.tmp + ft_strlen(search[wc.start]);						/* Shorten string from front */
+		wc.start++;
 	}
+	if (ends[1] == 0)														/* If no ending wildcard and no match end return false */
+	{
+		if (ft_strncmp(wc.tmp + (ft_strlen(wc.tmp) - ft_strlen(search[wc.end])), search[wc.end], ft_strlen(search[wc.end])))
+			return (free_return_bool(wc.p_tmp, false));
+		wc.tmp[ft_strlen(wc.tmp) - ft_strlen(search[wc.end])] = '\0';			/* Shorten string from back */
+		wc.end--;
+	}
+	while (wc.start <= wc.end)												/* Handle middle wildcard matches */
+	{
+		wc.ret = ft_strnstr(wc.tmp, search[wc.start], ft_strlen(wc.tmp));
+		if (!wc.ret)
+			return (free_return_bool(wc.p_tmp, false));
+		if (wc.tmp)
+			free(wc.tmp);
+		wc.tmp = wc.ret;
+		wc.tmp = wc.tmp + ft_strlen(search[wc.start]);						/* Shorten string */
+		wc.start++;
+	}
+	return (free_return_bool(wc.p_tmp, true));
 }
-WE

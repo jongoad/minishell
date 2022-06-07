@@ -13,6 +13,7 @@ void	execute(t_shell *sh)
 	while (i < sh->nb_cmds)
 	{
 		check_builtins(sh, sh->cmds[i]);									/* Check if command is builtin, and if so get the function index */
+		check_wildcard(sh->cmds[i]);
 		if (sh->nb_cmds == 1 && sh->cmds[i]->builtin >= 0)					/* If there is only one command and it is a builtin, run it without forking */
 			sh->ret_val = run_builtin_parent(sh, sh->cmds[i]);
 		else
@@ -68,4 +69,67 @@ int	run_builtin_parent(t_shell *sh, t_cmd *cmd)
 			put_err_msg(sh->sh_name, cmd->exe, NULL, NULL);		/* Check getting correct error message here */
 	}
 	return (cmd->errnum);
+}
+
+/* Wildcard integration function */
+void	check_wildcard(t_cmd *cmd)
+{
+	char	**result;
+	char	**output;
+	int	i;
+
+	result = NULL;
+	output = NULL;
+	i = 0;
+	while (i < cmd->nb_args)
+	{
+		result = expand_wildcard(cmd->args[i]);
+		// if (!result[1] && !ft_strncmp(cmd->args[i], result[0], ft_strlen(cmd->args[i])))									/* If there is a result copy result to output array */
+			output = add_str_array(output, cmd->args[i]);
+		// else										/* If no result copy string to output array */
+		// 	output = join_array_array(output, result);
+		i++;
+	}
+	// free_array((void **)cmd->args);
+	cmd->args = output;
+	cmd->exe = ft_strdup(output[0]);
+
+
+
+	int k = 0;
+	while (output[k])
+	{
+		printf("%s\n", output[k]);
+		k++;
+	}
+}
+
+/* Join two string arrays together */
+char	**join_array_array(char **arr1, char **arr2)
+{
+	char	**result;
+	int		count;
+	int		i;
+	int		j;
+
+	result = NULL;
+	count = count_array(((void **)arr1)) + count_array((void**)arr2) + 1;
+	result = (char **)malloc(sizeof(char *) * count);		/* New array needs to be sizeof both arrays + 1 */
+	result[count] = NULL;
+	i = 0;
+	while (arr1 && arr1[i])
+	{
+		result[i] = ft_strdup(arr1[i]);
+		i++;
+	}
+	j = 0;
+	while (arr2 && arr2[j])
+	{
+		result[i] = arr2[j];
+		i++;
+		j++;
+	}
+	// free_array((void **)arr1);
+	// free_array((void **)arr2);
+	return (result);
 }
