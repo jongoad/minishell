@@ -24,7 +24,7 @@ int	main(int argc, char *argv[], char **envp)
 	}
 	ret = minishell(sh);
 	cleanup(sh);
-	return (ret);
+	exit(ret);
 }
 
 /* Create parseable string from command line input */ 
@@ -66,10 +66,11 @@ void	run_single_command(t_shell *sh)
 	else
 	{
 		cmds_lst_to_str(sh);
-		check_wildcards_debug(sh);
+		// clean_linked_lists(sh);
+		// check_wildcards_debug(sh);
 		print_cmds_info(sh);
-		// if (sh->cmds)
-		// 	execute(sh);
+		if (sh->cmds)
+			execute(sh);
 		ret = sh->ret_val;
 	}
 	cleanup(sh);
@@ -110,7 +111,8 @@ int	minishell(t_shell *sh)
 		else
 		{
 			cmds_lst_to_str(sh);
-			// print_cmds_info(sh);
+			// clean_linked_lists(sh);
+			print_cmds_info(sh);
 			if (sh->cmds)
 				execute(sh);
 		}

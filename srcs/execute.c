@@ -13,7 +13,8 @@ void	execute(t_shell *sh)
 	while (i < sh->nb_cmds)
 	{
 		check_builtins(sh, sh->cmds[i]);										/* Check if command is builtin, and if so get the function index */
-		check_wildcard(sh->cmds[i]);
+		if (BONUS)
+			check_wildcard(sh->cmds[i]);
 		if (sh->nb_cmds == 1 && sh->cmds[i]->builtin >= 0)						/* If there is only one command and it is a builtin, run it without forking */
 			sh->ret_val = run_builtin_parent(sh, sh->cmds[i]);
 		else
@@ -24,10 +25,8 @@ void	execute(t_shell *sh)
 	}
 	close_pipes(sh);
 	if (sh->nb_cmds > 1 || (sh->nb_cmds == 1 && sh->cmds[0]->builtin < 0))		/* Wait unless there was only one command and it was a builtin */
-	{
 		while (wait(&sh->ret_val) > 0)
-			sh->ret_val >>= 8;													/* Update return value from each forked process */
-	}
+			sh->ret_val >>= 8 & 0xFF;											/* Update return value from each forked process */
 }
 
 /* Fork process and run a command */
@@ -65,6 +64,7 @@ int	run_builtin_parent(t_shell *sh, t_cmd *cmd)
 	else
 	{
 		sh->builtins.f[cmd->builtin](sh, cmd);
+		// FIXME: double error messaging for exit() with too many arguments
 		if (cmd->errnum)
 			put_err_msg(sh->sh_name, cmd->exe, NULL, NULL);						/* Check getting correct error message here FIX*/
 	}

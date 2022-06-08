@@ -39,7 +39,7 @@ int	builtin_echo_n(t_shell *sh, t_cmd *cmd)
 			putchar_fd(' ', fd);
 		i++;
 	}
-	sh->ret_val = cmd->errnum;	//Janky fix, find a better use for sh in these functions
+	sh->ret_val = sh->ret_val;	//Janky fix, find a better use for sh in these functions
 	return (cmd->errnum);
 }
 
@@ -178,7 +178,10 @@ int	builtin_exit(t_shell *sh, t_cmd *cmd)
 			return (1);
 		}
 		else if (!is_valid)
+		{
+			ret = 255;
 			put_err_msg(sh->sh_name, cmd->args[0], cmd->args[1], ERR_EXIT_NON_NUMERIC);
+		}
 
 		else
 			putstr_fd("exit\n", 2);

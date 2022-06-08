@@ -101,6 +101,8 @@ int			parse_error(char err_char);
 /* Memory management functions */
 void		cleanup(t_shell *sh);
 void		clean_env(t_shell *sh);
+void		clean_linked_lists(t_shell *sh);
+void		clean_single_cmd_linked_lists(t_cmd *cmd);
 void		clean_single_cmd(t_cmd *cmd);
 void		clean_cmds(t_shell *sh);
 void		clean_fork(t_shell *sh, t_cmd *cmd);
@@ -181,5 +183,6 @@ char	**wildcard_error_return(t_wildcard *wc);
 void	init_wildcard(t_wildcard *wc, char *arg);
 bool	check_no_wildcard(t_cmd *cmd);
 char	*replace_wildcard(char *str);
+bool	is_wildcard_match_ends(t_wildcard *wc, char **search, int *ends);
 
 #endif

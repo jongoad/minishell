@@ -151,21 +151,8 @@ bool	is_wildcard_match(char *direct, char **search, int *ends)
 		return (free_return_bool(wc.tmp, true));
 	if (ft_strlen(wc.tmp) < (size_t)get_search_tot(search))					/* If total length of string is not equal to or greater than sum of search strings return false */
 		return (free_return_bool(wc.tmp, false));
-
-	if (ends[0] == 0)														/* If no starting wildcard and no match at start return false */
-	{
-		if (ft_strncmp(wc.tmp, search[wc.start], ft_strlen(search[wc.start])))
-			return (free_return_bool(wc.tmp, false));
-		wc.tmp = wc.tmp + ft_strlen(search[wc.start]);						/* Shorten string from front */
-		wc.start++;
-	}
-	if (ends[1] == 0)														/* If no ending wildcard and no match end return false */
-	{
-		if (ft_strncmp(wc.tmp + (ft_strlen(wc.tmp) - ft_strlen(search[wc.end])), search[wc.end], ft_strlen(search[wc.end])))
-			return (free_return_bool(wc.p_tmp, false));
-		wc.tmp[ft_strlen(wc.tmp) - ft_strlen(search[wc.end])] = '\0';			/* Shorten string from back */
-		wc.end--;
-	}
+	if (!is_wildcard_match_ends(&wc, search, ends))								/* Check end cases */
+		return (free_return_bool(wc.tmp, false));
 	while (wc.start <= wc.end)												/* Handle middle wildcard matches */
 	{
 		wc.ret = ft_strnstr(wc.tmp, search[wc.start], ft_strlen(wc.tmp));
@@ -178,4 +165,25 @@ bool	is_wildcard_match(char *direct, char **search, int *ends)
 		wc.start++;
 	}
 	return (free_return_bool(wc.p_tmp, true));
-} //REDUCE LINE COUNT - FIX
+}
+
+/* Check end cases for wildcard match */
+bool	is_wildcard_match_ends(t_wildcard *wc, char **search, int *ends)
+{
+	if (ends[0] == 0)															/* If no starting wildcard and no match at start return false */
+	{
+		if (ft_strncmp(wc->tmp, search[wc->start], ft_strlen(search[wc->start])))
+			return (false);
+		wc->tmp = wc->tmp + ft_strlen(search[wc->start]);						/* Shorten string from front */
+		wc->start++;
+	}
+	if (ends[1] == 0)															/* If no ending wildcard and no match end return false */
+	{
+		if (ft_strncmp(wc->tmp + (ft_strlen(wc->tmp) - ft_strlen(search[wc->end])),
+			search[wc->end], ft_strlen(search[wc->end])))
+			return (false);
+		wc->tmp[ft_strlen(wc->tmp) - ft_strlen(search[wc->end])] = '\0';		/* Shorten string from back */
+		wc->end--;
+	}
+	return (true);
+}
