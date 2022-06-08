@@ -66,8 +66,10 @@ void	run_single_command(t_shell *sh)
 	else
 	{
 		cmds_lst_to_str(sh);
-		if (sh->cmds)
-			execute(sh);
+		check_wildcards_debug(sh);
+		print_cmds_info(sh);
+		// if (sh->cmds)
+		// 	execute(sh);
 		ret = sh->ret_val;
 	}
 	cleanup(sh);

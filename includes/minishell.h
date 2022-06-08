@@ -150,6 +150,7 @@ t_cmd	*get_new_cmd(void);
 void	print_redirs(t_cmd *cmd);
 void	print_cmd_args(t_cmd *cmd);
 void	print_cmds_info(t_shell *sh);
+void	print_char_arr(char **arr);
 
 //	args_list.c
 void		ms_lstadd(t_arglst **lst, t_arglst *new);
@@ -162,6 +163,7 @@ char	*rl_getline(t_shell *sh);
 void	init_history(t_shell *sh);
 
 /* Wildcard functions */
+void	check_wildcards_debug(t_shell *sh);
 void	check_wildcard(t_cmd *cmd);
 char	**join_array_array(char **arr1, char **arr2);
 char	**expand_wildcard(char *arg);
@@ -175,5 +177,9 @@ void	split_path_wildcard(t_wildcard *wc, char *arg);
 void	add_path_wildcard(char **results, char *path);
 char	*ft_strjoin_free_rev(char *s1, char *s2);
 bool	free_return_bool(char *str, bool ret);
+char	**wildcard_error_return(t_wildcard *wc);
+void	init_wildcard(t_wildcard *wc, char *arg);
+bool	check_no_wildcard(t_cmd *cmd);
+char	*replace_wildcard(char *str);
 
 #endif

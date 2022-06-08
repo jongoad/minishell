@@ -73,3 +73,25 @@ void	print_cmds_info(t_shell *sh)
 	}
 	return ;
 }
+
+void	print_char_arr(char **arr)
+{
+	int	i;
+	
+	i = 0;
+	if (!arr)
+	{
+		printf("arr is (null)\n");
+		return ;
+	}
+	if (!*arr)
+	{
+		printf("arr[0] is (null)\n");
+		return ;
+	}
+	while (arr[i])
+	{
+		printf("arr[%d] = %s\n", i, arr[i]);
+		i++;
+	}
+}

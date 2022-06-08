@@ -48,7 +48,7 @@ void	clean_single_cmd(t_cmd *cmd)
 {
 	int	i;
 
-	free_split(cmd->args);
+	free_array((void **)cmd->args);
 	free(cmd->exe);
 	cmd->exe = NULL;
 	free(cmd->errname);

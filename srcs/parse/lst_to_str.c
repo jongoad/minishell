@@ -84,6 +84,7 @@ char	**lst_arr_to_str_arr(char **envp, t_arglst **lst_arr, int nb_elems)
 {
 	char	**str_arr;
 	int		i;
+	// int		j;
 
 	if (!lst_arr || !*lst_arr || nb_elems < 1)
 		return (NULL);
@@ -92,6 +93,10 @@ char	**lst_arr_to_str_arr(char **envp, t_arglst **lst_arr, int nb_elems)
 	while (i < nb_elems)
 	{
 		str_arr[i] = lst_to_str(envp, lst_arr[i]);
+		// if (str_arr[j])
+		// 	j++;
+		// else
+
 		i++;
 	}
 	str_arr[i] = NULL;
@@ -111,7 +116,18 @@ void	cmds_lst_to_str(t_shell *sh)
 		if (cmd->args_lst)		/* If args_lst is null there is no command, do not attempt to access */
 		{
 			cmd->exe = lst_to_str(sh->env.envp, cmd->args_lst[0]);
-			cmd->args = lst_arr_to_str_arr(sh->env.envp, cmd->args_lst, cmd->nb_args);
+			cmd->args = ft_xalloc((cmd->nb_args + 1) * sizeof(char *));
+			j = 0;
+			while (i < cmd->nb_args)
+			{
+				cmd->args[j] = lst_to_str(sh->env.envp, cmd->args_lst[i]);
+				if (cmd->args[j])
+					j++;
+				else
+					cmd->nb_args--;
+				i++;
+			}
+			// cmd->args = lst_arr_to_str_arr(sh->env.envp, cmd->args_lst, cmd->nb_args);
 		}
 		j = -1;
 		while (++j < cmd->nb_ins)
@@ -121,4 +137,5 @@ void	cmds_lst_to_str(t_shell *sh)
 			cmd->outs[j]->outfile = lst_to_str(sh->env.envp, cmd->outs[j]->out_lst);
 		i++;
 	}
+	print_cmds_info(sh);
 }

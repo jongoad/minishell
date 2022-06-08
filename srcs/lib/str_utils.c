@@ -205,16 +205,15 @@ char	*ft_strjoin_free(char *s1, char const *s2)
 	int		i;
 
 	tot_len = ft_strlen(s1) + ft_strlen(s2) + 1;
-	s_joined = malloc(tot_len);
-	if (!s_joined)
+	if (!s1 && !s2)
 		return (NULL);
+	s_joined = ft_xalloc(tot_len);
 	i = 0;
 	if (s1)
-	{
 		while (s1[i])
 			*s_joined++ = s1[i++];
-		free (s1);
-	}
+	free (s1);
+	s1 = NULL;
 	i = 0;
 	if (s2)
 		while (s2[i])

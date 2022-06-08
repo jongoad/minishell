@@ -7,14 +7,13 @@ char **add_str_array(char **array, char *str)
 	int	i;
 
 	i = 0;
-	ret = (char **)malloc(sizeof(char *) * (count_array((void **)array) + 2));
+	ret = ft_xalloc(sizeof(char *) * (count_array((void **)array) + 2));
 	while (array && array[i])
 	{
 		ret[i] = ft_strdup(array[i]);
 		i++;
 	}
 	ret[i] = ft_strdup(str);
-	ret[i + 1] = NULL;
 	free_array((void **)array);
 	array = NULL;
 	return (ret);

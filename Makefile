@@ -95,10 +95,12 @@ $(NAME):		$(OBJS)
 				@$(CC) $(CFLAGS) -o $(NAME) $(OBJS) -Lreadline-8.1 -lreadline -lcurses
 
 bonus:			$(NAME_BONUS)
+				@$(ECHO) Done
 
 $(NAME_BONUS):	$(OBJS_BONUS)
-				cp .inputrc ~/
-				$(CC) $(CFLAGS_BONUS) -o $(NAME_BONUS) $(OBJS_BONUS) -Lreadline-8.1 -lreadline -lcurses
+				@cp .inputrc ~/
+				@$(ECHO) Linking $@
+				@$(CC) $(CFLAGS_BONUS) -o $(NAME_BONUS) $(OBJS_BONUS) -Lreadline-8.1 -lreadline -lcurses
 
 readline:
 			@cd readline-8.1 && ./configure

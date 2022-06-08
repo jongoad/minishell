@@ -22,8 +22,10 @@ void	free_array(void **array)
 		while(array[i])
 		{
 			free(array[i]);
+			array[i] = NULL;
 			i++;
 		}
 		free(array);
+		array = NULL;
 	}
 }

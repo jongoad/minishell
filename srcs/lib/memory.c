@@ -44,6 +44,7 @@ void	free_split(char **split)
 	while (split[i])
 	{
 		free(split[i]);
+		split[i] = NULL;
 		i++;
 	}
 	free(split);

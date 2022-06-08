@@ -7,6 +7,16 @@
 		"__locale": "c",
 		"ios": "c",
 		"readline.h": "c",
-		"rlstdc.h": "c"
+		"rlstdc.h": "c",
+		"sstream": "c",
+		"__bit_reference": "c",
+		"algorithm": "c",
+		"bitset": "c",
+		"chrono": "c",
+		"unordered_map": "c",
+		"memory": "c",
+		"complex": "c",
+		"string": "c",
+		"iosfwd": "c"
 	}
 }

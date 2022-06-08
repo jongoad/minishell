@@ -5,53 +5,78 @@ char **expand_wildcard(char *arg)
 {
 	t_wildcard	wc;
 
-	split_path_wildcard(&wc, arg);
-	wc.ends = malloc(sizeof(int) * 2);
-	check_ends(wc.str, wc.ends);									/* Check for end wildcards */
-	wc.search = ft_split(wc.str, WILDCARD);								/* Split remaining string using asterisk */
+	if (!is_set(WILDCARD, arg))	/* Check if any wildcards exist, if not return NULL */
+		return (NULL);
+	init_wildcard(&wc, arg);
 	if (wc.path)													/* If there is a relative path use for getting folder */
 		wc.output = read_directory(wc.path);
 	else															/* Else open current directory */
 		wc.output = read_directory(".");
+	if (!wc.output)													/* Handle directory error */
+		return (wildcard_error_return((&wc)));
 	wc.output = search_directory(wc.output, wc.search, wc.ends);	/* Run search on directory results, return only matching results. If null returned there are no results */
-	if (wc.path)
-		add_path_wildcard(wc.output, wc.path);						/* Join path back onto result strings */
-
-	/* Free memory before exit */
-	if (wc.path)
+	if (!wc.output)													/* Handle no search results */
+		return (wildcard_error_return((&wc)));
+	if (wc.path)													/* Join path back onto result strings */
+	{
+		add_path_wildcard(wc.output, wc.path);
 		free(wc.path);
+	}
 	if (wc.str)
 		free(wc.str);
 	free(wc.ends);
 	free_array((void **)wc.search);
 	return (wc.output);
 }
-//Need to adjust the return to be NULL if there is no change FIX
-//Change to use 26 instead of *
+
+/* Initialize wildcard data */
+void	init_wildcard(t_wildcard *wc, char *arg)
+{
+	split_path_wildcard(wc, arg);
+	wc->ends = malloc(sizeof(int) * 2);
+	check_ends(wc->str, wc->ends);									/* Check for end wildcards */
+	wc->search = ft_split(wc->str, WILDCARD);						/* Split remaining string using asterisk */
+}
+
+/* Free memory and return NULL on error */
+char	**wildcard_error_return(t_wildcard *wc)
+{
+	if (wc->path)
+		free(wc->path);
+	if (wc->str)
+		free(wc->str); 
+	free(wc->ends);
+	free_array((void **)wc->search);
+	return (NULL);
+}
 
 /* Check for presence of path information */
 void	split_path_wildcard(t_wildcard *wc, char *arg)
 {
+	char	*tmp;
 	int	i;
 
+	tmp = ft_strdup(arg);
 	i = ft_strlen(arg);
 	while (i >= 0)
 	{
-		if (arg[i] == '/')
+		if (tmp[i] == '/')
 			break;
 		i--;
 	}
 	if (i != -1)							/* If a slash found */
 	{
-		wc->str = get_last_token(arg, '/');	/* Copy non-path segment */
-		arg[i + 1] = '\0';
-		wc->path = ft_strdup(arg);			/* Copy the path segment */
+		wc->str = get_last_token(tmp, '/');	/* Copy non-path segment */
+		tmp[i + 1] = '\0';
+		wc->path = ft_strdup(tmp);			/* Copy the path segment */
 	}
 	else
 	{
-		wc->str = ft_strdup(arg);
+		wc->str = ft_strdup(tmp);
 		wc->path = NULL;
 	}
+	if (tmp)
+		free(tmp);
 }
 
 /* Append path back on to result strings */
@@ -77,16 +102,11 @@ char **read_directory(char *path)
 	ret = NULL;
 	fd = opendir(path);
 	if (!fd)
-	{
-		//error messaging
-		/* cat: ../sadsadsd/sadsa*: No such file or directory */
 		return (NULL);
-	}
 	direct = readdir(fd);
 	if (!direct)
 	{
 		closedir(fd);
-		//Error messaging
 		return (NULL);
 	}
 	while (direct)
@@ -158,4 +178,4 @@ bool	is_wildcard_match(char *direct, char **search, int *ends)
 		wc.start++;
 	}
 	return (free_return_bool(wc.p_tmp, true));
-}
+} //REDUCE LINE COUNT - FIX
