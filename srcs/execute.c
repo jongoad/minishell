@@ -26,7 +26,7 @@ void	execute(t_shell *sh)
 	close_pipes(sh);
 	if (sh->nb_cmds > 1 || (sh->nb_cmds == 1 && sh->cmds[0]->builtin < 0))		/* Wait unless there was only one command and it was a builtin */
 		while (wait(&sh->ret_val) > 0)
-			sh->ret_val >>= 8 & 0xFF;											/* Update return value from each forked process */
+			sh->ret_val >>= 8;													/* Update return value from each forked process */
 }
 
 /* Fork process and run a command */
