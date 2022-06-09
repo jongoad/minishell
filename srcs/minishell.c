@@ -10,11 +10,8 @@ int	main(int argc, char *argv[], char **envp)
 	signal(SIGINT, signal_handler);		/* Setup signal catch for SIGINT  (CTRL-C) */
 	signal(SIGQUIT, signal_handler);	/* Setup signal catch for SIGQUIT (CTRL-\) */
 	signal(SIGTSTP, signal_handler);	/* Setup signal catch for SIGTSTP (CTRL-Z) */
-
 	sh = NULL;
-	sh = init_shell(sh, argc, argv, envp);
-	// if (argc > 1)
-	// 	test_minishell(sh);
+	sh = init_shell(sh, argv, envp);
 	if (argc > 1)
 	{
 		if (command_line_input(sh, argc, argv))
@@ -68,31 +65,13 @@ void	run_single_command(t_shell *sh)
 		cmds_lst_to_str(sh);
 		// clean_linked_lists(sh);
 		// check_wildcards_debug(sh);
-		print_cmds_info(sh);
+		// print_cmds_info(sh);
 		if (sh->cmds)
 			execute(sh);
 		ret = sh->ret_val;
 	}
 	cleanup(sh);
 	exit(ret);
-}
-
-int	test_minishell(t_shell *sh)
-{
-	char	err_char;
-
-	// sh->line = ft_strdup("\"lol\"abc$SHLVL");
-	sh->line = ft_strdup("$SHLVL\"o\"\'ooo\' e\"lol\" \"\"\"lol$HELL\"$SHLVL \'sq\'\"dq\" \"unclosed");
-	printf("line = %s\n", sh->line);
-	err_char = parse(sh, sh->line);
-	if (err_char)
-		parse_error(err_char);
-	cmds_lst_to_str(sh);
-	print_cmds_info(sh);
-	// sh->pids = malloc(sizeof(pid_t) * sh->nb_cmds);
-	// execute(sh);
-	free (sh->line);
-	return (0);
 }
 
 /* Container function for one iteration (loop) of shell */
@@ -112,7 +91,7 @@ int	minishell(t_shell *sh)
 		{
 			cmds_lst_to_str(sh);
 			clean_linked_lists(sh);
-			print_cmds_info(sh);
+			// print_cmds_info(sh);
 			if (sh->cmds)
 				execute(sh);
 		}

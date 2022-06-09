@@ -321,3 +321,29 @@ char	*ft_strnstr(const char *haystack, const char *needle, size_t len)
 	}
 	return (NULL);
 }
+
+/* Join two strings and free the second string */
+char	*ft_strjoin_free_rev(char *s1, char *s2)
+{
+	size_t	tot_len;
+	char	*s_joined;
+	int		i;
+
+	tot_len = ft_strlen(s1) + ft_strlen(s2) + 1;
+	s_joined = malloc(tot_len);
+	if (!s_joined)
+		return (NULL);
+	i = 0;
+	if (s1)
+	{
+		while (s1[i])
+			*s_joined++ = s1[i++];
+	}
+	i = 0;
+	if (s2)
+		while (s2[i])
+			*s_joined++ = s2[i++];
+	*s_joined++ = 0;
+	free(s2);
+	return (s_joined - tot_len);
+}

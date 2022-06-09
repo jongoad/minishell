@@ -50,7 +50,7 @@ CFILES			:=	builtins/builtins_utils.c	builtins/builtins_utils_2.c \
 					lib/str_utils.c		lib/write.c \
 					parse/args_list.c	parse/cl_tok.c			parse/heredoc.c 	parse/lst_to_str.c \
 					parse/parse_cmds.c	parse/parse_redir.c		parse/parse_utils.c	parse/parse.c \
-					parse/print_utils.c
+					parse/print_utils.c init_2.c wildcard_2.c
 
 CFILES_BONUS	:=	builtins/builtins_utils.c	builtins/builtins_utils_2.c \
 					builtins/builtins.c			builtins/builtins_2.c \
@@ -62,7 +62,7 @@ CFILES_BONUS	:=	builtins/builtins_utils.c	builtins/builtins_utils_2.c \
 					lib/str_utils.c		lib/write.c \
 					parse/args_list.c	parse/cl_tok.c			parse/heredoc.c 	parse/lst_to_str.c \
 					parse/parse_cmds.c	parse/parse_redir.c		parse/parse_utils.c	parse/parse.c \
-					parse/print_utils.c
+					parse/print_utils.c wildcard_2.c init_2.c
 
 INC		= ./includes
 

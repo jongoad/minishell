@@ -19,6 +19,8 @@
 		"string": "c",
 		"iosfwd": "c",
 		"ostream": "c",
-		"ratio": "c"
+		"ratio": "c",
+		"error.h": "c",
+		"typeinfo": "c"
 	}
 }

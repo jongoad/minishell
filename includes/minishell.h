@@ -45,7 +45,7 @@ void readline_exit(t_shell *sh);
 int			minishell(t_shell *sh);
 
 /* Initialization functions */
-t_shell		*init_shell(t_shell *sh, int argc, char **argv, char **envp);
+t_shell		*init_shell(t_shell *sh, char **argv, char **envp);
 void		init_shell_prompt(t_shell *sh, char *name);
 void		init_env_vars(t_shell *sh, char **envp);
 char		*increment_shlvl(char *str);

@@ -1,23 +1,6 @@
 #include "minishell.h"
 
-/* Add a new string to an array of strings */
-char **add_str_array(char **array, char *str)
-{
-	char **ret;
-	int	i;
 
-	i = 0;
-	ret = ft_xalloc(sizeof(char *) * (count_array((void **)array) + 2));
-	while (array && array[i])
-	{
-		ret[i] = ft_strdup(array[i]);
-		i++;
-	}
-	ret[i] = ft_strdup(str);
-	free_array((void **)array);
-	array = NULL;
-	return (ret);
-}
 
 /* Get total string length of all search tokens */
 int	get_search_tot(char **search)
@@ -56,28 +39,29 @@ bool free_return_bool(char *str, bool ret)
 	return (ret);
 }
 
-/* Join two strings and free the second string */
-char	*ft_strjoin_free_rev(char *s1, char *s2)
+/* Free memory and return NULL on error */
+char	**wildcard_error_return(t_wildcard *wc)
 {
-	size_t	tot_len;
-	char	*s_joined;
-	int		i;
+	if (wc->path)
+		free(wc->path);
+	if (wc->str)
+		free(wc->str); 
+	free(wc->ends);
+	free_array((void **)wc->search);
+	return (NULL);
+}
 
-	tot_len = ft_strlen(s1) + ft_strlen(s2) + 1;
-	s_joined = malloc(tot_len);
-	if (!s_joined)
-		return (NULL);
+/* Add wildcard character back to string */
+char	*replace_wildcard(char *str)
+{
+	int	i;
+
 	i = 0;
-	if (s1)
+	while (str && str[i])
 	{
-		while (s1[i])
-			*s_joined++ = s1[i++];
+		if (str[i] == WILDCARD)
+			str[i] = '*';
+		i++;
 	}
-	i = 0;
-	if (s2)
-		while (s2[i])
-			*s_joined++ = s2[i++];
-	*s_joined++ = 0;
-	free(s2);
-	return (s_joined - tot_len);
+	return (str);
 }

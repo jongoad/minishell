@@ -9,4 +9,11 @@
 # define ERR_PIPE "unable to allocate pipes"
 # define ERR_IDENTIFER	"not a valid identifier" 
 # define ERR_CMD "command not found"
+
+/* Bash errors */
+typedef enum e_bash_errors
+{
+	E_CMDNOTFOUND = 127
+} t_bash_errors;
+
 #endif

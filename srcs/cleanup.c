@@ -13,7 +13,7 @@ void	cleanup(t_shell *sh)
 	sh->sh_name = NULL;
 	free(sh);
 	sh = NULL;
-	//clear_history();
+	clear_history();
 }
 
 /* Free envp memory */
