@@ -5,24 +5,21 @@ char	*build_cmd_path(char **cmd_path, char *cmd)
 {
 	char	*tmp;
 	char	*cmd_res;
-	int		i;
 
-	i = 0;
-	while (cmd[i])
+	if (is_set('/', cmd) && access(cmd, X_OK) == 0)
+		return (ft_strdup(cmd));
+	else
 	{
-		if (cmd[0] == '.' || cmd[i] == '/')
-			return (ft_strdup(cmd));
-		i++;
-	}
-	while (cmd_path && *cmd_path)
-	{
-		tmp = ft_strjoin(*cmd_path, "/");
-		cmd_res = ft_strjoin(tmp, cmd);
-		free (tmp);
-		if (access(cmd_res, 0) == 0)
-			return (cmd_res);
-		free(cmd_res);
-		cmd_path++;
+		while (cmd_path && *cmd_path)
+		{
+			tmp = ft_strjoin(*cmd_path, "/");
+			cmd_res = ft_strjoin(tmp, cmd);
+			free (tmp);
+			if (access(cmd_res, X_OK) == 0)
+				return (cmd_res);
+			free(cmd_res);
+			cmd_path++;
+		}
 	}
 	return (NULL);
 }

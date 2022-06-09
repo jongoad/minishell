@@ -57,7 +57,6 @@ int	init_outs(t_shell *sh, t_cmd *cmd)
 			close_files(cmd); //Maybe move
 			return (cmd->errnum);
 		}
-		//Ismael change
 		if (i)
 			close (cmd->outs[i - 1]->fd);
 	}

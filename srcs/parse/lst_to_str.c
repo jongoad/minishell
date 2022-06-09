@@ -137,5 +137,5 @@ void	cmds_lst_to_str(t_shell *sh)
 			cmd->outs[j]->outfile = lst_to_str(sh->env.envp, cmd->outs[j]->out_lst);
 		i++;
 	}
-	print_cmds_info(sh);
+	// print_cmds_info(sh);
 }

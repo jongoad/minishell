@@ -17,6 +17,10 @@
 		"memory": "c",
 		"complex": "c",
 		"string": "c",
-		"iosfwd": "c"
+		"iosfwd": "c",
+		"ostream": "c",
+		"ratio": "c",
+		"error.h": "c",
+		"typeinfo": "c"
 	}
 }
