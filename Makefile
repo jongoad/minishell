@@ -35,42 +35,53 @@ endif
 # end progress bar
 #------------------
 
-# REST OF YOUR MAKEFILE HERE
-
+#--------------------------------#
+#    Name and file information   #
+#--------------------------------#
 NAME			:= minishell
 NAME_BONUS		:= minishell_bonus
 
+
 CFILES			:=	builtins/builtins_utils.c	builtins/builtins_utils_2.c \
 					builtins/builtins.c			builtins/builtins_2.c \
-					cleanup.c			error.c					execute_utils.c \
-					execute.c 			init.c		io.c 		minishell.c			pipes.c \
-					readline.c			signal.c 	wildcard.c	wildcard_utils.c \
-					lib/get_next_line/get_next_line_utils.c		lib/get_next_line/get_next_line.c \
-					lib/array.c			lib/math.c				lib/memory.c		lib/split.c \
-					lib/str_utils.c		lib/write.c \
-					parse/args_list.c	parse/cl_tok.c			parse/heredoc.c 	parse/lst_to_str.c \
-					parse/parse_cmds.c	parse/parse_redir.c		parse/parse_utils.c	parse/parse.c \
-					parse/print_utils.c init_2.c wildcard_2.c
+					wildcard/wildcard.c			wildcard/wildcard_2.c \
+					wildcard/wildcard_utils.c \
+					parse/args_list.c			parse/cl_tok.c			parse/heredoc.c 		parse/lst_to_str.c \
+					parse/parse_cmds.c			parse/parse_redir.c		parse/parse_utils.c		parse/parse.c \
+					parse/print_utils.c  \
+					lib/gnl/gnl_utils.c			lib/gnl/gnl.c			lib/array.c				lib/math.c \
+					lib/memory.c				lib/split.c				lib/str_utils.c			lib/str_utils_2.c \
+					lib/str_utils_3.c			lib/str_utils_4.c		lib/write.c \
+					minishell.c					readline.c				init.c					init_2.c \
+					io.c						pipes.c					execute.c				execute_utils.c	\
+					signal.c					error.c					cleanup.c				cleanup_2.c \
+
 
 CFILES_BONUS	:=	builtins/builtins_utils.c	builtins/builtins_utils_2.c \
 					builtins/builtins.c			builtins/builtins_2.c \
-					cleanup.c	error.c				execute_utils.c \
-					execute.c 			init.c		io.c 		minishell.c			pipes.c \
-					readline.c			signal.c 	wildcard.c	wildcard_utils.c \
-					lib/get_next_line/get_next_line_utils.c		lib/get_next_line/get_next_line.c \
-					lib/array.c			lib/math.c				lib/memory.c		lib/split.c \
-					lib/str_utils.c		lib/write.c \
-					parse/args_list.c	parse/cl_tok.c			parse/heredoc.c 	parse/lst_to_str.c \
-					parse/parse_cmds.c	parse/parse_redir.c		parse/parse_utils.c	parse/parse.c \
-					parse/print_utils.c wildcard_2.c init_2.c
+					wildcard/wildcard.c			wildcard/wildcard_2.c \
+					wildcard/wildcard_utils.c	\
+					parse/args_list.c			parse/cl_tok.c			parse/heredoc.c 		parse/lst_to_str.c \
+					parse/parse_cmds.c			parse/parse_redir.c		parse/parse_utils.c		parse/parse.c \
+					parse/print_utils.c \
+					lib/gnl/gnl_utils.c			lib/gnl/gnl.c			lib/array.c				lib/math.c \
+					lib/memory.c				lib/split.c				lib/str_utils.c			lib/str_utils_2.c \
+					lib/str_utils_3.c			lib/str_utils_4.c		lib/write.c \
+					minishell.c					readline.c				init.c					init_2.c \
+					io.c						pipes.c					execute.c				execute_utils.c	\
+					signal.c					error.c					cleanup.c				cleanup_2.c \
 
-INC		= ./includes
+#---------------------------------------------------------#
+#   Directory information and object directory building   #
+#---------------------------------------------------------#
 
-SRC_DIR	= ./srcs
-SRCS	= $(addprefix $(SRC_DIR)/, $(CFILES))
+INC				:= ./includes
 
-OBJ_DIR	= ./obj
-OBJS	= $(addprefix $(OBJ_DIR)/, $(CFILES:.c=.o))
+SRC_DIR			= ./srcs
+SRCS			= $(addprefix $(SRC_DIR)/, $(CFILES))
+
+OBJ_DIR			= ./obj
+OBJS			= $(addprefix $(OBJ_DIR)/, $(CFILES:.c=.o))
 
 OBJ_DIR_BONUS	= ./obj_bonus
 OBJS_BONUS		= $(addprefix $(OBJ_DIR_BONUS)/, $(CFILES_BONUS:.c=.o))
@@ -85,10 +96,18 @@ $(OBJ_DIR_BONUS)/%.o:	$(SRC_DIR)/%.c
 	@$(ECHO) Compiling $@
 	@$(CC) $(CFLAGS_BONUS) -o $@ -c $<
 
+#--------------------------------#
+#  Compiler settings and flags   #
+#--------------------------------#
+
 CC				= gcc
 RM				= rm -rf
 CFLAGS			= -Wall -Wextra -Werror -I./includes/ -I./readline-8.1 -g -D READLINE_LIBRARY=1
 CFLAGS_BONUS	= -Wall -Wextra -Werror -I./includes/ -I./readline-8.1 -g -D READLINE_LIBRARY=1 -D BONUS=1
+
+#--------------------------------#
+#   Makefile rules and targets   #
+#--------------------------------#
 
 all:			$(NAME)
 				@$(ECHO) Done
@@ -107,9 +126,8 @@ $(NAME_BONUS):	$(OBJS_BONUS)
 				@$(CC) $(CFLAGS_BONUS) -o $(NAME_BONUS) $(OBJS_BONUS) -Lreadline-8.1 -lreadline -lcurses
 
 readline:
-			@cd readline-8.1 && ./configure
-			@make -sC readline-8.1/
-
+				@cd readline-8.1 && ./configure
+				@make -sC readline-8.1/
 
 clean:
 				$(RM) $(OBJ_DIR) $(OBJ_DIR_BONUS)

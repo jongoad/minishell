@@ -1,3 +1,15 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   execute_utils.c                                    :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: jgoad <jgoad@student.42.fr>                +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2022/06/09 15:09:17 by jgoad             #+#    #+#             */
+/*   Updated: 2022/06/09 15:09:50 by jgoad            ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "minishell.h"
 
 /* Build a path for a specific command */
@@ -31,7 +43,7 @@ int	check_builtins(t_shell *sh, t_cmd *cmd)
 	int		i;
 
 	i = 0;
-	if(!cmd->exe)							/* If there is no command return -1 here to prevent segfault */
+	if (!cmd->exe)							/* If there is no command return -1 here to prevent segfault */
 		return (cmd->builtin = -1);
 	tmp = ft_strdup(cmd->exe);				/* Create a local copy of command name/path */
 	tmp = str_to_lower(tmp);				/* Set to lowercase for comparison */

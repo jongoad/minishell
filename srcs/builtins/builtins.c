@@ -1,7 +1,16 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   builtins.c                                         :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: jgoad <jgoad@student.42.fr>                +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2022/06/09 14:46:44 by jgoad             #+#    #+#             */
+/*   Updated: 2022/06/09 14:47:57 by jgoad            ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "minishell.h"
-
-
-//Echo needs to handle expansion, should probably just expand as each command is run
 
 /* Echo string */
 int	builtin_echo(t_shell *sh, t_cmd *cmd)
@@ -28,7 +37,7 @@ int	builtin_echo(t_shell *sh, t_cmd *cmd)
 int	builtin_echo_n(t_shell *sh, t_cmd *cmd)
 {
 	int	i;
-	int fd;
+	int	fd;
 
 	i = 2;
 	fd = cmd->fd_out;
@@ -48,7 +57,7 @@ int	builtin_cd(t_shell *sh, t_cmd *cmd)
 {
 	char *buf;
 	char *res;
-	
+
 	buf = (char *)malloc(sizeof(char) * 1025);
 	buf = getcwd(buf, 1025);
 	res = ft_strjoin("OLDPWD=", buf);
@@ -71,7 +80,6 @@ int	builtin_cd(t_shell *sh, t_cmd *cmd)
 	}
 	return (cmd->errnum);
 }
-//FIX error handling
 
 /* Print path to current directory */
 int	builtin_pwd(t_shell *sh, t_cmd *cmd)
@@ -107,7 +115,7 @@ int	builtin_export(t_shell *sh, t_cmd *cmd)
 	i = 1;
 	while (cmd->args[i])
 	{
-		if (check_env_var(cmd->args[i], false))		/* Check each argument and add to env array if valid */
+		if (check_env_var(cmd->args[i], false))			/* Check each argument and add to env array if valid */
 		{
 			if (!change_env_var(&sh->env, cmd->args[i]))
 				add_env_var(&sh->env, cmd->args[i]);

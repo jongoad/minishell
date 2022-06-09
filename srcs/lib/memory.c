@@ -1,3 +1,15 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   memory.c                                           :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: jgoad <jgoad@student.42.fr>                +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2022/06/09 14:33:24 by jgoad             #+#    #+#             */
+/*   Updated: 2022/06/09 14:33:32 by jgoad            ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "minishell.h"
 
 /* Set memory to a specified value */
@@ -11,6 +23,7 @@ void	*ft_memset(void *b, int c, size_t len)
 	return (b);
 }
 
+/* Set all bytes in a given memory space to 0 */
 void	ft_bzero(void *s, size_t n)
 {
 	unsigned char	*ptr;
@@ -20,6 +33,7 @@ void	ft_bzero(void *s, size_t n)
 		*ptr++ = 0;
 }
 
+/* Allocate a block of memory and set all bytes to 0 */
 void	*ft_xalloc(size_t size)
 {
 	void	*mem_space;
@@ -34,6 +48,7 @@ void	*ft_xalloc(size_t size)
 	return (mem_space);
 }
 
+/* Free a null terminated string array returned from ft_split */
 void	free_split(char **split)
 {
 	int	i;

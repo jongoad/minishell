@@ -1,3 +1,15 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   cleanup.c                                          :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: jgoad <jgoad@student.42.fr>                +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2022/06/09 15:10:41 by jgoad             #+#    #+#             */
+/*   Updated: 2022/06/09 15:17:15 by jgoad            ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "minishell.h"
 
 /* Free all memory before program exit */
@@ -17,7 +29,7 @@ void	cleanup(t_shell *sh)
 }
 
 /* Free envp memory */
-void clean_env(t_shell *sh)
+void	clean_env(t_shell *sh)
 {
 	int	i;
 
@@ -45,120 +57,8 @@ void clean_env(t_shell *sh)
 	}
 }
 
-void	clean_linked_lists(t_shell *sh)
-{
-	int	i;
-
-	i = 0;
-	while (sh->cmds && i < sh->nb_cmds)
-	{
-		if (sh->cmds[i])
-			clean_single_cmd_linked_lists(sh->cmds[i]);
-		i++;
-	}
-}
-
-void	clean_single_cmd_linked_lists(t_cmd *cmd)
-{
-	int	i;
-
-	i = 0;
-	while (i < cmd->nb_args)
-	{
-		ms_lstclear(&cmd->args_lst[i]);
-		cmd->args_lst[i] = NULL;
-		i++;
-	}
-	i = 0;
-	while (cmd->nb_ins && i < cmd->nb_ins)
-	{
-		ms_lstclear(&cmd->ins[i]->in_lst);
-		cmd->ins[i]->in_lst = NULL;
-		ms_lstclear(&cmd->ins[i]->delim_lst);
-		cmd->ins[i]->delim_lst = NULL;
-		i++;
-	}
-	i = 0;
-	while (cmd->nb_outs && i < cmd->nb_outs)
-	{
-		ms_lstclear(&cmd->outs[i]->out_lst);
-		cmd->outs[i]->out_lst = NULL;
-		i++;
-	}
-}
-
-void	clean_single_cmd(t_cmd *cmd)
-{
-	int	i;
-
-	free_array((void **)cmd->args);
-	free(cmd->exe);
-	cmd->exe = NULL;
-	free(cmd->errname);
-	cmd->errname = NULL;
-	i = 0;
-	while (i < cmd->nb_args)
-		ms_lstclear(&cmd->args_lst[i++]);
-	i = 0;
-	while (cmd->nb_ins && i < cmd->nb_ins)
-	{
-		ms_lstclear(&cmd->ins[i]->in_lst);
-		ms_lstclear(&cmd->ins[i]->delim_lst);
-		if (cmd->ins[i]->delim)
-			unlink(cmd->ins[i]->infile);
-		free(cmd->ins[i]->infile);
-		cmd->ins[i]->infile = NULL;
-		free(cmd->ins[i]->delim);
-		cmd->ins[i]->delim = NULL;
-		i++;
-	}
-	i = 0;
-	while (cmd->nb_outs && i < cmd->nb_outs)
-	{
-		ms_lstclear(&cmd->outs[i]->out_lst);
-		free(cmd->outs[i]->outfile);
-		cmd->outs[i]->outfile = NULL;
-		i++;
-	}
-	free(cmd->ins);
-	cmd->ins = NULL;
-	free(cmd->outs);
-	cmd->outs = NULL;
-	free(cmd->args_lst);
-	cmd->args_lst = NULL;
-}
-
-/* Free command memory before returning to readline loop */
-void	clean_cmds(t_shell *sh)
-{
-	int	i;
-
-	i = 0;
-	if (sh->pipes)
-	{
-		close_pipes(sh);
-		free(sh->pipes);
-		sh->pipes = NULL;
-	}
-	i = 0;
-	while (sh->cmds && i < sh->nb_cmds)
-	{
-		if (sh->cmds[i])
-		{
-			clean_single_cmd(sh->cmds[i]);
-			free(sh->cmds[i]);
-			sh->cmds[i] = NULL;
-		}
-		i++;
-	}
-	free(sh->pids);
-	sh->pids = NULL;
-	free(sh->cmds);
-	sh->cmds = NULL;
-}
-
 /* Reset shell */
-void reset_shell(t_shell *sh)
+void	reset_shell(t_shell *sh)
 {
 	if (sh->cmds)
 		clean_cmds(sh);
@@ -171,8 +71,8 @@ void reset_shell(t_shell *sh)
 /* Clear local copy of data in fork before exiting */
 void	clean_fork(t_shell *sh, t_cmd *cmd)
 {
-	close_files(cmd);							/* Close all open file descriptors */
-	cleanup(sh);								/* Free all memory allocated in shell struct and its child structs */
+	close_files(cmd);
+	cleanup(sh);
 }
 
 /* Close all open file descriptors */
@@ -195,44 +95,3 @@ void	close_files(t_cmd *cmd)
 		i++;
 	}
 }
-
-// void	clean_single_cmd(t_cmd *cmd)
-// {
-// 	int	i;
-
-// 	free_array((void **)cmd->args);
-// 	free(cmd->exe);
-// 	cmd->exe = NULL;
-// 	free(cmd->errname);
-// 	cmd->errname = NULL;
-// 	i = 0;
-// 	while (i < cmd->nb_args)
-// 		ms_lstclear(&cmd->args_lst[i]);
-// 	i = 0;
-// 	while (cmd->nb_ins && i < cmd->nb_ins)
-// 	{
-// 		ms_lstclear(&cmd->ins[i]->in_lst);
-// 		ms_lstclear(&cmd->ins[i]->delim_lst);
-// 		if (cmd->ins[i]->delim)
-// 			unlink(cmd->ins[i]->infile);
-// 		free(cmd->ins[i]->infile);
-// 		cmd->ins[i]->infile = NULL;
-// 		free(cmd->ins[i]->delim);
-// 		cmd->ins[i]->delim = NULL;
-// 		i++;
-// 	}
-// 	i = 0;
-// 	while (cmd->nb_outs && i < cmd->nb_outs)
-// 	{
-// 		ms_lstclear(&cmd->outs[i]->out_lst);
-// 		free(cmd->outs[i]->outfile);
-// 		cmd->outs[i]->outfile = NULL;
-// 		i++;
-// 	}
-// 	free(cmd->ins);
-// 	cmd->ins = NULL;
-// 	free(cmd->outs);
-// 	cmd->outs = NULL;
-// 	free(cmd->args_lst);
-// 	cmd->args_lst = NULL;
-// }

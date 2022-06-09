@@ -1,7 +1,19 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   io.c                                               :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: jgoad <jgoad@student.42.fr>                +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2022/06/09 15:00:05 by jgoad             #+#    #+#             */
+/*   Updated: 2022/06/09 15:02:04 by jgoad            ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "minishell.h"
 
 /* Check input and output files and set up file descriptors */
-int init_io(t_shell *sh, t_cmd *cmd)
+int	init_io(t_shell *sh, t_cmd *cmd)
 {
 	if (init_ins(sh, cmd))
 		return (cmd->errnum);
@@ -13,7 +25,7 @@ int init_io(t_shell *sh, t_cmd *cmd)
 /* Check input redirections and set up file descriptor */
 int	init_ins(t_shell *sh, t_cmd *cmd)
 {
-	int i;
+	int	i;
 
 	i = -1;
 	while (++i < cmd->nb_ins)
@@ -23,8 +35,9 @@ int	init_ins(t_shell *sh, t_cmd *cmd)
 			cmd->errnum = access(cmd->ins[i]->infile, R_OK);
 		if (cmd->errnum)
 		{
-			put_err_msg(sh->sh_name, cmd->ins[i]->infile, NULL, strerror(cmd->errnum));
-			close_files(cmd); //Maybe move
+			put_err_msg(sh->sh_name, cmd->ins[i]->infile, NULL,
+				strerror(cmd->errnum));
+			close_files(cmd);
 			return (cmd->errnum);
 		}
 	}

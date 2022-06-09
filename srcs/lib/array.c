@@ -1,9 +1,21 @@
-#include "../../includes/minishell.h"
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   array.c                                            :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: jgoad <jgoad@student.42.fr>                +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2022/06/09 14:31:38 by jgoad             #+#    #+#             */
+/*   Updated: 2022/06/09 15:21:26 by jgoad            ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
+#include "minishell.h"
 
 /* Count the number of elements in a 2d array that is null terminated */
 int	count_array(void **array)
 {
-	int count;
+	int	count;
 
 	count = 0;
 	while (array && array[count])
@@ -19,7 +31,7 @@ void	free_array(void **array)
 	i = 0;
 	if (array)
 	{
-		while(array[i])
+		while (array[i])
 		{
 			free(array[i]);
 			array[i] = NULL;
@@ -31,10 +43,10 @@ void	free_array(void **array)
 }
 
 /* Add a new string to an array of strings */
-char **add_str_array(char **array, char *str)
+char	**add_str_array(char **array, char *str)
 {
-	char **ret;
-	int	i;
+	char	**ret;
+	int		i;
 
 	i = 0;
 	ret = ft_xalloc(sizeof(char *) * (count_array((void **)array) + 2));
@@ -49,7 +61,7 @@ char **add_str_array(char **array, char *str)
 	return (ret);
 }
 
-/* Join two string arrays together */
+/* Join two string arrays together and free both input arrays */
 char	**join_array_array(char **arr1, char **arr2)
 {
 	char	**result;
@@ -58,7 +70,7 @@ char	**join_array_array(char **arr1, char **arr2)
 	int		j;
 
 	result = NULL;
-	count = count_array(((void **)arr1)) + count_array((void**)arr2) + 1;
+	count = count_array(((void **)arr1)) + count_array((void **)arr2) + 1;
 	result = ft_xalloc(sizeof(char *) * count);
 	i = 0;
 	while (arr1 && arr1[i])

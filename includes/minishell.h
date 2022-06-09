@@ -56,6 +56,7 @@ void		init_pwd(t_shell *sh);
 /* Execution functions */
 void		execute(t_shell *sh);
 void		run_cmd(t_shell *sh, t_cmd *cmd, int i);
+void		run_cmd_external(t_shell *sh, t_cmd *cmd);
 int			check_builtins(t_shell *sh, t_cmd *cmd);
 int			run_builtin_parent(t_shell *sh, t_cmd *cmd);
 int			init_io(t_shell *sh, t_cmd *cmd);
@@ -106,6 +107,7 @@ void		clean_env(t_shell *sh);
 void		clean_linked_lists(t_shell *sh);
 void		clean_single_cmd_linked_lists(t_cmd *cmd);
 void		clean_single_cmd(t_cmd *cmd);
+void		clean_io(t_cmd *cmd);
 void		clean_cmds(t_shell *sh);
 void		clean_fork(t_shell *sh, t_cmd *cmd);
 void		reset_shell(t_shell *sh);

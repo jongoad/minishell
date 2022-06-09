@@ -1,3 +1,15 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   init_2.c                                           :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: jgoad <jgoad@student.42.fr>                +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2022/06/09 15:02:58 by jgoad             #+#    #+#             */
+/*   Updated: 2022/06/09 15:03:49 by jgoad            ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "minishell.h"
 
 /* Update shell level for current shell */
@@ -9,7 +21,6 @@ char	*increment_shlvl(char *str)
 	while (*str && *str != '=')
 		str++;
 	str++;
-
 	num = ft_itoa(ft_atoi(str) + 1);
 	tmp = ft_strjoin("SHLVL=", num);
 	free(num);
@@ -19,7 +30,7 @@ char	*increment_shlvl(char *str)
 /* Set PWD upon shell launch */
 void	init_pwd(t_shell *sh)
 {
-	int	i;
+	int		i;
 	char	*tmp;
 
 	i = 0;
@@ -40,17 +51,14 @@ void	init_pwd(t_shell *sh)
 /* Init builtin commands struct */
 void	init_builtins(t_shell *sh)
 {
-	/* Init alias strings */
-	sh->builtins.alias[0] = "echo";
+	sh->builtins.alias[0] = "echo";			/* Init alias strings */
 	sh->builtins.alias[1] = "cd";
 	sh->builtins.alias[2] = "pwd";
 	sh->builtins.alias[3] = "export";
 	sh->builtins.alias[4] = "unset";
 	sh->builtins.alias[5] = "env";
 	sh->builtins.alias[6] = "exit";
-
-	/* Init fucntion pointer array */
-	sh->builtins.f[0] = &builtin_echo;
+	sh->builtins.f[0] = &builtin_echo;		/* Init function pointer array */
 	sh->builtins.f[1] = &builtin_cd;
 	sh->builtins.f[2] = &builtin_pwd;
 	sh->builtins.f[3] = &builtin_export;

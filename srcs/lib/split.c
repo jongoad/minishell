@@ -1,5 +1,18 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   split.c                                            :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: jgoad <jgoad@student.42.fr>                +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2022/06/09 14:33:42 by jgoad             #+#    #+#             */
+/*   Updated: 2022/06/09 14:33:57 by jgoad            ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "../../includes/minishell.h"
 
+/* Countnumber of strings to be split */
 static unsigned int	string_count(char *s, char c)
 {
 	unsigned int	count;
@@ -25,6 +38,7 @@ static unsigned int	string_count(char *s, char c)
 	return (count);
 }
 
+/* Count number of chars in a string to be split */
 static unsigned int	char_count(char const *s, char c)
 {
 	unsigned int	count;
@@ -38,6 +52,7 @@ static unsigned int	char_count(char const *s, char c)
 	return (count);
 }
 
+/* Get a single single to split */
 static char	*get_string(char const *s, char c)
 {
 	char			*str;
@@ -57,6 +72,7 @@ static char	*get_string(char const *s, char c)
 	return (str);
 }
 
+/* Free an array of strings */
 static void	free_array_split(char **array, int count)
 {
 	int	i;
@@ -70,6 +86,7 @@ static void	free_array_split(char **array, int count)
 	free(array);
 }
 
+/* Main split function */
 char	**ft_split(char const *s, char c)
 {
 	char	**array;

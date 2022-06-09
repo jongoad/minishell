@@ -1,3 +1,15 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   init.c                                             :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: jgoad <jgoad@student.42.fr>                +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2022/06/09 15:02:11 by jgoad             #+#    #+#             */
+/*   Updated: 2022/06/09 15:02:53 by jgoad            ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "minishell.h"
 
 /* Singleton to get shell struct */
@@ -11,7 +23,7 @@ t_shell	*get_data(void)
 }
 
 /* Initialize shell variables and do preliminary setup */
-t_shell *init_shell(t_shell *sh, char **argv, char **envp)
+t_shell	*init_shell(t_shell *sh, char **argv, char **envp)
 {
 	sh = get_data();
 	init_shell_prompt(sh, argv[0]);			/* Set shell name and prompt */
@@ -20,7 +32,7 @@ t_shell *init_shell(t_shell *sh, char **argv, char **envp)
 	init_history(sh);
 	init_pwd(sh);
 	sh->ret_val = 0;
-	sh->line = (char *)NULL;
+	sh->line = (char *) NULL;
 	sh->cmd_line = false;
 	return (sh);
 }

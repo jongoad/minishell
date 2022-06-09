@@ -1,6 +1,16 @@
-#include "minishell.h"
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   minishell.c                                        :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: jgoad <jgoad@student.42.fr>                +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2022/06/09 14:57:37 by jgoad             #+#    #+#             */
+/*   Updated: 2022/06/09 17:19:17 by jgoad            ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
 
-int	test_minishell(t_shell *sh);
+#include "minishell.h"
 
 int	main(int argc, char *argv[], char **envp)
 {
@@ -24,11 +34,12 @@ int	main(int argc, char *argv[], char **envp)
 	exit(ret);
 }
 
-/* Create parseable string from command line input */ 
+/* Create parseable string from command line input */
 bool	command_line_input(t_shell *sh, int argc, char **argv)
 {
 	bool	is_single_command;
-	int 	i;
+	int		i;
+	
 	if (!ft_strncmp(argv[1], "-c", 2) && !argv[1][2])	//If first argument is -c, run a single command then exit
 	{
 		is_single_command = true;
@@ -39,7 +50,6 @@ bool	command_line_input(t_shell *sh, int argc, char **argv)
 		is_single_command = false;
 		i = 1;
 	}
-	
 	while (i < argc)
 	{
 		sh->line = ft_strjoin_free(sh->line, " ");		/* Add a space to seperate each argument */
@@ -53,7 +63,7 @@ bool	command_line_input(t_shell *sh, int argc, char **argv)
 void	run_single_command(t_shell *sh)
 {
 	int		ret;
-
+	
 	ret = parse(sh, sh->line);
 	if (ret)
 	{
@@ -63,9 +73,6 @@ void	run_single_command(t_shell *sh)
 	else
 	{
 		cmds_lst_to_str(sh);
-		// clean_linked_lists(sh);
-		// check_wildcards_debug(sh);
-		// print_cmds_info(sh);
 		if (sh->cmds)
 			execute(sh);
 		ret = sh->ret_val;
@@ -79,13 +86,13 @@ int	minishell(t_shell *sh)
 {
 	while (1)
 	{
-		if (!sh->cmd_line)					/* Handle command line input as first execution */
+		if (!sh->cmd_line)								/* Handle command line input as first execution */
 			sh->line = rl_getline(sh);
 		sh->cmd_line = false;
-		if (!sh->line)						/* If readline returns a null line, CTRL-D has been entered. Free and exit */
+		if (!sh->line)									/* If readline returns a null line, CTRL-D has been entered. Free and exit */
 			readline_exit(sh);
 		sh->err_char = parse(sh, sh->line);
-		if (sh->err_char)					/* Print parse error and set ret value */
+		if (sh->err_char)								/* Print parse error and set ret value */
 			sh->ret_val = parse_error(sh->err_char);
 		else
 		{
@@ -101,7 +108,7 @@ int	minishell(t_shell *sh)
 }
 
 /* Handle CTRL-D exit from readline */
-void readline_exit(t_shell *sh)
+void	readline_exit(t_shell *sh)
 {
 	cleanup(sh);
 	sh = NULL;

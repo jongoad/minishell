@@ -1,5 +1,18 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   get_next_line.c                                    :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: jgoad <jgoad@student.42.fr>                +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2022/06/09 14:31:08 by jgoad             #+#    #+#             */
+/*   Updated: 2022/06/09 14:31:12 by jgoad            ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "get_next_line.h"
 
+/* Read from fd into storage string */
 int	read_chars(char **store, int fd)
 {
 	char	*buffer;
@@ -21,6 +34,7 @@ int	read_chars(char **store, int fd)
 	return (strlen_char(*store, '\n'));
 }
 
+/* Get a single line to return from the currently stored string */
 static void	get_line(char **store, char **line, int len)
 {
 	char	*new;
@@ -46,6 +60,7 @@ static void	get_line(char **store, char **line, int len)
 	}
 }
 
+/* Return a line from a source specified by fd */
 char	*get_next_line(int fd)
 
 {

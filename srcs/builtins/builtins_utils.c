@@ -1,3 +1,15 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   builtins_utils.c                                   :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: jgoad <jgoad@student.42.fr>                +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2022/06/09 14:49:38 by jgoad             #+#    #+#             */
+/*   Updated: 2022/06/09 14:51:02 by jgoad            ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "minishell.h"
 
 /* Convert a value held in a string to an int and check if valid */
@@ -32,8 +44,9 @@ long long	ft_atoll(const char *str, bool *is_valid)
 /* Add a new environment variable to the envp array */
 void	add_env_var(t_env *env, char *str)
 {
-	int	i;
-	char **tmp;
+	int		i;
+	char	**tmp;
+
 	i = count_array((void **)env->envp);
 	tmp = (char **)malloc(sizeof(char *) * (i + 2));
 	i = 0;
@@ -57,16 +70,16 @@ void	add_env_var(t_env *env, char *str)
 /* Change value of an environment variable */
 int	change_env_var(t_env *env, char *arg)
 {
-	int	i;
-	char **split;
-	char *tmp;
+	int		i;
+	char	**split;
+	char	*tmp;
 
 	i = 0;
 	split = ft_split(arg, '=');
 	while (env->envp[i])
 	{
-		if (!ft_strncmp(split[0], env->envp[i], ft_strlen(split[0])) &&
-			env->envp[i][ft_strlen(split[0])] == '=')
+		if (!ft_strncmp(split[0], env->envp[i], ft_strlen(split[0]))
+			&& env->envp[i][ft_strlen(split[0])] == '=')
 		{
 			free(env->envp[i]);
 			tmp = ft_strjoin(split[0], "=");
@@ -83,9 +96,9 @@ int	change_env_var(t_env *env, char *arg)
 /* Remove an env variable */
 void	remove_env_var(t_env *env, int n)
 {
-	int i;
-	int j;
-	char **tmp;
+	int		i;
+	int		j;
+	char	**tmp;
 
 	i = count_array((void **)env->envp);
 	tmp = (char **)malloc(sizeof(char *) * i);
@@ -108,7 +121,7 @@ void	remove_env_var(t_env *env, int n)
 }
 
 /* Check if environment variable name is valid */
-bool check_env_var(char *str, bool unset)
+bool	check_env_var(char *str, bool unset)
 {
 	int	i;
 
@@ -128,4 +141,3 @@ bool check_env_var(char *str, bool unset)
 		return (false);
 	return (true);
 }
-
