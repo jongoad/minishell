@@ -40,7 +40,9 @@ endif
 NAME			:= minishell
 NAME_BONUS		:= minishell_bonus
 
-CFILES			:=	builtins_utils.c	builtins.c	cleanup.c	error.c				execute_utils.c \
+CFILES			:=	builtins/builtins_utils.c	builtins/builtins_utils_2.c \
+					builtins/builtins.c			builtins/builtins_2.c \
+					cleanup.c			error.c					execute_utils.c \
 					execute.c 			init.c		io.c 		minishell.c			pipes.c \
 					readline.c			signal.c 	wildcard.c	wildcard_utils.c \
 					lib/get_next_line/get_next_line_utils.c		lib/get_next_line/get_next_line.c \
@@ -50,7 +52,9 @@ CFILES			:=	builtins_utils.c	builtins.c	cleanup.c	error.c				execute_utils.c \
 					parse/parse_cmds.c	parse/parse_redir.c		parse/parse_utils.c	parse/parse.c \
 					parse/print_utils.c
 
-CFILES_BONUS	:=	builtins_utils.c	builtins.c	cleanup.c	error.c				execute_utils.c \
+CFILES_BONUS	:=	builtins/builtins_utils.c	builtins/builtins_utils_2.c \
+					builtins/builtins.c			builtins/builtins_2.c \
+					cleanup.c	error.c				execute_utils.c \
 					execute.c 			init.c		io.c 		minishell.c			pipes.c \
 					readline.c			signal.c 	wildcard.c	wildcard_utils.c \
 					lib/get_next_line/get_next_line_utils.c		lib/get_next_line/get_next_line.c \

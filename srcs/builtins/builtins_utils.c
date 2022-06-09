@@ -103,14 +103,7 @@ void	remove_env_var(t_env *env, int n)
 			j++;
 		}
 	}
-	//FIX this free is causing problems
-	i = 0;
-	while (env->envp[i])
-	{
-		free(env->envp[i]);
-		i++;
-	}
-	free(env->envp);
+	free_array((void **)env->envp);
 	env->envp = tmp;
 }
 
@@ -120,49 +113,19 @@ bool check_env_var(char *str, bool unset)
 	int	i;
 
 	i = 0;
-	if (!str[i] || (str[i] >= '0' && str[i] <= '9') || (str[i] == '_' && str[i + 1] == '\0'))		/* If null string or if variable name is a single underscore or a number, return invalid */
+	if (!str[i] || (str[i] >= '0' && str[i] <= '9')
+		|| (str[i] == '_' && str[i + 1] == '\0'))					/* If null string or if variable name is a single underscore or a number, return invalid */
 		return (false);
-	while (str[i] && str[i] != '=')					/* Iterate until equals sign is hit */
+	while (str[i] && str[i] != '=')									/* Iterate until equals sign is hit */
 	{
 		if (!ft_isalnum(str[i]) && str[i] != '_')
 			return (false);
 		i++;
 	}
-	if (!unset && str[i] != '=')								/* If no equals sign is hit, return false */
+	if (!unset && str[i] != '=')									/* If no equals sign is hit, return false */
 		return (false);
 	else if (unset && str[i] != '\0')
 		return (false);
 	return (true);
 }
 
-/* Compare env var name passed to unset to record in env var  array */
-bool	env_var_cmp(char *arg_str, char *env_str)
-{
-	int	i;
-
-	i = 0;
-	while (arg_str[i] && env_str[i] && env_str[i] != '=')
-	{
-		if (arg_str[i] != env_str[i])
-			return (false);
-		i++;
-	}
-	if (!arg_str[i] && env_str[i] == '=')
-		return (true);
-	return (false);
-}
-
-/* Print path to current directory */
-char	*pwd_to_str(void)
-{
-	char	*buf;
-	char	*tmp;
-
-	buf = (char *)malloc(sizeof(char) * 1025);
-	ft_memset((void*)buf, 0, 1025);
-	buf = getcwd(buf, 1025);
-	tmp = ft_strdup(buf);
-	free(buf);
-	return (tmp);
-}
-//FIX check error management

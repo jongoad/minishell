@@ -98,7 +98,7 @@ void	clean_single_cmd(t_cmd *cmd)
 	cmd->errname = NULL;
 	i = 0;
 	while (i < cmd->nb_args)
-		ms_lstclear(&cmd->args_lst[i]);
+		ms_lstclear(&cmd->args_lst[i++]);
 	i = 0;
 	while (cmd->nb_ins && i < cmd->nb_ins)
 	{

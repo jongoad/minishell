@@ -18,6 +18,7 @@ t_shell *init_shell(t_shell *sh, int argc, char **argv, char **envp)
 	init_env_vars(sh, envp);				/* Set environment vars array and paths array */
 	init_builtins(sh);						/* Initialize builtin function array and function pointers */
 	init_history(sh);
+	init_pwd(sh);
 	sh->ret_val = 0;
 	sh->line = (char *)NULL;
 	sh->cmd_line = false;
@@ -26,7 +27,7 @@ t_shell *init_shell(t_shell *sh, int argc, char **argv, char **envp)
 	// if (argc > 1)							/* If a command is passed with shell, need to send it to be parsed as first command string */
 	// 	return (NULL);
 	
-	(void)argc;
+	(void)argc; //FIX do not need
 	return (sh);
 }
 //FIX error handling
@@ -99,7 +100,27 @@ char	*increment_shlvl(char *str)
 	tmp = ft_strjoin("SHLVL=", num);
 	free(num);
 	return (tmp);
-	
+}
+
+/* Set PWD upon shell launch */
+void	init_pwd(t_shell *sh)
+{
+	int	i;
+	char	*tmp;
+
+	i = 0;
+	while (sh->env.envp[i])
+	{
+		if (!ft_strncmp(sh->env.envp[i], "PWD=", 4))
+		{
+			free(sh->env.envp[i]);
+			tmp = pwd_to_str();
+			sh->env.envp[i] = ft_strjoin("PWD=", tmp);
+			free(tmp);
+			break ;
+		}
+		i++;
+	}
 }
 
 /* Init builtin commands struct */

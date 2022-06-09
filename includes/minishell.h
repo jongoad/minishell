@@ -51,6 +51,7 @@ void		init_env_vars(t_shell *sh, char **envp);
 char		*increment_shlvl(char *str);
 void		init_builtins(t_shell *sh);
 void		init_path(t_shell *sh);
+void		init_pwd(t_shell *sh);
 
 /* Execution functions */
 void		execute(t_shell *sh);
@@ -86,6 +87,7 @@ bool		check_env_var(char *str, bool unset);
 bool		env_var_cmp(char *arg_str, char *env_str);
 void		init_builtins(t_shell *sh);
 int			change_env_var(t_env *env, char *arg);
+char		*pwd_to_str(void);
 
 /* Pipe functions */
 int			init_pipes(t_shell *sh);

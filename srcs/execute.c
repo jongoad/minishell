@@ -26,12 +26,13 @@ void	execute(t_shell *sh)
 	close_pipes(sh);
 	if (sh->nb_cmds > 1 || (sh->nb_cmds == 1 && sh->cmds[0]->builtin < 0))		/* Wait unless there was only one command and it was a builtin */
 		while (wait(&sh->ret_val) > 0)
-			sh->ret_val >>= 8;													/* Update return value from each forked process */
+			sh->ret_val = WEXITSTATUS(sh->ret_val);													/* Update return value from each forked process */
 }
 
 /* Fork process and run a command */
 void	run_cmd(t_shell *sh, t_cmd *cmd, int i)
 {
+	char *exe;
 	sh->pids[i] = fork();
 	if (sh->pids[i] == 0)
 	{
@@ -40,7 +41,9 @@ void	run_cmd(t_shell *sh, t_cmd *cmd, int i)
 			manage_pipes(sh, cmd);
 			if (cmd->builtin < 0)												/* If system command run with execve */
 			{
-				cmd->errnum = execve(build_cmd_path(sh->env.path, cmd->exe), cmd->args, sh->env.envp);
+				exe = build_cmd_path(sh->env.path, cmd->exe);
+				if (exe)
+					cmd->errnum = execve(exe, cmd->args, sh->env.envp);
 				put_err_msg(sh->sh_name, cmd->exe, NULL, ERR_CMD);
 			}
 			else																/* If built in command run in current process */
