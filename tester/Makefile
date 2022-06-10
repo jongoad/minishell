@@ -10,13 +10,15 @@ RM				:= rm -rf
 all:			$(NAME)
 
 $(NAME):		$(OBJS)
-				@$(CC) $(CFLAGS) -o $(NAME) $(OBJS)
+				$(CC) $(CFLAGS) -o $(NAME) $(OBJS)
 
 clean:
-				@$(RM) $(OBJS)
+				$(RM) $(OBJS)
 				
 
 fclean:			clean
-				@$(RM) $(NAME)
+				$(RM) $(NAME)
 
-.PHONY:			all clean
+re:				fclean all
+
+.PHONY:			all clean fclean re

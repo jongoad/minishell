@@ -8,14 +8,15 @@
 # include <string.h>
 # include <stdlib.h>
 # include <signal.h>
+# include <sys/stat.h>
 
 # define MS_LOG "./log/ms.log"
 # define BASH_LOG "./log/bash.log"
 # define MS_VAL_LOG "./log/ms_val.log"
 # define BASH_VAL_LOG "./log/bash_val.log"
 
-# define MS_PATH "../minishell"
-# define MS_PATH_BONUS "../minishell_bonus"
+# define MS_PATH "./minishell"
+# define MS_PATH_BONUS "./minishell_bonus"
 # define BASH_PATH "/bin/bash"
 
 

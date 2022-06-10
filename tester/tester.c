@@ -17,6 +17,7 @@ void	run_line_bash(t_tester *cont, char *test_line, int fd, char **envp)
 
 }
 
+
 /* Test control function */
 int	run_tests(t_tester *cont, char *test_line, char **envp)
 {
@@ -26,8 +27,8 @@ int	run_tests(t_tester *cont, char *test_line, char **envp)
 	char stat_str[2][1025];
 
 	/* Open file log output files */
-	fd[0] = open(MS_LOG, O_CREAT | O_RDWR, 0000644);
-	fd[1] = open(BASH_LOG, O_CREAT | O_RDWR, 0000644);
+	fd[0] = open(MS_LOG, O_CREAT | O_RDWR, 0644);
+	fd[1] = open(BASH_LOG, O_CREAT | O_RDWR, 0644);
 
 	/* Fork processed to run command in bash and minishell */
 	cont->pids[0] = fork();
@@ -51,11 +52,11 @@ int	run_tests(t_tester *cont, char *test_line, char **envp)
 	/* Get return statuses and write to log value files*/
 	waitpid(cont->pids[0], &status[0], 0);
 	waitpid(cont->pids[1], &status[1], 0);
-	fd[0] = open(MS_VAL_LOG, O_CREAT | O_RDWR, 0000644);
-	fd[1] = open(BASH_VAL_LOG, O_CREAT | O_RDWR, 0000644);
+	fd[0] = open(MS_VAL_LOG, O_CREAT | O_RDWR, 0644);
+	fd[1] = open(BASH_VAL_LOG, O_CREAT | O_RDWR, 0644);
 	
 	
-	sprintf(stat_str[0], "%d", status[0]);
+	sprintf(stat_str[0], "%d", status[0] >> 8);
 	sprintf(stat_str[1], "%d", status[1] >> 8);
 	write(fd[0], stat_str[0], strlen(stat_str[0]));
 	write(fd[1], stat_str[1], strlen(stat_str[1]));
@@ -96,8 +97,12 @@ int	main(int argc, char **argv, char **envp)
 
 	/* Check input */
 	if (argc != 2)
+	{
+		printf("ms_tester: Invalid input\nUsage: ./ms_tester \"line_to_test\"\n");
 		return (0);
+	}
 
+	mkdir("log", 0755);
 	/* First arg needs to be program name, then -c, then input string */
 	setup_input(&cont, argc, argv, MINISHELL);
 	setup_input(&cont, argc, argv, BASH);
@@ -120,17 +125,16 @@ void	free_array(void **array)
 	int	i;
 
 	i = 0;
-	if (array)
+	if (!array)
+		return ;
+	while (array[i])
 	{
-		while (array[i])
-		{
-			free(array[i]);
-			array[i] = NULL;
-			i++;
-		}
-		free(array);
-		array = NULL;
+		free(array[i]);
+		array[i] = NULL;
+		i++;
 	}
+	free(array);
+	array = NULL;
 }
 
 /* 
