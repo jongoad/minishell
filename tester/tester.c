@@ -4,7 +4,7 @@
 void	run_line_ms(t_tester *cont, char *test_line, int fd, char **envp)
 {
 	dup2(fd, STDOUT_FILENO); /* Send output for this fork to log fd */
-	dup2(fd, STDERR_FILENO);
+	// dup2(fd, STDERR_FILENO);
 	execve(MS_PATH, cont->argv_ms, envp);
 }
 
@@ -12,7 +12,7 @@ void	run_line_ms(t_tester *cont, char *test_line, int fd, char **envp)
 void	run_line_bash(t_tester *cont, char *test_line, int fd, char **envp)
 {
 	dup2(fd, STDOUT_FILENO); /* Send output for this fork to log fd */
-	dup2(fd, STDERR_FILENO);
+	// dup2(fd, STDERR_FILENO);
 	execve(BASH_PATH, cont->argv_bash, envp);
 
 }
@@ -74,9 +74,10 @@ void	setup_input(t_tester *cont, int argc, char **argv, int ctrl)
 
 	/* argc will always be 2 */
 	/* arr[0] is name, arr[1] is "-c", arr[2] is string, arr[3] is NULL */
+	argc -= 2;
 	arr = malloc(sizeof(char *) * 4);
 	if (ctrl == MINISHELL)
-		arr[0] = strdup("minishell");
+		arr[0] = strdup("./minishell");
 	else
 		arr[0] = strdup("bash");
 	arr[1] = strdup("-c");
@@ -96,7 +97,7 @@ int	main(int argc, char **argv, char **envp)
 	t_tester	cont;
 
 	/* Check input */
-	if (argc != 2)
+	if (argc < 2)
 	{
 		printf("ms_tester: Invalid input\nUsage: ./ms_tester \"line_to_test\"\n");
 		return (0);
