@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   str_utils_2.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jgoad <jgoad@student.42.fr>                +#+  +:+       +#+        */
+/*   By: iyahoui- <iyahoui-@student.42quebec.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/06/09 14:35:17 by jgoad             #+#    #+#             */
-/*   Updated: 2022/06/09 14:35:21 by jgoad            ###   ########.fr       */
+/*   Updated: 2022/06/10 20:31:13 by iyahoui-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,6 +34,8 @@ char	*ft_itoa(int n)
 	len = 0;
 	while (n && ++len)
 		n /= 10;
+	if (!len)
+		len = 1;
 	n_to_a = ft_xalloc(len + 2);
 	if (n_to_long < 0)
 	{
