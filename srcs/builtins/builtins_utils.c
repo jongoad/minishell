@@ -6,7 +6,7 @@
 /*   By: iyahoui- <iyahoui-@student.42quebec.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/06/09 14:49:38 by jgoad             #+#    #+#             */
-/*   Updated: 2022/06/12 18:54:07 by iyahoui-         ###   ########.fr       */
+/*   Updated: 2022/06/12 19:25:40 by iyahoui-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,7 +17,6 @@ long long	ft_atoll(const char *str, bool *is_valid)
 {
 	long long	num;
 	long long	sign;
-	long long	prev;
 
 	num = 0;
 	sign = 1;
@@ -32,10 +31,9 @@ long long	ft_atoll(const char *str, bool *is_valid)
 	{	
 		if (*str < '0' || *str > '9')
 			*is_valid = false;
-		prev = num;
 		num = (num * 10) + (*str - '0');
 		str++;
-		if (abs_val(num * sign) < prev)
+		if ((num * sign < 0 && sign == 1) || (num * sign > 0 && sign == -1))
 			*is_valid = false;
 	}
 	return (num * sign);
