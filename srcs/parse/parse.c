@@ -23,7 +23,7 @@ int	parse(t_shell *sh, char *line)
 	}
 	if (*line)
 		return (check_parse(sh, curr_cmd, ++line));
-	return (EXIT_SUCCESS);
+	return (0);
 }
 
 int	check_parse(t_shell *sh, t_cmd *cmd, char *line)

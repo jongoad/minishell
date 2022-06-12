@@ -3,14 +3,29 @@
 /*                                                        :::      ::::::::   */
 /*   readline.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jgoad <jgoad@student.42.fr>                +#+  +:+       +#+        */
+/*   By: iyahoui- <iyahoui-@student.42quebec.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/06/09 14:55:08 by jgoad             #+#    #+#             */
-/*   Updated: 2022/06/09 14:56:28 by jgoad            ###   ########.fr       */
+/*   Updated: 2022/06/12 13:11:26 by iyahoui-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
+
+bool	is_valid_hist_entry(char *entry)
+{
+	int	i;
+
+	while (entry[i])
+	{
+		if (entry[i] < 9 || (entry[i] > 13 && entry[i] != 32))
+			break ;
+		i++;
+	}
+	if (entry[i])
+		return (true);
+	return (false);
+}
 
 /* Init history */
 void	init_history(t_shell *sh)
@@ -21,7 +36,8 @@ void	init_history(t_shell *sh)
 	curr_line = get_next_line(sh->history_fd);
 	while (curr_line)
 	{
-		add_history(curr_line);
+		if (is_valid_hist_entry(curr_line))
+			add_history(curr_line);
 		free(curr_line);
 		curr_line = get_next_line(sh->history_fd);
 	}
@@ -42,7 +58,8 @@ char	*rl_getline(t_shell *sh)
 	sh->line = readline (sh->prompt);		/* Get a line from the user. */
 	if (sh->line && *sh->line)				/* If the line has any text in it, save it on the history. */
 	{
-		add_history(sh->line);
+		if (is_valid_hist_entry(curr_line))
+			add_history(sh->line);
 		putendl_fd(sh->line, sh->history_fd);
 	}
 	return (sh->line);
