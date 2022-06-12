@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   builtins_2.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jgoad <jgoad@student.42.fr>                +#+  +:+       +#+        */
+/*   By: iyahoui- <iyahoui-@student.42quebec.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/06/09 14:43:36 by jgoad             #+#    #+#             */
-/*   Updated: 2022/06/09 14:48:46 by jgoad            ###   ########.fr       */
+/*   Updated: 2022/06/12 18:54:33 by iyahoui-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -66,6 +66,7 @@ int	builtin_exit(t_shell *sh, t_cmd *cmd)
 	if (cmd->args[1])
 	{
 		ret = ft_atoll(cmd->args[1], &is_valid);
+		printf("%lld\n", ret);
 		if (is_valid && cmd->args[2])
 		{
 			putstr_fd("exit\n", 2);
@@ -75,6 +76,7 @@ int	builtin_exit(t_shell *sh, t_cmd *cmd)
 		else if (!is_valid)
 		{
 			ret = 255;
+			putstr_fd("exit\n", 2);
 			put_err_msg(sh->sh_name, cmd->args[0], cmd->args[1], ERR_EXIT_NON_NUMERIC);
 		}
 		else

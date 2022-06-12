@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   init_2.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jgoad <jgoad@student.42.fr>                +#+  +:+       +#+        */
+/*   By: iyahoui- <iyahoui-@student.42quebec.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/06/09 15:02:58 by jgoad             #+#    #+#             */
-/*   Updated: 2022/06/09 15:03:49 by jgoad            ###   ########.fr       */
+/*   Updated: 2022/06/12 16:42:00 by iyahoui-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,8 +40,10 @@ void	init_pwd(t_shell *sh)
 		{
 			free(sh->env.envp[i]);
 			tmp = pwd_to_str();
+			if (!tmp)
+				put_err_msg("minishell-init", ERR_PWD, ERR_CWD, ERR_FILE);
 			sh->env.envp[i] = ft_strjoin("PWD=", tmp);
-			free(tmp);
+			sh->pwd = ft_strdup(tmp);
 			break ;
 		}
 		i++;

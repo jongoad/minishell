@@ -1,15 +1,3 @@
-/* ************************************************************************** */
-/*                                                                            */
-/*                                                        :::      ::::::::   */
-/*   minishell.c                                        :+:      :+:    :+:   */
-/*                                                    +:+ +:+         +:+     */
-/*   By: iyahoui- <iyahoui-@student.42quebec.com    +#+  +:+       +#+        */
-/*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2022/06/09 14:57:37 by jgoad             #+#    #+#             */
-/*   Updated: 2022/06/12 12:29:48 by iyahoui-         ###   ########.fr       */
-/*                                                                            */
-/* ************************************************************************** */
-
 #include "minishell.h"
 
 int	main(int argc, char *argv[], char **envp)
@@ -19,7 +7,6 @@ int	main(int argc, char *argv[], char **envp)
 
 	signal(SIGINT, signal_handler);		/* Setup signal catch for SIGINT  (CTRL-C) */
 	signal(SIGQUIT, signal_handler);	/* Setup signal catch for SIGQUIT (CTRL-\) */
-	signal(SIGTSTP, signal_handler);	/* Setup signal catch for SIGTSTP (CTRL-Z) */
 	sh = NULL;
 	sh = init_shell(sh, argv, envp);
 	if (argc > 1)

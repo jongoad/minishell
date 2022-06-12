@@ -62,10 +62,6 @@ void	parse_dquotes(t_arglst **lst, char **line)
 		}
 		else if (**line == '$')
 			parse_env_var(lst, line);
-		// {
-		// 	*line += 1;
-		// 	add_token(lst, line, CL_TOK_LIM, true);
-		// }	
 		else
 			add_token(lst, line, CL_DQU_NOSPEC, false);
 	}
@@ -121,17 +117,32 @@ void	set_cl_tok(t_arglst **lst, char **line)
 		parse_squotes(lst, line);
 	else if (**line == '$')
 		parse_env_var(lst, line);
-	// {
-	// 	*line += 1;
-	// 	if (**line == '?')
-	// 		add_token_by_len(lst, line, 1, true);
-	// 	else
-	// 		add_token(lst, line, CL_TOK_LIM, true);
-	// }
 	else
 		add_token(lst, line, CL_TOK_LIM, false);
-	if (is_set(**line, CL_SPEC_CH) || ft_isalnum(**line))
-		return (set_cl_tok(lst, line));
+	if (is_set(**line, CL_SAME_TOK) || ft_isalnum(**line))
+		return (add_cl_tok(lst, line));
+}
+
+// Adds tokens that belong together by setting the arglst->is_joined flag
+void	add_cl_tok(t_arglst **lst, char **line)
+{
+	t_arglst	*last;
+	if (!line || !*line)
+		return ;
+	if (**line == '\"')
+		parse_dquotes(lst, line);
+	else if (**line == '\'')
+		parse_squotes(lst, line);
+	else if (**line == '$')
+		parse_env_var(lst, line);
+	else
+		add_token(lst, line, CL_TOK_LIM, false);
+	last = *lst;
+	while (last->next)
+		last = last->next;
+	last->is_joined = true;
+	if (is_set(**line, CL_SAME_TOK) || ft_isalnum(**line))
+		return (add_cl_tok(lst, line));
 }
 
 /**
@@ -150,13 +161,7 @@ void	set_cl_tok_bonus(t_arglst **lst, char **line)
 	else if (**line == '\'')
 		parse_squotes(lst, line);
 	else if (**line == '$')
-	{
-		*line += 1;
-		if (**line == '?')
-			add_token_by_len(lst, line, 1, true);
-		else
-			add_token(lst, line, CL_TOK_LIM_BONUS, true);
-	}
+		parse_env_var(lst, line);
 	else if (**line == '*')
 	{
 		add_token_by_len(lst, line, 1, true);

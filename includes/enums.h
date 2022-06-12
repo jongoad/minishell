@@ -3,6 +3,7 @@
 
 /* Parse defines */
 # define CL_SPEC_CH "\"\'$"
+# define CL_SAME_TOK "\"\'$/"
 # define WHITESPACES " \n\t\v\r\f"
 # define CL_TOK_LIM " \n\t\v\r\f<>|$\"\'"		// to add: &()
 # define CL_VAR_LIM " \n\t\v\r\f<>|\"\'"		// to add: &()
@@ -13,6 +14,7 @@
 # define CL_TOK_LIM_BONUS "* \n\t\v\r\f<>|$\"\'"
 # define CL_SPEC_CH_BONUS "*\"\'$"
 # define HEREDOC_PATH "/tmp/heredoc"	// to add: &()
+# define HIST_LOG ".minishell_history"	// to add: &()
 # define WILDCARD 26
 
 # ifndef BONUS

@@ -6,7 +6,7 @@
 /*   By: iyahoui- <iyahoui-@student.42quebec.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/06/09 15:09:58 by jgoad             #+#    #+#             */
-/*   Updated: 2022/06/11 09:22:48 by iyahoui-         ###   ########.fr       */
+/*   Updated: 2022/06/12 16:34:22 by iyahoui-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,6 +19,13 @@ int	msg_err_ret(int errnum, char *errname)
 	putstr_fd("minishell: ", 2);
 	perror(errname);
 	return (errnum);
+}
+
+/* Print error message and return errnum */
+int	fct_err_msg(char *fct, char *errname)
+{
+	printf("%s: %s", fct, errname);
+	return (errno);
 }
 
 /* Write bash-style error messages to STDERR */

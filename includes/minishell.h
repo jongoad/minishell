@@ -98,6 +98,7 @@ void		manage_pipes(t_shell *sh, t_cmd *cmd);
 /* Error handling */
 void		put_err_msg(char *sh_name, char *cmd, char *arg, char *msg);
 int			msg_err_ret(int errnum, char *errname);
+int			fct_err_msg(char *fct, char *errname);
 char		*get_err_msg(int errnum);
 int			parse_error(char err_char);
 
@@ -120,6 +121,7 @@ int		check_parse(t_shell *sh, t_cmd *cmd, char *line);
 
 //	tokenizer.c
 void	set_cl_tok(t_arglst **lst, char **line);
+void	add_cl_tok(t_arglst **lst, char **line);
 void	set_cl_tok_bonus(t_arglst **lst, char **line);
 void	add_token(t_arglst **lst, char **line, char *delim, bool is_env_var);
 void	add_token_by_set(t_arglst **lst, char **line, char *set, bool is_env_var);

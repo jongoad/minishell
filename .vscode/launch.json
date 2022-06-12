@@ -8,10 +8,10 @@
 		"name": "gcc - Build and debug active file",
 		"type": "cppdbg",
 		"request": "launch",
-		"program": "${workspaceFolder}/minishell_bonus",
+		"program": "${workspaceFolder}/minishell",
 		"args": ["ls -la", "|", "wtf"],
 		"stopAtEntry": true,
-		"cwd": "${fileDirname}",
+		"cwd": "${fileDirname}/test_dir",
 		"environment": [],
 		"externalConsole": false,
 		"MIMode": "lldb"

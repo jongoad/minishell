@@ -1,15 +1,3 @@
-/* ************************************************************************** */
-/*                                                                            */
-/*                                                        :::      ::::::::   */
-/*   cleanup.c                                          :+:      :+:    :+:   */
-/*                                                    +:+ +:+         +:+     */
-/*   By: jgoad <jgoad@student.42.fr>                +#+  +:+       +#+        */
-/*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2022/06/09 15:10:41 by jgoad             #+#    #+#             */
-/*   Updated: 2022/06/09 15:17:15 by jgoad            ###   ########.fr       */
-/*                                                                            */
-/* ************************************************************************** */
-
 #include "minishell.h"
 
 /* Free all memory before program exit */
@@ -23,6 +11,10 @@ void	cleanup(t_shell *sh)
 	sh->prompt = NULL;
 	free(sh->sh_name);
 	sh->sh_name = NULL;
+	free(sh->pwd);
+	sh->pwd = NULL;
+	free(sh->ms_path);
+	sh->ms_path = NULL;
 	free(sh);
 	sh = NULL;
 	clear_history();

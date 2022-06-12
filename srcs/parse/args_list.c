@@ -23,7 +23,7 @@ t_arglst	*ms_lstnew(char *str, bool is_env_var)
 
 	if (!str)
 		return (NULL);
-	new_node = malloc(sizeof(t_arglst));
+	new_node = ft_xalloc(sizeof(t_arglst));
 	if (!new_node)
 		return (NULL);
 	new_node->str = str;

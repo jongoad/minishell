@@ -1,15 +1,3 @@
-/* ************************************************************************** */
-/*                                                                            */
-/*                                                        :::      ::::::::   */
-/*   readline.c                                         :+:      :+:    :+:   */
-/*                                                    +:+ +:+         +:+     */
-/*   By: iyahoui- <iyahoui-@student.42quebec.com    +#+  +:+       +#+        */
-/*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2022/06/09 14:55:08 by jgoad             #+#    #+#             */
-/*   Updated: 2022/06/12 13:13:38 by iyahoui-         ###   ########.fr       */
-/*                                                                            */
-/* ************************************************************************** */
-
 #include "minishell.h"
 
 bool	is_valid_hist_entry(char *entry)
@@ -32,8 +20,12 @@ bool	is_valid_hist_entry(char *entry)
 void	init_history(t_shell *sh)
 {
 	char	*curr_line;
+	char	*hist_path;
 
-	sh->history_fd = open(".minishell_history", O_CREAT | O_RDONLY, 0644);
+	hist_path = ft_strjoin(sh->ms_path, HIST_LOG);
+	sh->history_fd = open(hist_path, O_CREAT | O_RDONLY, 0644);
+	if (sh->history_fd < 0)
+		return ;
 	curr_line = get_next_line(sh->history_fd);
 	while (curr_line)
 	{
@@ -44,9 +36,11 @@ void	init_history(t_shell *sh)
 	}
 	free(curr_line);
 	close(sh->history_fd);
-	sh->history_fd = open(".minishell_history", O_WRONLY | O_APPEND, 0644);
+	sh->history_fd = open(hist_path, O_WRONLY | O_APPEND, 0644);
+	free(hist_path);
 	return ;
 }
+
 
 /* Read a string, and return a pointer to it.  Returns NULL on EOF. */
 char	*rl_getline(t_shell *sh)

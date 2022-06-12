@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   init.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jgoad <jgoad@student.42.fr>                +#+  +:+       +#+        */
+/*   By: iyahoui- <iyahoui-@student.42quebec.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/06/09 15:02:11 by jgoad             #+#    #+#             */
-/*   Updated: 2022/06/09 15:02:53 by jgoad            ###   ########.fr       */
+/*   Updated: 2022/06/12 17:43:06 by iyahoui-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,7 +25,19 @@ t_shell	*get_data(void)
 /* Initialize shell variables and do preliminary setup */
 t_shell	*init_shell(t_shell *sh, char **argv, char **envp)
 {
+	int	i;
+	
 	sh = get_data();
+	if (is_set('/', argv[0]))
+	{
+		i = ft_strlen(argv[0]);
+		while (argv[0][i] != '/')
+			i--;
+		sh->ms_path = ft_xalloc(i + 1);
+		sh->ms_path = ft_strncpy(sh->ms_path, argv[0], i);
+	}
+	else
+		sh->ms_path = ft_strdup(argv[0]);
 	init_shell_prompt(sh, argv[0]);			/* Set shell name and prompt */
 	init_env_vars(sh, envp);				/* Set environment vars array and paths array */
 	init_builtins(sh);						/* Initialize builtin function array and function pointers */
@@ -54,7 +66,8 @@ void	init_env_vars(t_shell *sh, char **envp)
 	sh->env.envp[count_array((void **)envp)] = NULL;
 	while (*envp)
 	{
-		sh->env.envp[i] = ft_strdup(*envp);
+		if (ft_strncmp(*envp, "OLDPWD=", 7))
+			sh->env.envp[i] = ft_strdup(*envp);
 		if (!ft_strncmp(*envp, "PATH=", 5))
 		{
 			sh->env.path = ft_split(*envp + 5, ':');

@@ -103,6 +103,35 @@ char	**lst_arr_to_str_arr(char **envp, t_arglst **lst_arr, int nb_elems)
 	return (str_arr);
 }
 
+void	expand_cmd_args(t_shell *sh, t_cmd *cmd)
+{
+	char	*arg_str;
+	char	**str_arr;
+	int		i;
+	int		j;
+	int		nb_args;
+
+	nb_args = cmd->nb_args;
+	str_arr = ft_xalloc((nb_args + 1) * sizeof(char *));
+	j = 0;
+	i = -1;
+	while (++i < nb_args)
+	{
+		arg_str = lst_to_str(sh->env.envp, cmd->args_lst[i]);
+		if (cmd->args_lst[i]->is_joined)
+		{
+			str_arr[j] = ft_strjoin_free(str_arr[j], arg_str);
+			free(arg_str);
+			arg_str = NULL;
+			cmd->nb_args -= 1;
+		}
+		else
+			str_arr[j++] = arg_str;
+	}
+	cmd->args = str_arr;
+	cmd->exe = ft_strdup(cmd->args[0]);
+}
+
 void	cmds_lst_to_str(t_shell *sh)
 {
 	t_cmd	*cmd;
@@ -115,7 +144,7 @@ void	cmds_lst_to_str(t_shell *sh)
 		cmd = sh->cmds[i];
 		if (cmd->args_lst)		/* If args_lst is null there is no command, do not attempt to access */
 		{
-			cmd->exe = lst_to_str(sh->env.envp, cmd->args_lst[0]);
+			expand_cmd_args(sh, cmd);
 			// cmd->args = ft_xalloc((cmd->nb_args + 1) * sizeof(char *));
 			// j = 0;
 			// while (i < cmd->nb_args)
@@ -127,7 +156,8 @@ void	cmds_lst_to_str(t_shell *sh)
 			// 		cmd->nb_args--;
 			// 	i++;
 			// }
-			cmd->args = lst_arr_to_str_arr(sh->env.envp, cmd->args_lst, cmd->nb_args);
+			// cmd->args = lst_arr_to_str_arr(sh->env.envp, cmd->args_lst, cmd->nb_args);
+			// cmd->exe = lst_to_str(sh->env.envp, cmd->args_lst[0]);
 		}
 		j = -1;
 		while (++j < cmd->nb_ins)

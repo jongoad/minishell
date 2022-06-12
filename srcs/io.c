@@ -6,7 +6,7 @@
 /*   By: iyahoui- <iyahoui-@student.42quebec.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/06/09 15:00:05 by jgoad             #+#    #+#             */
-/*   Updated: 2022/06/10 20:24:47 by iyahoui-         ###   ########.fr       */
+/*   Updated: 2022/06/12 18:05:18 by iyahoui-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,12 +31,18 @@ int	init_ins(t_shell *sh, t_cmd *cmd)
 	while (++i < cmd->nb_ins)
 	{
 		cmd->errnum = access(cmd->ins[i]->infile, F_OK);
-		if (!cmd->errnum)
-			cmd->errnum = access(cmd->ins[i]->infile, R_OK);
 		if (cmd->errnum)
 		{
 			put_err_msg(sh->sh_name, cmd->ins[i]->infile, NULL,
-				strerror(cmd->errnum));
+				ERR_FILE);
+			close_files(cmd);
+			return (cmd->errnum);
+		}
+		cmd->errnum = access(cmd->ins[i]->infile, R_OK);
+		if (cmd->errnum)
+		{
+			put_err_msg(sh->sh_name, cmd->ins[i]->infile, NULL,
+				ERR_ACCESS);
 			close_files(cmd);
 			return (cmd->errnum);
 		}

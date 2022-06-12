@@ -29,6 +29,7 @@ struct s_arglst
 {
 	char		*str;
 	bool		is_env_var;
+	bool		is_joined;
 	int			*is_wildcard; /* 0 if not wildcard, exists otherwise */
 	t_arglst	*next;
 };
@@ -102,6 +103,7 @@ struct s_shell
 	char		*line;			/* Buffer for line return from readlin - MUST FREE */
 	char		*prompt;		/* Prompt for current shell - MUST FREE */
 	char		*sh_name;		/* Name of current shell - MUST FREE */
+	char		*ms_path;		/* Name of current shell - MUST FREE */
 	int			*pipes;			/* Array of ints to hold pipe data - MUST FREE */
 	int			nb_cmds;		/* Number of commands parsed */
 	int			nb_pipes;		/* Number of pipes created */
@@ -110,6 +112,7 @@ struct s_shell
 	int			history_fd;		/* File descriptory */
 	bool		cmd_line;		/* Store presence of a command line input on program launch */
 	char		err_char;		/* Error character for parse error handling */
+	char		*pwd;			/* Store copy of PWD */
 };
 
 typedef struct s_wildcard
