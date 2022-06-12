@@ -6,7 +6,7 @@
 /*   By: iyahoui- <iyahoui-@student.42quebec.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/06/09 14:55:08 by jgoad             #+#    #+#             */
-/*   Updated: 2022/06/12 13:11:26 by iyahoui-         ###   ########.fr       */
+/*   Updated: 2022/06/12 13:13:38 by iyahoui-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,6 +16,7 @@ bool	is_valid_hist_entry(char *entry)
 {
 	int	i;
 
+	i = 0;
 	while (entry[i])
 	{
 		if (entry[i] < 9 || (entry[i] > 13 && entry[i] != 32))
@@ -58,7 +59,7 @@ char	*rl_getline(t_shell *sh)
 	sh->line = readline (sh->prompt);		/* Get a line from the user. */
 	if (sh->line && *sh->line)				/* If the line has any text in it, save it on the history. */
 	{
-		if (is_valid_hist_entry(curr_line))
+		if (is_valid_hist_entry(sh->line))
 			add_history(sh->line);
 		putendl_fd(sh->line, sh->history_fd);
 	}

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   builtins.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jgoad <jgoad@student.42.fr>                +#+  +:+       +#+        */
+/*   By: iyahoui- <iyahoui-@student.42quebec.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/06/09 14:46:44 by jgoad             #+#    #+#             */
-/*   Updated: 2022/06/09 14:47:57 by jgoad            ###   ########.fr       */
+/*   Updated: 2022/06/12 13:21:52 by iyahoui-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,7 +19,7 @@ int	builtin_echo(t_shell *sh, t_cmd *cmd)
 	int	fd;
 
 	i = 1;
-	if (!ft_strncmp(cmd->args[1], "-n", 3))
+	if (cmd->args[1] && !ft_strncmp(cmd->args[1], "-n", 3))
 		return (builtin_echo_n(sh, cmd));
 	fd = cmd->fd_out;
 	while (cmd->args[i])
