@@ -2,14 +2,15 @@
 # define ENUMS_H
 
 /* Parse defines */
-# define WHITESPACES " \n\t"
 # define CL_SPEC_CH "\"\'$"
-# define CL_TOK_LIM " \n\t<>|$\"\'"		// to add: &()
-# define CL_DQU_LIM " \n\t<>|$\'"		// to add: &()
-# define CL_SQU_LIM " \n\t<>|$\""		// to add: &()
+# define WHITESPACES " \n\t\v\r\f"
+# define CL_TOK_LIM " \n\t\v\r\f<>|$\"\'"		// to add: &()
+# define CL_VAR_LIM " \n\t\v\r\f<>|\"\'"		// to add: &()
+# define CL_DQU_LIM " \n\t\v\r\f<>|$\'"		// to add: &()
+# define CL_SQU_LIM " \n\t\v\r\f<>|$\""		// to add: &()
 # define CL_DQU_NOSPEC "$\""			// to add: &()
-# define CL_VAR_CHARS "_abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789"
-# define CL_TOK_LIM_BONUS "* \n\t<>|$\"\'"
+# define ENV_VAR_CHARS "_abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789"
+# define CL_TOK_LIM_BONUS "* \n\t\v\r\f<>|$\"\'"
 # define CL_SPEC_CH_BONUS "*\"\'$"
 # define HEREDOC_PATH "/tmp/heredoc"	// to add: &()
 # define WILDCARD 26

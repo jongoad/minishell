@@ -118,13 +118,15 @@ void		reset_shell(t_shell *sh);
 int		parse(t_shell *sh, char *rem_line);
 int		check_parse(t_shell *sh, t_cmd *cmd, char *line);
 
-//	get_cl_tok.c
+//	tokenizer.c
 void	set_cl_tok(t_arglst **lst, char **line);
 void	set_cl_tok_bonus(t_arglst **lst, char **line);
 void	add_token(t_arglst **lst, char **line, char *delim, bool is_env_var);
+void	add_token_by_set(t_arglst **lst, char **line, char *set, bool is_env_var);
 void	add_token_by_len(t_arglst **lst, char **line, int tok_len, bool is_env_var);
 void	parse_dquotes(t_arglst **lst, char **line);
 void	parse_squotes(t_arglst **lst, char **line);
+void	parse_env_var(t_arglst **lst, char **line);
 
 //	heredoc.c
 void	parse_heredoc(t_cmd *cmd, t_infile *in);
@@ -139,6 +141,7 @@ void	cmds_lst_to_str(t_shell *sh);
 //	parse_utils.c
 void	skip_whitespaces(char **line);
 int		get_tok_len(char *token, char *delimiters);
+int		get_tok_len_set(char *token, char *set);
 
 //	parse_redir.c
 int		parse_redir(t_cmd *cmd, char **line);

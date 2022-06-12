@@ -18,6 +18,7 @@ char		*get_first_token(char *string, char delimiter);
 char		*get_last_token(char *string, char delimiter);
 char		*ft_strjoin_free(char *s1, char const *s2);
 int			ft_isalnum(int c);
+int			ft_isspace(char c);
 char		*ft_itoa(int n);
 int			ft_atoi(const char *str);
 char		*ft_strnstr(const char *haystack, const char *needle, size_t len);

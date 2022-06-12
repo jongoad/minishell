@@ -29,3 +29,17 @@ int get_tok_len(char *token, char *delimiters)
 	}
 	return (tok_len);
 }
+
+int	get_tok_len_set(char *token, char *set)
+{
+	int  tok_len;
+
+	if (!token)
+		return (-1);
+	tok_len = 0;
+	while (token[tok_len] && is_set(token[tok_len], set))
+	{
+		tok_len++;
+	}
+	return (tok_len);
+}

@@ -3,14 +3,21 @@
 /*                                                        :::      ::::::::   */
 /*   str_utils_4.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jgoad <jgoad@student.42.fr>                +#+  +:+       +#+        */
+/*   By: iyahoui- <iyahoui-@student.42quebec.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/06/09 14:36:04 by jgoad             #+#    #+#             */
-/*   Updated: 2022/06/09 14:36:15 by jgoad            ###   ########.fr       */
+/*   Updated: 2022/06/12 13:36:47 by iyahoui-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
+
+int	ft_isspace(char c)
+{
+	if ((c > 8 && c < 14) || c == ' ')
+		return (1);
+	return (0);
+}
 
 /* Find if a character exists in a string */
 int	is_set(char const c, char const *set)
@@ -44,3 +51,4 @@ int	is_set_ret(char const c, char const *set)
 	}
 	return (-1);
 }
+
