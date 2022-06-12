@@ -85,7 +85,7 @@ int	minishell(t_shell *sh)
 		{
 			cmds_lst_to_str(sh);
 			clean_linked_lists(sh);
-			// print_cmds_info(sh);
+			print_cmds_info(sh);
 			if (sh->cmds)
 				execute(sh);
 		}

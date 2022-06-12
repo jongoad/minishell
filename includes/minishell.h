@@ -123,12 +123,14 @@ int		check_parse(t_shell *sh, t_cmd *cmd, char *line);
 void	set_cl_tok(t_arglst **lst, char **line);
 void	add_cl_tok(t_arglst **lst, char **line);
 void	set_cl_tok_bonus(t_arglst **lst, char **line);
+void	add_cl_tok_bonus(t_arglst **lst, char **line);
 void	add_token(t_arglst **lst, char **line, char *delim, bool is_env_var);
 void	add_token_by_set(t_arglst **lst, char **line, char *set, bool is_env_var);
 void	add_token_by_len(t_arglst **lst, char **line, int tok_len, bool is_env_var);
 void	parse_dquotes(t_arglst **lst, char **line);
 void	parse_squotes(t_arglst **lst, char **line);
 void	parse_env_var(t_arglst **lst, char **line);
+void	parse_wildcard(t_arglst **lst, char **line);
 
 //	heredoc.c
 void	parse_heredoc(t_cmd *cmd, t_infile *in);
@@ -168,6 +170,7 @@ void		ms_lstadd(t_arglst **lst, t_arglst *new);
 t_arglst	*ms_lstnew(char *str, bool is_expandable);
 void		ms_lstclear(t_arglst **lst);
 void		ms_lstdelone(t_arglst *lst);
+t_arglst	*ms_lstlast(t_arglst *lst);
 
 /* Readline functions */
 char	*rl_getline(t_shell *sh);

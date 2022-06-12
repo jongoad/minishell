@@ -56,3 +56,14 @@ void	ms_lstdelone(t_arglst *lst)
 	free (lst->str);
 	free (lst);
 }
+
+t_arglst	*ms_lstlast(t_arglst *lst)
+{
+	t_arglst	*ptr;
+	if (!lst)
+		return (lst);
+	ptr = lst;
+	while (ptr->next)
+		ptr = ptr->next;
+	return (ptr);
+}

@@ -91,7 +91,7 @@ int	builtin_cd(t_shell *sh, t_cmd *cmd)
 	if (!change_env_var(&sh->env, res))
 		add_env_var(&sh->env, ft_strjoin("OLDPWD=", res));
 	free(res);
-	if (cmd->nb_args == 1)
+	if (cmd->nb_args == 1 || (cmd->args[1][0] == '~' && !cmd->args[1][1]))
 		cd_no_arg(sh, cmd);
 	if (chdir(cmd->args[cmd->nb_args - 1]))
 	{
@@ -142,14 +142,13 @@ int	builtin_export(t_shell *sh, t_cmd *cmd)
 {
 	int	i;
 	int	j;
-	char decl[12] = "declare -x ";
 
 	j = 0;
 	if (!cmd->args[1])								 	/* If  no arguments passed print out declare list */
 	{
 		while (sh->env.envp[j])
 		{
-			printf("%s%s\n", decl, sh->env.envp[j]);
+			printf("%s%s\n", "declare -x ", sh->env.envp[j]);
 			j++;
 		}
 		return(cmd->errnum);
