@@ -6,7 +6,7 @@
 /*   By: iyahoui- <iyahoui-@student.42quebec.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/06/09 15:02:11 by jgoad             #+#    #+#             */
-/*   Updated: 2022/06/13 15:34:32 by iyahoui-         ###   ########.fr       */
+/*   Updated: 2022/06/13 16:54:10 by iyahoui-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,7 +26,7 @@ t_shell	*get_data(void)
 t_shell	*init_shell(t_shell *sh, char **argv, char **envp)
 {
 	int	i;
-	
+
 	sh = get_data();
 	if (is_set('/', argv[0]))
 	{
@@ -38,9 +38,9 @@ t_shell	*init_shell(t_shell *sh, char **argv, char **envp)
 	}
 	else
 		sh->ms_path = ft_strdup(argv[0]);
-	init_shell_prompt(sh, argv[0]);			/* Set shell name and prompt */
-	init_env_vars(sh, envp);				/* Set environment vars array and paths array */
-	init_builtins(sh);						/* Initialize builtin function array and function pointers */
+	init_shell_prompt(sh, argv[0]);
+	init_env_vars(sh, envp);
+	init_builtins(sh);
 	init_history(sh);
 	init_pwd(sh);
 	sh->ret_val = 0;
@@ -59,7 +59,7 @@ void	init_shell_prompt(t_shell *sh, char *name)
 /* Initialize environment variables */
 void	init_env_vars(t_shell *sh, char **envp)
 {
-	int i;
+	int	i;
 
 	i = 0;
 	sh->env.envp = ft_xalloc(sizeof(char *) * (count_array((void **)envp) + 1));
@@ -67,7 +67,6 @@ void	init_env_vars(t_shell *sh, char **envp)
 	while (*envp)
 	{
 		sh->env.envp[i] = ft_strdup(*envp);
-		// if (ft_strncmp(*envp, "OLDPWD=", 7)) FIX WHATS GOING ON HERE?
 		if (!ft_strncmp(*envp, "PATH=", 5))
 			sh->env.path = ft_split(*envp + 5, ':');
 		else if (!ft_strncmp(*envp, "SHLVL=", 6))
@@ -86,10 +85,6 @@ void	init_path(t_shell *sh)
 	int	i;
 
 	i = 0;
-	// print_char_arr(sh->env.path);
-	// if (sh->env.path)
-	// {
-	// }
 	free_array((void **)sh->env.path);
 	sh->env.path = NULL;
 	while (sh->env.envp[i])

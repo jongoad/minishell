@@ -1,10 +1,18 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   lst_to_str.c                                       :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: iyahoui- <iyahoui-@student.42quebec.com    +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2022/06/13 16:54:58 by jgoad             #+#    #+#             */
+/*   Updated: 2022/06/13 16:57:49 by iyahoui-         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "minishell.h"
 
-/**
- * @brief 
- * 			We need to decide how we want to store $?
- * 			In practice, expand_env_vars should be called at exec_time
- */
+/* Expand an environment variable to its true value */
 char	*expand_env_var(char **envp, char *var_name)
 {
 	t_shell	*sh;
@@ -14,11 +22,9 @@ char	*expand_env_var(char **envp, char *var_name)
 
 	if (!envp || !var_name)
 		return (NULL);
-	/* Expand error return */
 	sh = get_data();
 	if (var_name[0] == '?' && !var_name[1])
 		return (ft_itoa(sh->ret_val));
-	/* Expand wildcards */
 	if (BONUS && var_name[0] == '*' && !var_name[1])
 	{
 		expanded = malloc(2);
@@ -26,7 +32,6 @@ char	*expand_env_var(char **envp, char *var_name)
 		expanded[1] = '\0';
 		return (expanded);
 	}
-	/* Search for the variable */
 	var_len = ft_strlen(var_name);
 	i = -1;
 	while (envp[++i])
@@ -35,6 +40,7 @@ char	*expand_env_var(char **envp, char *var_name)
 	return (NULL);
 }
 
+/* Convert linked list to struct array format */
 char	*lst_to_str(char **envp, t_arglst *lst)
 {
 	t_arglst	*ptr;
@@ -58,6 +64,7 @@ char	*lst_to_str(char **envp, t_arglst *lst)
 	return (str);
 }
 
+/* Convert linked list to struct array without expansion */
 char	*lst_to_str_no_exp(t_arglst *lst)
 {
 	t_arglst	*ptr;
@@ -81,6 +88,7 @@ char	*lst_to_str_no_exp(t_arglst *lst)
 	return (str);
 }
 
+/* Expand and convert command arguments from linked list format */
 void	expand_cmd_args(t_shell *sh, t_cmd *cmd)
 {
 	char	*arg_str;
@@ -110,6 +118,7 @@ void	expand_cmd_args(t_shell *sh, t_cmd *cmd)
 	cmd->exe = ft_strdup(cmd->args[0]);
 }
 
+/* Convert linked list command to struct array format */
 void	cmds_lst_to_str(t_shell *sh)
 {
 	t_cmd	*cmd;
@@ -120,7 +129,7 @@ void	cmds_lst_to_str(t_shell *sh)
 	while (i < sh->nb_cmds)
 	{
 		cmd = sh->cmds[i];
-		if (cmd->args_lst)		/* If args_lst is null there is no command, do not attempt to access */
+		if (cmd->args_lst)
 			expand_cmd_args(sh, cmd);
 		j = -1;
 		while (++j < cmd->nb_ins)

@@ -82,6 +82,7 @@ int			builtin_env(t_shell *sh, t_cmd *cmd);
 int			builtin_exit(t_shell *sh, t_cmd *cmd);
 
 /* Builtin command utilities */
+void		builtins_cd_2(t_shell *sh, t_cmd *cmd, char *res, char *buf);
 void		add_env_var(t_env *env, char *str);
 void		remove_env_var(t_env *env, int n);
 bool		check_env_var(char *str, bool unset);
@@ -108,7 +109,8 @@ void		clean_env(t_shell *sh);
 void		clean_linked_lists(t_shell *sh);
 void		clean_single_cmd_linked_lists(t_cmd *cmd);
 void		clean_single_cmd(t_cmd *cmd);
-void		clean_io(t_cmd *cmd);
+void		clean_input(t_cmd *cmd);
+void		clean_output(t_cmd *cmd);
 void		clean_cmds(t_shell *sh);
 void		clean_fork(t_shell *sh, t_cmd *cmd);
 void		reset_shell(t_shell *sh);

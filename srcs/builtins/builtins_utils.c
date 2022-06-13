@@ -1,3 +1,15 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   builtins_utils.c                                   :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: iyahoui- <iyahoui-@student.42quebec.com    +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2022/06/13 17:02:49 by jgoad             #+#    #+#             */
+/*   Updated: 2022/06/13 17:09:40 by iyahoui-         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "minishell.h"
 
 /* Convert a value held in a string to an int and check if valid */
@@ -65,10 +77,10 @@ int	change_env_var(t_env *env, char *arg)
 	char	*tmp;
 	t_shell	*sh;
 
-	i = 0;
+	i = -1;
 	split = ft_split(arg, '=');
 	sh = get_data();
-	while (env->envp[i])
+	while (env->envp[++i])
 	{
 		if (!ft_strncmp(split[0], env->envp[i], ft_strlen(split[0]))
 			&& env->envp[i][ft_strlen(split[0])] == '=')
@@ -77,14 +89,11 @@ int	change_env_var(t_env *env, char *arg)
 			tmp = ft_strjoin(split[0], "=");
 			env->envp[i] = ft_strjoin(tmp, split[1]);
 			free(tmp);
-			// FIXME: path not properly updated
-			// 	added this, but a bit janky -isma
 			if (!ft_strncmp(split[0], "PATH", ft_strlen(split[0])))
 				init_path(sh);
 			free_array((void **)split);
 			return (1);
 		}
-		i++;
 	}
 	free_array((void **)split);
 	return (0);
@@ -102,54 +111,22 @@ void	remove_env_var(t_env *env, int n)
 	i = count_array((void **)env->envp);
 	tmp = ft_xalloc(sizeof(char *) * i);
 	sh = get_data();
-	i = 0;
+	i = -1;
 	j = 0;
 	unset_path = false;
-	while (env->envp[i])
+	while (env->envp[++i])
 	{
 		if (i == n)
-		{
 			if (!ft_strncmp(env->envp[i], "PATH=", 5))
 				unset_path = true;
-		}
 		else
 			tmp[j++] = ft_strdup(env->envp[i]);
-		i++;
 	}
 	free_array((void **)env->envp);
 	env->envp = tmp;
 	if (unset_path)
 		init_path(sh);
-	//printf("Size of envp: %lu\n", sizeof(env->envp));
 }
-// void	remove_env_var(t_env *env, int n)
-// {
-// 	int		i;
-// 	int		j;
-// 	char	**tmp;
-// 	int count;
-
-// 	i = count_array((void **)env->envp);
-// 	count = i;
-// 	tmp = ft_xalloc(sizeof(char *) * i);
-// 	i = 0;
-// 	j = 0;
-// 	// while (env->envp[i])
-// 	while (i < count)
-// 	{
-// 		if (i == n)
-// 			i++;
-// 		else
-// 		{
-// 			tmp[j] = ft_strdup(env->envp[i]);
-// 			i++;
-// 			j++;
-// 		}
-// 	}
-// 	free_array((void **)env->envp);
-// 	env->envp = tmp;
-// 	//printf("Size of envp: %lu\n", sizeof(env->envp));
-// }
 
 /* Check if environment variable name is valid */
 bool	check_env_var(char *str, bool unset)
@@ -158,15 +135,15 @@ bool	check_env_var(char *str, bool unset)
 
 	i = 0;
 	if (!str[i] || (str[i] >= '0' && str[i] <= '9')
-		|| (str[i] == '_' && str[i + 1] == '\0'))					/* If null string or if variable name is a single underscore or a number, return invalid */
+		|| (str[i] == '_' && str[i + 1] == '\0'))
 		return (false);
-	while (str[i] && str[i] != '=')									/* Iterate until equals sign is hit */
+	while (str[i] && str[i] != '=')
 	{
 		if (!ft_isalnum(str[i]) && str[i] != '_')
 			return (false);
 		i++;
 	}
-	if (!unset && str[i] != '=')									/* If no equals sign is hit, return false */
+	if (!unset && str[i] != '=')
 		return (false);
 	else if (unset && str[i] != '\0')
 		return (false);

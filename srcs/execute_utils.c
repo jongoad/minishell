@@ -6,7 +6,7 @@
 /*   By: iyahoui- <iyahoui-@student.42quebec.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/06/09 15:09:17 by jgoad             #+#    #+#             */
-/*   Updated: 2022/06/13 15:08:21 by iyahoui-         ###   ########.fr       */
+/*   Updated: 2022/06/13 16:47:53 by iyahoui-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,13 +43,14 @@ int	check_builtins(t_shell *sh, t_cmd *cmd)
 	int		i;
 
 	i = 0;
-	if (!cmd->exe)							/* If there is no command return -1 here to prevent segfault */
+	if (!cmd->exe)
 		return (cmd->builtin = -1);
-	tmp = ft_strdup(cmd->exe);				/* Create a local copy of command name/path */
-	tmp = str_to_lower(tmp);				/* Set to lowercase for comparison */
+	tmp = ft_strdup(cmd->exe);
+	tmp = str_to_lower(tmp);
 	while (i < 7)
 	{
-		if (!ft_strncmp(tmp, sh->builtins.alias[i], ft_strlen(sh->builtins.alias[i])))
+		if (!ft_strncmp(tmp, sh->builtins.alias[i],
+				ft_strlen(sh->builtins.alias[i])))
 		{
 			if (!tmp[ft_strlen(sh->builtins.alias[i])])
 			{
@@ -58,7 +59,7 @@ int	check_builtins(t_shell *sh, t_cmd *cmd)
 				return (cmd->builtin);
 			}
 		}
-		i++;	
+		i++;
 	}
 	free(tmp);
 	return (cmd->builtin = -1);

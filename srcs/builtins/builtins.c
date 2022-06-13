@@ -6,7 +6,7 @@
 /*   By: iyahoui- <iyahoui-@student.42quebec.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/06/09 14:46:44 by jgoad             #+#    #+#             */
-/*   Updated: 2022/06/12 16:36:555 by iyahoui-         ###   ########.fr       */
+/*   Updated: 2022/06/13 17:14:18 by iyahoui-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,37 +50,11 @@ int	builtin_echo_n(t_shell *sh, t_cmd *cmd)
 	return (cmd->errnum);
 }
 
-int	handle_cd_error(t_shell *sh)
-{
-	// fct_err_msg("chdir", strerror(errno));
-	put_err_msg("chdir", ERR_PWD, ERR_CWD, ERR_FILE);
-	sh->ret_val = 1;
-	return (sh->ret_val);
-}
-
-void	cd_no_arg(t_shell *sh, t_cmd *cmd)
-{
-	char	**new_arr;
-	int		i;
-
-	new_arr = ft_xalloc((cmd->nb_args + 2) * sizeof(char *));
-	i = 0;
-	while (i < cmd->nb_args)
-	{
-		new_arr[i] = cmd->args[i];
-		i++;
-	}
-	new_arr[i] = expand_env_var(sh->env.envp, "HOME");
-	cmd->args = new_arr;
-	cmd->nb_args += 1;
-	return ;
-}
-
 /* Change directory */
 int	builtin_cd(t_shell *sh, t_cmd *cmd)
 {
-	char *buf;
-	char *res;
+	char	*buf;
+	char	*res;
 
 	if (!sh->pwd)
 	{
@@ -99,6 +73,13 @@ int	builtin_cd(t_shell *sh, t_cmd *cmd)
 		free(buf);
 		return (sh->ret_val);
 	}
+	builtins_cd_2(sh, cmd, res, buf);
+	return (cmd->errnum);
+}
+
+/* Extension for CD function */
+void	builtins_cd_2(t_shell *sh, t_cmd *cmd, char *res, char *buf)
+{
 	res = ft_strjoin("OLDPWD=", sh->pwd);
 	if (!change_env_var(&sh->env, res))
 		add_env_var(&sh->env, ft_strjoin("OLDPWD=", res));
@@ -109,7 +90,8 @@ int	builtin_cd(t_shell *sh, t_cmd *cmd)
 	{
 		cmd->errnum = errno;
 		cmd->errname = ft_strjoin("cd: ", cmd->args[cmd->nb_args - 1]);
-		put_err_msg(sh->sh_name, cmd->exe, cmd->args[cmd->nb_args - 1], ERR_FILE);
+		put_err_msg(sh->sh_name, cmd->exe,
+			cmd->args[cmd->nb_args - 1], ERR_FILE);
 	}
 	else
 	{
@@ -118,19 +100,17 @@ int	builtin_cd(t_shell *sh, t_cmd *cmd)
 		res = ft_strjoin("PWD=", buf);
 		free(sh->pwd);
 		sh->pwd = buf;
-		// free(buf);
 		change_env_var(&sh->env, res);
 		free(res);
 	}
-	return (cmd->errnum);
 }
 
 /* Print path to current directory */
 int	builtin_pwd(t_shell *sh, t_cmd *cmd)
 {
-	char *buf;
+	char	*buf;
 
-	sh->sh_name = sh->sh_name; //FIX janky solution for sh not being used
+	sh->sh_name = sh->sh_name;
 	if (cmd->errnum)
 		return (msg_err_ret(cmd->errnum, cmd->errname));
 	buf = (char *)malloc(sizeof(char) * 1025);
@@ -147,37 +127,6 @@ int	builtin_pwd(t_shell *sh, t_cmd *cmd)
 	{
 		put_err_msg(cmd->exe, ERR_PWD, ERR_CWD, ERR_FILE);
 		return (cmd->errnum);
-	}
-	return (cmd->errnum);
-}
-
-/* Create a new env var for current shell instance */
-int	builtin_export(t_shell *sh, t_cmd *cmd)
-{
-	int	i;
-	int	j;
-
-	j = 0;
-	if (!cmd->args[1])								 	/* If  no arguments passed print out declare list */
-	{
-		while (sh->env.envp[j])
-		{
-			printf("%s%s\n", "declare -x ", sh->env.envp[j]);
-			j++;
-		}
-		return(cmd->errnum);
-	}
-	i = 1;
-	while (cmd->args[i])
-	{
-		if (check_env_var(cmd->args[i], false))			/* Check each argument and add to env array if valid */
-		{	
-			if (!change_env_var(&sh->env, cmd->args[i]))
-				add_env_var(&sh->env, cmd->args[i]);
-		}
-		else
-			put_err_msg(sh->sh_name, cmd->exe, cmd->args[i], ERR_IDENTIFER);
-		i++;
 	}
 	return (cmd->errnum);
 }

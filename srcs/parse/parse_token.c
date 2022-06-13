@@ -1,11 +1,17 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   parse_token.c                                      :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: iyahoui- <iyahoui-@student.42quebec.com    +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2022/06/13 16:58:55 by jgoad             #+#    #+#             */
+/*   Updated: 2022/06/13 16:59:09 by iyahoui-         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "minishell.h"
 
-/**!
- * 	@brief	If unclosed, treats the token as without quotes
- * 			Otherwise, tokenizes content of dquotes into:
- * 			- pure strings
- * 			- env_vars
- */
 void	parse_dquotes(t_arglst **lst, char **line)
 {
 	int		tok_len;
@@ -14,7 +20,7 @@ void	parse_dquotes(t_arglst **lst, char **line)
 	if (!(*line)[tok_len + 1])
 		return (add_token(lst, line, CL_DQU_LIM, false));
 	*line += 1;
-	while (**line)	//bogus condition to reduce chances of segfault
+	while (**line)
 	{
 		tok_len = get_tok_len(*line, "\"$");
 		if ((*line)[tok_len] == '\"')
@@ -30,9 +36,6 @@ void	parse_dquotes(t_arglst **lst, char **line)
 	}
 }
 
-/**!
- * 	@brief	Returns the entirety of the string in squotes
- */
 void	parse_squotes(t_arglst **lst, char **line)
 {
 	int		tok_len;

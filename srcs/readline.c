@@ -1,5 +1,18 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   readline.c                                         :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: iyahoui- <iyahoui-@student.42quebec.com    +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2022/06/13 15:56:34 by jgoad             #+#    #+#             */
+/*   Updated: 2022/06/13 16:45:44 by iyahoui-         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "minishell.h"
 
+/* Check if history entry is not just empty line */
 bool	is_valid_hist_entry(char *entry)
 {
 	int	ret;
@@ -50,8 +63,8 @@ char	*rl_getline(t_shell *sh)
 		free(sh->line);
 		sh->line = (char *) NULL;
 	}
-	sh->line = readline (sh->prompt);		/* Get a line from the user. */
-	if (sh->line && *sh->line)				/* If the line has any text in it, save it on the history. */
+	sh->line = readline (sh->prompt);
+	if (sh->line && *sh->line)
 	{
 		if (is_valid_hist_entry(sh->line))
 			add_history(sh->line);

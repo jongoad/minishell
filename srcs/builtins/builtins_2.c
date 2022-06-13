@@ -3,14 +3,44 @@
 /*                                                        :::      ::::::::   */
 /*   builtins_2.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jgoad <jgoad@student.42.fr>                +#+  +:+       +#+        */
+/*   By: iyahoui- <iyahoui-@student.42quebec.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/06/09 14:43:36 by jgoad             #+#    #+#             */
-/*   Updated: 2022/06/13 13:53:51 by jgoad            ###   ########.fr       */
+/*   Updated: 2022/06/13 17:12:57 by iyahoui-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
+
+/* Create a new env var for current shell instance */
+int	builtin_export(t_shell *sh, t_cmd *cmd)
+{
+	int	i;
+
+	i = 0;
+	if (!cmd->args[1])
+	{
+		while (sh->env.envp[i])
+		{
+			printf("%s%s\n", "declare -x ", sh->env.envp[i]);
+			i++;
+		}
+		return (cmd->errnum);
+	}
+	i = 1;
+	while (cmd->args[i])
+	{
+		if (check_env_var(cmd->args[i], false))
+		{	
+			if (!change_env_var(&sh->env, cmd->args[i]))
+				add_env_var(&sh->env, cmd->args[i]);
+		}
+		else
+			put_err_msg(sh->sh_name, cmd->exe, cmd->args[i], ERR_IDENTIFER);
+		i++;
+	}
+	return (cmd->errnum);
+}
 
 /* Unset env var for current shell instance */
 int	builtin_unset(t_shell *sh, t_cmd *cmd)
@@ -18,28 +48,26 @@ int	builtin_unset(t_shell *sh, t_cmd *cmd)
 	int	i;
 	int	j;
 
-	i = 1;
-	while (cmd->args[i])
+	i = 0;
+	while (cmd->args[++i])
 	{
-		if (!check_env_var(cmd->args[i], true))					/* If arg to be unset does not pass env var naming conventions print error */
+		if (!check_env_var(cmd->args[i], true))
 		{
 			put_err_msg(sh->sh_name, cmd->exe, cmd->args[i], ERR_IDENTIFER);
 			cmd->errnum = 1;
 		}
 		else
 		{
-			j = 0;
-			while (sh->env.envp[j])								/* Find and remove variable if it exists */
+			j = -1;
+			while (sh->env.envp[++j])
 			{
 				if (env_var_cmp(cmd->args[i], sh->env.envp[j]))
 				{
 					remove_env_var(&sh->env, j);
-					break;
+					break ;
 				}
-				j++;
 			}
 		}
-		i++;
 	}
 	return (cmd->errnum);
 }
@@ -70,7 +98,6 @@ int	builtin_exit(t_shell *sh, t_cmd *cmd)
 	if (cmd->args[1])
 	{
 		ret = ft_atoll(cmd->args[1], &is_valid);
-		// printf("%lld\n", ret);
 		if (is_valid && cmd->args[2])
 		{
 			put_err_msg(sh->sh_name, cmd->args[0], NULL, ERR_EXIT_ARGS_NUM);
@@ -79,10 +106,11 @@ int	builtin_exit(t_shell *sh, t_cmd *cmd)
 		else if (!is_valid)
 		{
 			ret = 255;
-			put_err_msg(sh->sh_name, cmd->args[0], cmd->args[1], ERR_EXIT_NON_NUMERIC);
+			put_err_msg(sh->sh_name, cmd->args[0],
+				cmd->args[1], ERR_EXIT_NON_NUMERIC);
 		}
 	}
-	cleanup(sh);						/* Cleanup ALL shell memory before exit */
+	cleanup(sh);
 	exit(ret);
 	return (ret);
 }

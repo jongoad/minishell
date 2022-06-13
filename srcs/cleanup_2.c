@@ -3,64 +3,21 @@
 /*                                                        :::      ::::::::   */
 /*   cleanup_2.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jgoad <jgoad@student.42.fr>                +#+  +:+       +#+        */
+/*   By: iyahoui- <iyahoui-@student.42quebec.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/06/09 15:16:30 by jgoad             #+#    #+#             */
-/*   Updated: 2022/06/13 13:15:57 by jgoad            ###   ########.fr       */
+/*   Updated: 2022/06/13 16:54:29 by iyahoui-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
-
-/* Free memory for command linked lists */
-void	clean_linked_lists(t_shell *sh)
-{
-	int	i;
-
-	i = 0;
-	while (sh->cmds && i < sh->nb_cmds)
-	{
-		if (sh->cmds[i])
-			clean_single_cmd_linked_lists(sh->cmds[i]);
-		i++;
-	}
-}
-
-/* Clean memory for a single array of command linked lists */
-void	clean_single_cmd_linked_lists(t_cmd *cmd)
-{
-	int	i;
-
-	i = 0;
-	while (i < cmd->nb_args)
-	{
-		ms_lstclear(&cmd->args_lst[i]);
-		cmd->args_lst[i] = NULL;
-		i++;
-	}
-	i = 0;
-	while (cmd->nb_ins && i < cmd->nb_ins)
-	{
-		ms_lstclear(&cmd->ins[i]->in_lst);
-		cmd->ins[i]->in_lst = NULL;
-		ms_lstclear(&cmd->ins[i]->delim_lst);
-		cmd->ins[i]->delim_lst = NULL;
-		i++;
-	}
-	i = 0;
-	while (cmd->nb_outs && i < cmd->nb_outs)
-	{
-		ms_lstclear(&cmd->outs[i]->out_lst);
-		cmd->outs[i]->out_lst = NULL;
-		i++;
-	}
-}
 
 /* Clean all memory for a single instance of command struct */
 void	clean_single_cmd(t_cmd *cmd)
 {
 	int	i;
 
+	close_files(cmd);
 	free_array((void **)cmd->args);
 	free(cmd->exe);
 	cmd->exe = NULL;
@@ -69,7 +26,8 @@ void	clean_single_cmd(t_cmd *cmd)
 	i = 0;
 	while (cmd->args_lst && cmd->args_lst[i])
 		ms_lstclear(&cmd->args_lst[i++]);
-	clean_io(cmd);
+	clean_input(cmd);
+	clean_output(cmd);
 	free(cmd->ins);
 	cmd->ins = NULL;
 	free(cmd->outs);
@@ -78,8 +36,8 @@ void	clean_single_cmd(t_cmd *cmd)
 	cmd->args_lst = NULL;
 }
 
-/* Clean memory and unlink files for input and output redirection */
-void	clean_io(t_cmd *cmd)
+/* Clean input data */
+void	clean_input(t_cmd *cmd)
 {
 	int	i;
 
@@ -97,7 +55,14 @@ void	clean_io(t_cmd *cmd)
 		free(cmd->ins[i]);
 		cmd->ins[i] = NULL;
 		i++;
-	}
+	}	
+}
+
+/* Clean output data */
+void	clean_ouput(t_cmd *cmd)
+{
+	int	i;
+
 	i = 0;
 	while (i < cmd->nb_outs)
 	{
@@ -128,6 +93,7 @@ void	clean_cmds(t_shell *sh)
 	{
 		if (sh->cmds[i])
 		{
+			close_files(sh->cmds[i]);
 			clean_single_cmd(sh->cmds[i]);
 			free(sh->cmds[i]);
 			sh->cmds[i] = NULL;

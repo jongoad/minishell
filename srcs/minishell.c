@@ -1,3 +1,15 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   minishell.c                                        :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: iyahoui- <iyahoui-@student.42quebec.com    +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2022/06/13 15:57:48 by jgoad             #+#    #+#             */
+/*   Updated: 2022/06/13 16:45:44 by iyahoui-         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "minishell.h"
 
 int	main(int argc, char *argv[], char **envp)
@@ -5,8 +17,8 @@ int	main(int argc, char *argv[], char **envp)
 	t_shell	*sh;
 	int		ret;
 
-	signal(SIGINT, signal_handler);		/* Setup signal catch for SIGINT  (CTRL-C) */
-	signal(SIGQUIT, signal_handler);	/* Setup signal catch for SIGQUIT (CTRL-\) */
+	signal(SIGINT, signal_handler);
+	signal(SIGQUIT, signal_handler);
 	sh = NULL;
 	sh = init_shell(sh, argv, envp);
 	if (argc > 1)
@@ -27,7 +39,7 @@ bool	command_line_input(t_shell *sh, int argc, char **argv)
 	bool	is_single_command;
 	int		i;
 
-	if (!ft_strncmp(argv[1], "-c", 2) && !argv[1][2])	//If first argument is -c, run a single command then exit
+	if (!ft_strncmp(argv[1], "-c", 2) && !argv[1][2])
 	{
 		is_single_command = true;
 		i = 2;
@@ -39,8 +51,8 @@ bool	command_line_input(t_shell *sh, int argc, char **argv)
 	}
 	while (i < argc)
 	{
-		sh->line = ft_strjoin_free(sh->line, " ");		/* Add a space to seperate each argument */
-		sh->line = ft_strjoin_free(sh->line, argv[i]);	/* Join argument */
+		sh->line = ft_strjoin_free(sh->line, " ");
+		sh->line = ft_strjoin_free(sh->line, argv[i]);
 		i++;
 	}
 	return (is_single_command);
@@ -50,14 +62,13 @@ bool	command_line_input(t_shell *sh, int argc, char **argv)
 void	run_single_command(t_shell *sh)
 {
 	int		ret;
-	
+
 	ret = parse(sh, sh->line);
 	if (ret)
 		ret = parse_error(ret);
 	else
 	{
 		cmds_lst_to_str(sh);
-		// print_cmds_info(sh);
 		if (sh->cmds)
 			execute(sh);
 		ret = sh->ret_val;
@@ -71,19 +82,17 @@ int	minishell(t_shell *sh)
 {
 	while (1)
 	{
-		if (!sh->cmd_line)								/* Handle command line input as first execution */
+		if (!sh->cmd_line)
 			sh->line = rl_getline(sh);
 		sh->cmd_line = false;
-		if (!sh->line)									/* If readline returns a null line, CTRL-D has been entered. Free and exit */
+		if (!sh->line)
 			readline_exit(sh);
 		sh->err_char = parse(sh, sh->line);
-		if (sh->err_char)								/* Print parse error and set ret value */
+		if (sh->err_char)
 			sh->ret_val = parse_error(sh->err_char);
 		else
 		{
 			cmds_lst_to_str(sh);
-			// clean_linked_lists(sh);
-			// print_cmds_info(sh);
 			if (sh->cmds)
 				execute(sh);
 		}

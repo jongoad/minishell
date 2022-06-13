@@ -1,3 +1,15 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   parse_utils.c                                      :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: iyahoui- <iyahoui-@student.42quebec.com    +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2022/06/13 16:59:24 by jgoad             #+#    #+#             */
+/*   Updated: 2022/06/13 16:59:30 by iyahoui-         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "minishell.h"
 
 void	skip_whitespaces(char **line)
@@ -8,14 +20,6 @@ void	skip_whitespaces(char **line)
 		*line += 1;
 }
 
-/**
- * @brief Get the tok len object
- * 
- * @param token 
- * @param delimiters Set of chars that represent the end of token
- * @return int 		 tok_len until the first delimiter encountered
- * 					 -1 if an arg is NULL
- */
 int	get_tok_len(char *token, char *delimiters)
 {
 	int	tok_len;

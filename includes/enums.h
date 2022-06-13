@@ -18,6 +18,11 @@
 # define HIST_LOG ".minishell_history"	// to add: &()
 # define WILDCARD 26
 
+/* File access defines */
+# define OPEN_APPEND 0x0200 | 0x0002 | 0x0008
+# define OPEN_TRUNC 0x0200 | 0x0002 | 0x0400
+
+
 # ifndef BONUS
 #  define BONUS 0
 # endif

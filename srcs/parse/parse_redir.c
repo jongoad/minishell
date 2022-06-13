@@ -1,3 +1,15 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   parse_redir.c                                      :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: iyahoui- <iyahoui-@student.42quebec.com    +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2022/06/13 16:58:26 by jgoad             #+#    #+#             */
+/*   Updated: 2022/06/13 16:58:49 by iyahoui-         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "minishell.h"
 
 void	add_infile(t_cmd *cmd, t_infile *new_in)
@@ -84,16 +96,16 @@ int	parse_redir(t_cmd *cmd, char **line)
 
 	is_double = false;
 	ptr = *line + 1;
-	if (*ptr == *(ptr - 1))		// Increment for `>>' or `<<'
+	if (*ptr == *(ptr - 1))
 	{
 		is_double = true;
 		ptr++;
 	}
 	skip_whitespaces(&ptr);
 	if (!*ptr)
-		return ('\n');			// To handle `newline' output in error msg
+		return ('\n');
 	else if (is_set(*ptr, "<>|"))
-		return (*ptr);			// Returns the problem char
+		return (*ptr);
 	if (**line == '<')
 		parse_in(cmd, &ptr, is_double);
 	else if (**line == '>')

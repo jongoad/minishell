@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   pipes.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jgoad <jgoad@student.42.fr>                +#+  +:+       +#+        */
+/*   By: iyahoui- <iyahoui-@student.42quebec.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/06/09 14:56:39 by jgoad             #+#    #+#             */
-/*   Updated: 2022/06/09 14:57:27 by jgoad            ###   ########.fr       */
+/*   Updated: 2022/06/13 16:45:44 by iyahoui-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -56,13 +56,13 @@ void	close_pipes(t_shell *sh)
 /* Manage pipes for each child process */
 void	manage_pipes(t_shell *sh, t_cmd *cmd)
 {
-	if (cmd->fd_in > 0)								/* Handle input */
+	if (cmd->fd_in > 0)
 		dup2(cmd->fd_in, 0);
 	else if (sh->cmd_iter == 0)
 		dup2(STDIN_FILENO, 0);
 	else
 		dup2(sh->pipes[2 * sh->cmd_iter - 2], 0);
-	if (cmd->fd_out > 1)							/* Handle output */
+	if (cmd->fd_out > 1)
 		dup2(cmd->fd_out, 1);
 	else if (sh->cmd_iter == sh->nb_cmds - 1)
 		dup2(STDOUT_FILENO, 1);

@@ -5,8 +5,8 @@
 /*                                                    +:+ +:+         +:+     */
 /*   By: iyahoui- <iyahoui-@student.42quebec.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2022/06/09 15:00:05 by jgoad             #+#    #+#             */
-/*   Updated: 2022/06/12 18:05:18 by iyahoui-         ###   ########.fr       */
+/*   Created: 2022/06/13 16:35:51 by jgoad             #+#    #+#             */
+/*   Updated: 2022/06/13 16:45:44 by iyahoui-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,19 +31,14 @@ int	init_ins(t_shell *sh, t_cmd *cmd)
 	while (++i < cmd->nb_ins)
 	{
 		cmd->errnum = access(cmd->ins[i]->infile, F_OK);
+		if (!cmd->errnum)
+			cmd->errnum = access(cmd->ins[i]->infile, R_OK);
 		if (cmd->errnum)
 		{
-			put_err_msg(sh->sh_name, cmd->ins[i]->infile, NULL,
-				ERR_FILE);
-			close_files(cmd);
-			return (cmd->errnum);
-		}
-		cmd->errnum = access(cmd->ins[i]->infile, R_OK);
-		if (cmd->errnum)
-		{
-			put_err_msg(sh->sh_name, cmd->ins[i]->infile, NULL,
-				ERR_ACCESS);
-			close_files(cmd);
+			if (errno == 2)
+				put_err_msg(sh->sh_name, cmd->ins[i]->infile, NULL, ERR_FILE);
+			else
+				put_err_msg(sh->sh_name, cmd->ins[i]->infile, NULL, ERR_ACCESS);
 			return (cmd->errnum);
 		}
 	}
@@ -66,22 +61,21 @@ int	init_outs(t_shell *sh, t_cmd *cmd)
 	while (++i < cmd->nb_outs)
 	{
 		if (cmd->outs[i]->append_mode)
-			cmd->outs[i]->fd = open(cmd->outs[i]->outfile, O_CREAT | O_RDWR | O_APPEND, 0000644);
+			cmd->outs[i]->fd = open(cmd->outs[i]->outfile,
+					O_CREAT | O_RDWR | O_APPEND, 0000644);
 		else
-			cmd->outs[i]->fd = open(cmd->outs[i]->outfile, O_CREAT | O_RDWR | O_TRUNC, 0000644);
+			cmd->outs[i]->fd = open(cmd->outs[i]->outfile,
+					O_CREAT | O_RDWR | O_TRUNC, 0000644);
 		if (cmd->outs[i]->fd < 0)
 		{
 			cmd->errnum = errno;
-			put_err_msg(sh->sh_name, cmd->ins[i]->infile, NULL, strerror(cmd->errnum));
-			close_files(cmd); //Maybe move
+			put_err_msg(sh->sh_name, cmd->ins[i]->infile,
+				NULL, strerror(cmd->errnum));
 			return (cmd->errnum);
 		}
-		if (i)
-			close (cmd->outs[i - 1]->fd);
 	}
+	cmd->fd_out = 1;
 	if (i)
 		cmd->fd_out = cmd->outs[i - 1]->fd;
-	else
-		cmd->fd_out = 1;
 	return (cmd->errnum);
 }

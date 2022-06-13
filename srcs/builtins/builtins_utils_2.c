@@ -6,7 +6,7 @@
 /*   By: iyahoui- <iyahoui-@student.42quebec.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/06/09 14:48:54 by jgoad             #+#    #+#             */
-/*   Updated: 2022/06/12 16:23:29 by iyahoui-         ###   ########.fr       */
+/*   Updated: 2022/06/13 17:09:34 by iyahoui-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,4 +41,31 @@ char	*pwd_to_str(void)
 	tmp = ft_strdup(buf);
 	free(buf);
 	return (tmp);
+}
+
+/* Handle CD error return */
+int	handle_cd_error(t_shell *sh)
+{
+	put_err_msg("chdir", ERR_PWD, ERR_CWD, ERR_FILE);
+	sh->ret_val = 1;
+	return (sh->ret_val);
+}
+
+/* Handle cd command with no arguments */
+void	cd_no_arg(t_shell *sh, t_cmd *cmd)
+{
+	char	**new_arr;
+	int		i;
+
+	new_arr = ft_xalloc((cmd->nb_args + 2) * sizeof(char *));
+	i = 0;
+	while (i < cmd->nb_args)
+	{
+		new_arr[i] = cmd->args[i];
+		i++;
+	}
+	new_arr[i] = expand_env_var(sh->env.envp, "HOME");
+	cmd->args = new_arr;
+	cmd->nb_args += 1;
+	return ;
 }

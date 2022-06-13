@@ -1,3 +1,15 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   print_utils.c                                      :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: iyahoui- <iyahoui-@student.42quebec.com    +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2022/06/13 16:59:34 by jgoad             #+#    #+#             */
+/*   Updated: 2022/06/13 16:59:47 by iyahoui-         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "minishell.h"
 
 void	print_ins(t_cmd *cmd)
@@ -52,7 +64,6 @@ void	print_cmd_args(t_cmd *cmd)
 	}
 	printf("-------- CMD_ARGS --------\n");
 	i = 0;
-	// while (i < cmd->nb_args)
 	while (cmd->args && cmd->args[i])
 	{
 		printf("arg #%d: \"%s\"\n", i, cmd->args[i]);

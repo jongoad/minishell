@@ -6,7 +6,7 @@
 /*   By: iyahoui- <iyahoui-@student.42quebec.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/06/09 14:51:21 by jgoad             #+#    #+#             */
-/*   Updated: 2022/06/13 15:45:34 by iyahoui-         ###   ########.fr       */
+/*   Updated: 2022/06/13 16:45:45 by iyahoui-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,7 +49,7 @@ void	init_wildcard(t_wildcard *wc, char *arg)
 	wc->search = ft_split(wc->str, WILDCARD);
 }
 
-/* If a wildcard is found, expand and return an array of strings containing all results */
+/* If a wildcard is found, expand and return an array of all results */
 char	**expand_wildcard(char *arg)
 {
 	t_wildcard	wc;
@@ -59,14 +59,14 @@ char	**expand_wildcard(char *arg)
 	init_wildcard(&wc, arg);
 	if (wc.path)
 		wc.output = read_directory(wc.path);
-	else															/* Else open current directory */
+	else
 		wc.output = read_directory(".");
-	if (!wc.output)													/* Handle directory error */
+	if (!wc.output)
 		return (wildcard_error_return((&wc)));
-	wc.output = search_directory(wc.output, wc.search, wc.ends);	/* Run search on directory results, return only matching results. If null returned there are no results */
-	if (!wc.output)													/* Handle no search results */
+	wc.output = search_directory(wc.output, wc.search, wc.ends);
+	if (!wc.output)
 		return (wildcard_error_return((&wc)));
-	if (wc.path)													/* Join path back onto result strings */
+	if (wc.path)
 	{
 		add_path_wildcard(wc.output, wc.path);
 		free(wc.path);
@@ -81,7 +81,7 @@ char	**expand_wildcard(char *arg)
 /* Check if a string is a wildcard match */
 bool	is_wildcard_match(char *direct, char **search, int *ends)
 {
-	t_wildcard wc;
+	t_wildcard	wc;
 
 	wc.start = 0;
 	wc.end = count_array((void **)search) - 1;
@@ -89,17 +89,17 @@ bool	is_wildcard_match(char *direct, char **search, int *ends)
 	wc.p_tmp = wc.tmp;
 	if (!search[0])
 		return (free_return_bool(wc.p_tmp, true));
-	if (ft_strlen(wc.tmp) < (size_t)get_search_tot(search))	
+	if (ft_strlen(wc.tmp) < (size_t)get_search_tot(search))
 		return (free_return_bool(wc.p_tmp, false));
-	if (!is_wildcard_match_ends(&wc, search, ends))	
+	if (!is_wildcard_match_ends(&wc, search, ends))
 		return (free_return_bool(wc.p_tmp, false));
-	while (wc.start <= wc.end)												/* Handle middle wildcard matches */
+	while (wc.start <= wc.end)
 	{
 		wc.ret = ft_strnstr(wc.tmp, search[wc.start], ft_strlen(wc.tmp));
 		if (!wc.ret)
 			return (free_return_bool(wc.p_tmp, false));
 		wc.tmp = wc.ret;
-		wc.tmp = wc.tmp + ft_strlen(search[wc.start]);						/* Shorten string */
+		wc.tmp = wc.tmp + ft_strlen(search[wc.start]);
 		wc.start++;
 	}
 	return (free_return_bool(wc.p_tmp, true));
@@ -108,19 +108,21 @@ bool	is_wildcard_match(char *direct, char **search, int *ends)
 /* Check end cases for wildcard match */
 bool	is_wildcard_match_ends(t_wildcard *wc, char **search, int *ends)
 {
-	if (ends[0] == 0)															/* If no starting wildcard and no match at start return false */
+	if (ends[0] == 0)
 	{
-		if (ft_strncmp(wc->tmp, search[wc->start], ft_strlen(search[wc->start])))
+		if (ft_strncmp(wc->tmp, search[wc->start],
+				ft_strlen(search[wc->start])))
 			return (false);
-		wc->tmp = wc->tmp + ft_strlen(search[wc->start]);						/* Shorten string from front */
+		wc->tmp = wc->tmp + ft_strlen(search[wc->start]);
 		wc->start++;
 	}
-	if (ends[1] == 0)															/* If no ending wildcard and no match end return false */
+	if (ends[1] == 0)
 	{
-		if (ft_strncmp(wc->tmp + (ft_strlen(wc->tmp) - ft_strlen(search[wc->end])),
-			search[wc->end], ft_strlen(search[wc->end])))
+		if (ft_strncmp(wc->tmp + (ft_strlen(wc->tmp)
+					- ft_strlen(search[wc->end])),
+				search[wc->end], ft_strlen(search[wc->end])))
 			return (false);
-		wc->tmp[ft_strlen(wc->tmp) - ft_strlen(search[wc->end])] = '\0';		/* Shorten string from back */
+		wc->tmp[ft_strlen(wc->tmp) - ft_strlen(search[wc->end])] = '\0';
 		wc->end--;
 	}
 	return (true);
