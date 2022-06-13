@@ -6,7 +6,7 @@
 /*   By: iyahoui- <iyahoui-@student.42quebec.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/06/09 14:48:54 by jgoad             #+#    #+#             */
-/*   Updated: 2022/06/13 17:16:15 by iyahoui-         ###   ########.fr       */
+/*   Updated: 2022/06/13 19:01:27 by iyahoui-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -65,6 +65,7 @@ void	cd_no_arg(t_shell *sh, t_cmd *cmd)
 		i++;
 	}
 	new_arr[i] = expand_env_var(sh->env.envp, "HOME");
+	free(cmd->args);
 	cmd->args = new_arr;
 	cmd->nb_args += 1;
 	return ;

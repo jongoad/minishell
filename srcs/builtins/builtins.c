@@ -6,7 +6,7 @@
 /*   By: iyahoui- <iyahoui-@student.42quebec.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/06/09 14:46:44 by jgoad             #+#    #+#             */
-/*   Updated: 2022/06/13 17:22:12 by iyahoui-         ###   ########.fr       */
+/*   Updated: 2022/06/13 18:56:35 by iyahoui-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -69,7 +69,6 @@ int	builtin_cd(t_shell *sh, t_cmd *cmd)
 			chdir(cmd->args[cmd->nb_args - 1]);
 			handle_cd_error(sh);
 		}
-		res = getcwd(buf, 1025);
 		free(sh->pwd);
 		sh->pwd = ft_strdup(res);
 		free(buf);

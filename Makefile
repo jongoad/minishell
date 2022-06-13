@@ -54,7 +54,7 @@ CFILES			:=	builtins/builtins_utils.c	builtins/builtins_utils_2.c \
 					lib/str_utils_3.c			lib/str_utils_4.c		lib/write.c \
 					minishell.c					readline.c				init.c					init_2.c \
 					io.c						pipes.c					execute.c				execute_utils.c	\
-					signal.c					error.c					cleanup.c				cleanup_2.c				cleanup_3.c
+					signal.c					error.c					cleanup.c				cleanup_2.c				cleanup_3.c \
 
 
 CFILES_BONUS	:=	builtins/builtins_utils.c	builtins/builtins_utils_2.c \
@@ -69,7 +69,7 @@ CFILES_BONUS	:=	builtins/builtins_utils.c	builtins/builtins_utils_2.c \
 					lib/str_utils_3.c			lib/str_utils_4.c		lib/write.c \
 					minishell.c					readline.c				init.c					init_2.c \
 					io.c						pipes.c					execute.c				execute_utils.c	\
-					signal.c					error.c					cleanup.c				cleanup_2.c 			cleanup_3.c
+					signal.c					error.c					cleanup.c				cleanup_2.c 			cleanup_3.c \
 
 #---------------------------------------------------------#
 #   Directory information and object directory building   #

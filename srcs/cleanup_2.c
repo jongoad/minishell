@@ -6,7 +6,7 @@
 /*   By: iyahoui- <iyahoui-@student.42quebec.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/06/09 15:16:30 by jgoad             #+#    #+#             */
-/*   Updated: 2022/06/13 17:16:34 by iyahoui-         ###   ########.fr       */
+/*   Updated: 2022/06/13 18:35:02 by iyahoui-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -59,7 +59,7 @@ void	clean_input(t_cmd *cmd)
 }
 
 /* Clean output data */
-void	clean_ouput(t_cmd *cmd)
+void	clean_output(t_cmd *cmd)
 {
 	int	i;
 
