@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   cleanup_2.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: iyahoui- <iyahoui-@student.42quebec.com    +#+  +:+       +#+        */
+/*   By: jgoad <jgoad@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/06/09 15:16:30 by jgoad             #+#    #+#             */
-/*   Updated: 2022/06/13 01:08:27 by iyahoui-         ###   ########.fr       */
+/*   Updated: 2022/06/13 12:53:03 by jgoad            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -67,7 +67,7 @@ void	clean_single_cmd(t_cmd *cmd)
 	free(cmd->errname);
 	cmd->errname = NULL;
 	i = 0;
-	while (cmd->args_lst[i])
+	while (cmd->args_lst && cmd->args_lst[i])
 		ms_lstclear(&cmd->args_lst[i++]);
 	clean_io(cmd);
 	free(cmd->ins);

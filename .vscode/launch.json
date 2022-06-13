@@ -9,7 +9,7 @@
 		"type": "cppdbg",
 		"request": "launch",
 		"program": "${workspaceFolder}/minishell_bonus",
-		"args": ["-c", "<< LIM"],
+		"args": ["<"],
 		"stopAtEntry": true,
 		"cwd": "${fileDirname}",
 		"environment": [],
