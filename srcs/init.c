@@ -6,7 +6,7 @@
 /*   By: iyahoui- <iyahoui-@student.42quebec.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/06/09 15:02:11 by jgoad             #+#    #+#             */
-/*   Updated: 2022/06/12 17:43:06 by iyahoui-         ###   ########.fr       */
+/*   Updated: 2022/06/12 19:52:28 by iyahoui-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,8 +33,8 @@ t_shell	*init_shell(t_shell *sh, char **argv, char **envp)
 		i = ft_strlen(argv[0]);
 		while (argv[0][i] != '/')
 			i--;
-		sh->ms_path = ft_xalloc(i + 1);
-		sh->ms_path = ft_strncpy(sh->ms_path, argv[0], i);
+		sh->ms_path = ft_xalloc(i + 2);
+		sh->ms_path = ft_strncpy(sh->ms_path, argv[0], i + 1);
 	}
 	else
 		sh->ms_path = ft_strdup(argv[0]);

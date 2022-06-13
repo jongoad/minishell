@@ -82,12 +82,24 @@ int	builtin_cd(t_shell *sh, t_cmd *cmd)
 	char *buf;
 	char *res;
 
-	buf = (char *)malloc(sizeof(char) * 1025);
-	buf = getcwd(buf, 1025);
-	if (!buf)
-		return (handle_cd_error(sh));
-	res = ft_strjoin("OLDPWD=", buf);
-	free(buf);
+	if (!sh->pwd)
+	{
+		buf = (char *)malloc(sizeof(char) * 1025);
+		res = getcwd(buf, 1025);
+		if (!res)
+		{
+			printf("oops\n");
+			if (cmd->nb_args == 1)
+				cd_no_arg(sh, cmd);
+			chdir(cmd->args[cmd->nb_args - 1]);
+			handle_cd_error(sh);
+		}
+		res = getcwd(buf, 1025);
+		sh->ret_val = ft_strdup(res);
+		free(buf);
+		return (sh->ret_val);
+	}
+	res = ft_strjoin("OLDPWD=", sh->pwd);
 	if (!change_env_var(&sh->env, res))
 		add_env_var(&sh->env, ft_strjoin("OLDPWD=", res));
 	free(res);
@@ -104,7 +116,9 @@ int	builtin_cd(t_shell *sh, t_cmd *cmd)
 		buf = (char *)malloc(sizeof(char) * 1025);
 		buf = getcwd(buf, 1025);
 		res = ft_strjoin("PWD=", buf);
-		free(buf);
+		free(sh->pwd);
+		sh->pwd = buf;
+		// free(buf);
 		change_env_var(&sh->env, res);
 		free(res);
 	}
