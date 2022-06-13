@@ -1,7 +1,19 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   error.h                                            :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: iyahoui- <iyahoui-@student.42quebec.com    +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2022/06/13 19:27:01 by iyahoui-          #+#    #+#             */
+/*   Updated: 2022/06/13 19:27:02 by iyahoui-         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #ifndef ERROR_H
 # define ERROR_H
 
-#include "minishell.h"
+# include "minishell.h"
 
 /* Error defines */
 # define ERR_EXIT_ARGS_NUM "too many arguments"
@@ -17,6 +29,6 @@
 typedef enum e_bash_errors
 {
 	E_CMDNOTFOUND = 127
-} t_bash_errors;
+}	t_bash_errors;
 
 #endif

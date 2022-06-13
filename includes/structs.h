@@ -1,3 +1,15 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   structs.h                                          :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: iyahoui- <iyahoui-@student.42quebec.com    +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2022/06/13 19:21:29 by iyahoui-          #+#    #+#             */
+/*   Updated: 2022/06/13 19:22:12 by iyahoui-         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #ifndef STRUCTS_H
 # define STRUCTS_H
 
@@ -10,8 +22,8 @@ typedef struct s_arglst	t_arglst;
 /* Builtin command access data */
 typedef struct s_builtin
 {
-	char	*alias[7];						/* Array of builtin command aliases */
-	int		(*f[7])(t_shell *, t_cmd *);	/* Array of function pointers */
+	char	*alias[7];
+	int		(*f[7])(t_shell *, t_cmd *);
 }	t_builtin;
 
 /* Readline data */
@@ -30,90 +42,84 @@ struct s_arglst
 	char		*str;
 	bool		is_env_var;
 	bool		is_joined;
-	int			*is_wildcard; /* 0 if not wildcard, exists otherwise */
+	int			*is_wildcard;
 	t_arglst	*next;
 };
 
 /* Infile redirection data*/
 typedef struct s_infile
 {
-	char		*infile;		/* Path for infile, if it exists */
-	t_arglst	*in_lst;		/* Linked list of the env_vars and pure string tokens */
-	char		*delim;			/* Delimiter for heredocs. NULL if infile is not a heredoc. */
-	t_arglst	*delim_lst;		/* Linked list of the env_vars and pure string tokens */
-	int			fd;				/* File descriptor for input, set to stdin by default */
+	char		*infile;
+	t_arglst	*in_lst;
+	char		*delim;
+	t_arglst	*delim_lst;
+	int			fd;
 }	t_infile;
 
-
-/* Outfile redirection data */ 
+/* Outfile redirection data */
 typedef struct s_outfile
 {
-	char		*outfile;		/* Path for outfile */
-	t_arglst	*out_lst;		/* Linked list of the env_vars and pure string tokens */
-	int			fd;				/* File descriptor for input, set to stdin by default */
-	bool		append_mode;	/* Determines whether the redir is '>' or '>>' */
+	char		*outfile;
+	t_arglst	*out_lst;
+	int			fd;
+	bool		append_mode;
 }	t_outfile;
-
 
 /* Environment variables data */
 typedef struct s_env
 {
-	char		**path;			/* Path environment variable */
-	char		**envp;			/* Envp array */
+	char		**path;
+	char		**envp;
 }	t_env;
 
 /* Individual command data */
 struct s_cmd
 {
-	t_infile	**ins;			/* in_files from parsing */
-	t_outfile	**outs;			/* out_files from parsing */
-	char		**args;			/* Input arguments for the command, element 0 is the command path */
-	t_arglst	**args_lst;		/* Array of linked lists representing the command line token */
-	char		**envp;			/* Environment path for the current shell */
-	char		*exe;			/* Path to command */
-	char		*errname;		/* Name or path associated with error */
-	int			errnum;			/* Error status (set during parsing) */
-	int			builtin;		/* Built in command or sys command */
-	int			nb_args;		/* Number of args parsed */
-	int			nb_ins;			/* Number of in_files */
-	int			nb_outs;		/* Number of out_files */
-	int			fd_in;			/* Final file descriptor for filestream in */
-	int			fd_out;			/* Final file descriptor for filestream out */
+	t_infile	**ins;
+	t_outfile	**outs;
+	char		**args;
+	t_arglst	**args_lst;
+	char		**envp;
+	char		*exe;
+	char		*errname;
+	int			errnum;
+	int			builtin;
+	int			nb_args;
+	int			nb_ins;
+	int			nb_outs;
+	int			fd_in;
+	int			fd_out;
 };
 
 /* Main shell data */
 struct s_shell
 {
-	t_env		env;			/* Environment variables struct */
-	t_builtin	builtins;    	/* Builtin command struct */
-	t_cmd		**cmds;			/* Array of command structs - MUST FREE */
-	pid_t		*pids;			/* Array of pid for managing waits - MUST FREE */
-	char		*line;			/* Buffer for line return from readlin - MUST FREE */
-	char		*prompt;		/* Prompt for current shell - MUST FREE */
-	char		*sh_name;		/* Name of current shell - MUST FREE */
-	char		*ms_path;		/* Name of current shell - MUST FREE */
-	int			*pipes;			/* Array of ints to hold pipe data - MUST FREE */
-	int			nb_cmds;		/* Number of commands parsed */
-	int			nb_pipes;		/* Number of pipes created */
-	int			ret_val;		/* Return value of last executed command */
-	int			cmd_iter;		/* Iterator for commands array */
-	int			history_fd;		/* File descriptory */
-	bool		cmd_line;		/* Store presence of a command line input on program launch */
-	char		err_char;		/* Error character for parse error handling */
-	char		*pwd;			/* Store copy of PWD */
+	t_env		env;
+	t_builtin	builtins;
+	t_cmd		**cmds;
+	pid_t		*pids;
+	char		*line;
+	char		*prompt;
+	char		*sh_name;
+	char		*ms_path;
+	int			*pipes;
+	int			nb_cmds;
+	int			nb_pipes;
+	int			ret_val;
+	int			cmd_iter;
+	int			history_fd;
+	bool		cmd_line;
+	char		err_char;
+	char		*pwd;
 };
 
 typedef struct s_wildcard
 {
-	/* General wildcard variables */
 	char	*str;
 	char	*path;
 	char	**output;
 	char	**search;
 	int		*ends;
-
-	/* Wildcard match variables */
-
 	int		start;
 	int		end;
 	int		search_tot;

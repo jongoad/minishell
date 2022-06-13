@@ -1,3 +1,15 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   minishell.h                                        :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: iyahoui- <iyahoui-@student.42quebec.com    +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2022/06/13 19:29:54 by iyahoui-          #+#    #+#             */
+/*   Updated: 2022/06/13 19:29:54 by iyahoui-         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #ifndef MINISHELL_H
 # define MINISHELL_H
 
@@ -37,9 +49,9 @@
 # include "get_next_line.h"
 
 /* Function prototypes */
-void	signal_handler(int signum);
-t_shell	*get_data(void);
-void readline_exit(t_shell *sh);
+void		signal_handler(int signum);
+t_shell		*get_data(void);
+void		readline_exit(t_shell *sh);
 
 /* Main control functions */
 int			minishell(t_shell *sh);
@@ -120,59 +132,62 @@ void		reset_shell(t_shell *sh);
 /* Parsing functions */
 
 //	parse.c
-int		parse(t_shell *sh, char *rem_line);
-int		check_parse(t_shell *sh, t_cmd *cmd, char *line);
+int			parse(t_shell *sh, char *rem_line);
+int			check_parse(t_shell *sh, t_cmd *cmd, char *line);
 
 //	tokenizer.c
-void	set_cl_tok(t_arglst **lst, char **line);
-void	add_cl_tok(t_arglst **lst, char **line);
-void	set_cl_tok_bonus(t_arglst **lst, char **line);
-void	add_cl_tok_bonus(t_arglst **lst, char **line);
+void		set_cl_tok(t_arglst **lst, char **line);
+void		add_cl_tok(t_arglst **lst, char **line);
+void		set_cl_tok_bonus(t_arglst **lst, char **line);
+void		add_cl_tok_bonus(t_arglst **lst, char **line);
 
 //	parse_token.c
-void	parse_dquotes(t_arglst **lst, char **line);
-void	parse_squotes(t_arglst **lst, char **line);
-void	parse_env_var(t_arglst **lst, char **line);
-void	parse_wildcard(t_arglst **lst, char **line);
+void		parse_dquotes(t_arglst **lst, char **line);
+void		parse_squotes(t_arglst **lst, char **line);
+void		parse_env_var(t_arglst **lst, char **line);
+void		parse_wildcard(t_arglst **lst, char **line);
 
 //	add_token.c
-void	add_token(t_arglst **lst, char **line, char *delim, bool is_env_var);
-void	add_token_by_set(t_arglst **lst, char **line, char *set, bool is_env_var);
-void	add_token_by_len(t_arglst **lst, char **line, int tok_len, bool is_env_var);
+void		add_token(
+				t_arglst **lst, char **line, char *delim, bool is_env_var);
+void		add_token_by_set(
+				t_arglst **lst, char **line, char *set, bool is_env_var);
+void		add_token_by_len(
+				t_arglst **lst, char **line, int tok_len, bool is_env_var);
 
 //	heredoc.c
-void	parse_heredoc(t_cmd *cmd, t_infile *in);
+void		parse_heredoc(t_cmd *cmd, t_infile *in);
 
 //	lst_to_str.c
-char	*expand_env_var(char **envp, char *var_name);
-char	*lst_to_str(char **envp, t_arglst *lst);
-char	*lst_to_str_no_exp(t_arglst *lst);
-char	**lst_arr_to_str_arr(char **envp, t_arglst **arglst, int nb_elems);
-void	cmds_lst_to_str(t_shell *sh);
+char		*expand_env_var(char **envp, char *var_name);
+char		*lst_to_str(char **envp, t_arglst *lst);
+char		*lst_to_str_no_exp(t_arglst *lst);
+char		**lst_arr_to_str_arr(char **envp, t_arglst **arglst, int nb_elems);
+void		cmds_lst_to_str(t_shell *sh);
 
 //	parse_utils.c
-void	skip_whitespaces(char **line);
-int		get_tok_len(char *token, char *delimiters);
-int		get_tok_len_set(char *token, char *set);
+void		skip_whitespaces(char **line);
+int			get_tok_len(char *token, char *delimiters);
+int			get_tok_len_set(char *token, char *set);
 
 //	parse_redir.c
-int		parse_redir(t_cmd *cmd, char **line);
-void	add_infile(t_cmd *cmd, t_infile *new_in);
-void	add_outfile(t_cmd *cmd, t_outfile *new_out);
-void	parse_in(t_cmd *cmd, char **line, bool is_double);
-void	parse_out(t_cmd *cmd, char **line, bool is_double);
+int			parse_redir(t_cmd *cmd, char **line);
+void		add_infile(t_cmd *cmd, t_infile *new_in);
+void		add_outfile(t_cmd *cmd, t_outfile *new_out);
+void		parse_in(t_cmd *cmd, char **line, bool is_double);
+void		parse_out(t_cmd *cmd, char **line, bool is_double);
 
 //	cmd_utils.c
-void	add_cmd_arg(t_cmd *cmd, char **line);
-t_cmd	*add_new_cmd(t_shell *sh);
-t_cmd	*get_new_cmd(void);
+void		add_cmd_arg(t_cmd *cmd, char **line);
+t_cmd		*add_new_cmd(t_shell *sh);
+t_cmd		*get_new_cmd(void);
 
 //	print_utils.c
-void	print_ins(t_cmd *cmd);
-void	print_outs(t_cmd *cmd);
-void	print_cmd_args(t_cmd *cmd);
-void	print_cmds_info(t_shell *sh);
-void	print_char_arr(char **arr);
+void		print_ins(t_cmd *cmd);
+void		print_outs(t_cmd *cmd);
+void		print_cmd_args(t_cmd *cmd);
+void		print_cmds_info(t_shell *sh);
+void		print_char_arr(char **arr);
 
 //	args_list.c
 void		ms_lstadd(t_arglst **lst, t_arglst *new);
@@ -182,28 +197,28 @@ void		ms_lstdelone(t_arglst *lst);
 t_arglst	*ms_lstlast(t_arglst *lst);
 
 /* Readline functions */
-char	*rl_getline(t_shell *sh);
-void	init_history(t_shell *sh);
+char		*rl_getline(t_shell *sh);
+void		init_history(t_shell *sh);
 
 /* Wildcard functions */
-void	check_wildcards_debug(t_shell *sh);
-void	check_wildcard(t_cmd *cmd);
-char	**join_array_array(char **arr1, char **arr2);
-char	**expand_wildcard(char *arg);
-void	check_ends(char *str, int *ends);
-char	**search_directory(char **direct, char **search, int *ends);
-bool	is_wildcard_match(char *direct, char **search, int *ends);
-int		get_search_tot(char **search);
-char	**read_directory(char *path);
-char	**add_str_array(char **array, char *str);
-void	split_path_wildcard(t_wildcard *wc, char *arg);
-void	add_path_wildcard(char **results, char *path);
-char	*ft_strjoin_free_rev(char *s1, char *s2);
-bool	free_return_bool(char *str, bool ret);
-char	**wildcard_error_return(t_wildcard *wc);
-void	init_wildcard(t_wildcard *wc, char *arg);
-bool	check_no_wildcard(t_cmd *cmd);
-char	*replace_wildcard(char *str);
-bool	is_wildcard_match_ends(t_wildcard *wc, char **search, int *ends);
+void		check_wildcards_debug(t_shell *sh);
+void		check_wildcard(t_cmd *cmd);
+char		**join_array_array(char **arr1, char **arr2);
+char		**expand_wildcard(char *arg);
+void		check_ends(char *str, int *ends);
+char		**search_directory(char **direct, char **search, int *ends);
+bool		is_wildcard_match(char *direct, char **search, int *ends);
+int			get_search_tot(char **search);
+char		**read_directory(char *path);
+char		**add_str_array(char **array, char *str);
+void		split_path_wildcard(t_wildcard *wc, char *arg);
+void		add_path_wildcard(char **results, char *path);
+char		*ft_strjoin_free_rev(char *s1, char *s2);
+bool		free_return_bool(char *str, bool ret);
+char		**wildcard_error_return(t_wildcard *wc);
+void		init_wildcard(t_wildcard *wc, char *arg);
+bool		check_no_wildcard(t_cmd *cmd);
+char		*replace_wildcard(char *str);
+bool		is_wildcard_match_ends(t_wildcard *wc, char **search, int *ends);
 
 #endif
