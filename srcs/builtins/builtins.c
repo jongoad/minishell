@@ -95,6 +95,7 @@ int	builtin_cd(t_shell *sh, t_cmd *cmd)
 			handle_cd_error(sh);
 		}
 		res = getcwd(buf, 1025);
+		free(sh->pwd);
 		sh->pwd = ft_strdup(res);
 		free(buf);
 		return (sh->ret_val);

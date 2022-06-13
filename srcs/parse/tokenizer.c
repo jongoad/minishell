@@ -169,7 +169,7 @@ void	set_cl_tok_bonus(t_arglst **lst, char **line)
 		parse_wildcard(lst, line);
 	else
 		add_token(lst, line, CL_TOK_LIM_BONUS, false);
-	if (is_set(**line, CL_SAME_TOK) || ft_isalnum(**line) || **line == '=')
+	if (is_set(**line, CL_SAME_TOK_BONUS) || ft_isalnum(**line) || **line == '=')
 		return (add_cl_tok_bonus(lst, line));
 }
 
@@ -187,8 +187,8 @@ void	add_cl_tok_bonus(t_arglst **lst, char **line)
 	else if (**line == '*')
 		parse_wildcard(lst, line);
 	else
-		add_token(lst, line, CL_TOK_LIM, false);
+		add_token(lst, line, CL_TOK_LIM_BONUS, false);
 	ms_lstlast(*lst)->is_joined = true;
-	if (is_set(**line, CL_SAME_TOK) || ft_isalnum(**line) || **line == '=')
+	if (is_set(**line, CL_SAME_TOK_BONUS) || ft_isalnum(**line) || **line == '=')
 		return (add_cl_tok_bonus(lst, line));
 }

@@ -37,16 +37,14 @@ void	clean_env(t_shell *sh)
 		free(sh->env.envp);
 	}
 	i = 0;
-	if (sh->env.path)
+	while (sh->env.path && sh->env.path[i])
 	{
-		while (sh->env.path && sh->env.path[i])
-		{
-			free(sh->env.path[i]);
-			sh->env.path[i] = NULL;
-			i++;
-		}
-		free(sh->env.path);
+		free(sh->env.path[i]);
+		sh->env.path[i] = NULL;
+		i++;
 	}
+	free(sh->env.path);
+	sh->env.path = NULL;
 }
 
 /* Reset shell */

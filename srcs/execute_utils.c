@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   execute_utils.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jgoad <jgoad@student.42.fr>                +#+  +:+       +#+        */
+/*   By: iyahoui- <iyahoui-@student.42quebec.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/06/09 15:09:17 by jgoad             #+#    #+#             */
-/*   Updated: 2022/06/09 15:09:50 by jgoad            ###   ########.fr       */
+/*   Updated: 2022/06/12 23:42:53 by iyahoui-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -54,7 +54,8 @@ int	check_builtins(t_shell *sh, t_cmd *cmd)
 			if (!tmp[ft_strlen(sh->builtins.alias[i])])
 			{
 				free(tmp);
-				return (cmd->builtin = i);
+				cmd->builtin = i;
+				return (cmd->builtin);
 			}
 		}
 		i++;	

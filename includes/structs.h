@@ -81,18 +81,6 @@ struct s_cmd
 	int			fd_out;			/* Final file descriptor for filestream out */
 };
 
-// typedef struct s_job
-// {
-// 	t_cmd	**cmds;				/* Jobs should be self-sufficient. In meantime, cmds represent strict minimum */
-// 	t_expr	*next;
-// 	t_expr	*right;
-// 	t_expr	*left;
-// 	pid_t	*pids;
-// 	char	*operator;
-// 	int		nb_cmds;
-// 	int		ret_val;
-// }	t_job;
-
 /* Main shell data */
 struct s_shell
 {
@@ -133,18 +121,5 @@ typedef struct s_wildcard
 	char	*tmp;
 	char	*p_tmp;
 }	t_wildcard;
-
-typedef struct s_expr	t_expr;
-struct s_expr
-{
-	t_cmd	**cmds;				/* Jobs should be self-sufficient. In meantime, cmds represent strict minimum */
-	t_expr	*next;
-	t_expr	*right;
-	t_expr	*left;
-	pid_t	*pids;
-	char	*operator;
-	int		nb_cmds;
-	int		ret_val;
-};
 
 #endif

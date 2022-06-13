@@ -78,6 +78,7 @@ int	minishell(t_shell *sh)
 		sh->cmd_line = false;
 		if (!sh->line)									/* If readline returns a null line, CTRL-D has been entered. Free and exit */
 			readline_exit(sh);
+		printf("%s: %d\n", __FUNCTION__, __LINE__);
 		sh->err_char = parse(sh, sh->line);
 		if (sh->err_char)								/* Print parse error and set ret value */
 			sh->ret_val = parse_error(sh->err_char);
@@ -85,9 +86,9 @@ int	minishell(t_shell *sh)
 		{
 			cmds_lst_to_str(sh);
 			clean_linked_lists(sh);
-			// print_cmds_info(sh);
-			if (sh->cmds)
-				execute(sh);
+			print_cmds_info(sh);
+			// if (sh->cmds)
+			// 	execute(sh);
 		}
 		reset_shell(sh);
 	}

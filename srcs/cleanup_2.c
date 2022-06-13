@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   cleanup_2.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jgoad <jgoad@student.42.fr>                +#+  +:+       +#+        */
+/*   By: iyahoui- <iyahoui-@student.42quebec.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/06/09 15:16:30 by jgoad             #+#    #+#             */
-/*   Updated: 2022/06/09 15:17:20 by jgoad            ###   ########.fr       */
+/*   Updated: 2022/06/12 23:36:15 by iyahoui-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -67,7 +67,7 @@ void	clean_single_cmd(t_cmd *cmd)
 	free(cmd->errname);
 	cmd->errname = NULL;
 	i = 0;
-	while (i < cmd->nb_args)
+	while (cmd->args_lst[i])
 		ms_lstclear(&cmd->args_lst[i++]);
 	clean_io(cmd);
 	free(cmd->ins);
@@ -84,7 +84,7 @@ void	clean_io(t_cmd *cmd)
 	int	i;
 
 	i = 0;
-	while (cmd->nb_ins && i < cmd->nb_ins)
+	while (i < cmd->nb_ins)
 	{
 		ms_lstclear(&cmd->ins[i]->in_lst);
 		ms_lstclear(&cmd->ins[i]->delim_lst);
@@ -97,9 +97,10 @@ void	clean_io(t_cmd *cmd)
 		i++;
 	}
 	i = 0;
-	while (cmd->nb_outs && i < cmd->nb_outs)
+	while (i < cmd->nb_outs)
 	{
 		ms_lstclear(&cmd->outs[i]->out_lst);
+		cmd->outs[i]->out_lst = NULL;
 		free(cmd->outs[i]->outfile);
 		cmd->outs[i]->outfile = NULL;
 		i++;
