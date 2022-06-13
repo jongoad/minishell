@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   wildcard.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: iyahoui- <iyahoui-@student.42quebec.com    +#+  +:+       +#+        */
+/*   By: jgoad <jgoad@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/06/09 14:51:21 by jgoad             #+#    #+#             */
-/*   Updated: 2022/06/13 00:36:41 by iyahoui-         ###   ########.fr       */
+/*   Updated: 2022/06/13 12:47:57 by jgoad            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -88,18 +88,16 @@ bool	is_wildcard_match(char *direct, char **search, int *ends)
 	wc.tmp = ft_strdup(direct);
 	wc.p_tmp = wc.tmp;
 	if (!search[0])
-		return (free_return_bool(wc.tmp, true));
+		return (free_return_bool(wc.p_tmp, true));
 	if (ft_strlen(wc.tmp) < (size_t)get_search_tot(search))	
-		return (free_return_bool(wc.tmp, false));
+		return (free_return_bool(wc.p_tmp, false));
 	if (!is_wildcard_match_ends(&wc, search, ends))	
-		return (free_return_bool(wc.tmp, false));
+		return (free_return_bool(wc.p_tmp, false));
 	while (wc.start <= wc.end)												/* Handle middle wildcard matches */
 	{
 		wc.ret = ft_strnstr(wc.tmp, search[wc.start], ft_strlen(wc.tmp));
 		if (!wc.ret)
 			return (free_return_bool(wc.p_tmp, false));
-		if (wc.tmp)
-			free(wc.tmp);
 		wc.tmp = wc.ret;
 		wc.tmp = wc.tmp + ft_strlen(search[wc.start]);						/* Shorten string */
 		wc.start++;
@@ -114,8 +112,7 @@ bool	is_wildcard_match_ends(t_wildcard *wc, char **search, int *ends)
 	{
 		if (ft_strncmp(wc->tmp, search[wc->start], ft_strlen(search[wc->start])))
 			return (false);
-		//	FIXME: This incrementation was causing a free error
-		// wc->tmp = wc->tmp + ft_strlen(search[wc->start]);						/* Shorten string from front */
+		wc->tmp = wc->tmp + ft_strlen(search[wc->start]);						/* Shorten string from front */
 		wc->start++;
 	}
 	if (ends[1] == 0)															/* If no ending wildcard and no match end return false */
