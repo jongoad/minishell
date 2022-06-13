@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   init.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jgoad <jgoad@student.42.fr>                +#+  +:+       +#+        */
+/*   By: iyahoui- <iyahoui-@student.42quebec.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/06/09 15:02:11 by jgoad             #+#    #+#             */
-/*   Updated: 2022/06/13 13:26:01 by jgoad            ###   ########.fr       */
+/*   Updated: 2022/06/13 14:30:16 by iyahoui-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -86,17 +86,20 @@ void	init_path(t_shell *sh)
 	int	i;
 
 	i = 0;
-	if (sh->env.path)
-	{
-		free(sh->env.path);
-		sh->env.path = NULL;
-	}
+	// print_char_arr(sh->env.path);
+	// if (sh->env.path)
+	// {
+	// }
+	free_array((void **)sh->env.path);
+	sh->env.path = NULL;
 	while (sh->env.envp[i])
 	{
 		if (!ft_strncmp(sh->env.envp[i], "PATH=", 5))
 		{
+			printf("yay\n");
 			sh->env.path = ft_split(sh->env.envp[i] + 5, ':');
 		}
 		i++;
 	}
+	print_char_arr(sh->env.path);
 }

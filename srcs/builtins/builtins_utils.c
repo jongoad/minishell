@@ -1,15 +1,3 @@
-/* ************************************************************************** */
-/*                                                                            */
-/*                                                        :::      ::::::::   */
-/*   builtins_utils.c                                   :+:      :+:    :+:   */
-/*                                                    +:+ +:+         +:+     */
-/*   By: jgoad <jgoad@student.42.fr>                +#+  +:+       +#+        */
-/*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2022/06/09 14:49:38 by jgoad             #+#    #+#             */
-/*   Updated: 2022/06/13 13:49:03 by jgoad            ###   ########.fr       */
-/*                                                                            */
-/* ************************************************************************** */
-
 #include "minishell.h"
 
 /* Convert a value held in a string to an int and check if valid */
@@ -44,7 +32,9 @@ void	add_env_var(t_env *env, char *str)
 {
 	int		i;
 	char	**tmp;
+	t_shell	*sh;
 
+	sh = get_data();
 	i = count_array((void **)env->envp);
 	tmp = (char **)malloc(sizeof(char *) * (i + 2));
 	i = 0;
@@ -63,6 +53,8 @@ void	add_env_var(t_env *env, char *str)
 	}
 	free(env->envp);
 	env->envp = tmp;
+	if (!ft_strncmp(str, "PATH=", 5))
+		init_path(sh);
 }
 
 /* Change value of an environment variable */
@@ -103,30 +95,61 @@ void	remove_env_var(t_env *env, int n)
 {
 	int		i;
 	int		j;
+	bool	unset_path;
 	char	**tmp;
-	int count;
+	t_shell	*sh;
 
 	i = count_array((void **)env->envp);
-	count = i;
 	tmp = ft_xalloc(sizeof(char *) * i);
+	sh = get_data();
 	i = 0;
 	j = 0;
-	// while (env->envp[i])
-	while (i < count)
+	unset_path = false;
+	while (env->envp[i])
 	{
 		if (i == n)
-			i++;
-		else
 		{
-			tmp[j] = ft_strdup(env->envp[i]);
-			i++;
-			j++;
+			if (!ft_strncmp(env->envp[i], "PATH=", 5))
+				unset_path = true;
 		}
+		else
+			tmp[j++] = ft_strdup(env->envp[i]);
+		i++;
 	}
 	free_array((void **)env->envp);
 	env->envp = tmp;
+	if (unset_path)
+		init_path(sh);
 	//printf("Size of envp: %lu\n", sizeof(env->envp));
 }
+// void	remove_env_var(t_env *env, int n)
+// {
+// 	int		i;
+// 	int		j;
+// 	char	**tmp;
+// 	int count;
+
+// 	i = count_array((void **)env->envp);
+// 	count = i;
+// 	tmp = ft_xalloc(sizeof(char *) * i);
+// 	i = 0;
+// 	j = 0;
+// 	// while (env->envp[i])
+// 	while (i < count)
+// 	{
+// 		if (i == n)
+// 			i++;
+// 		else
+// 		{
+// 			tmp[j] = ft_strdup(env->envp[i]);
+// 			i++;
+// 			j++;
+// 		}
+// 	}
+// 	free_array((void **)env->envp);
+// 	env->envp = tmp;
+// 	//printf("Size of envp: %lu\n", sizeof(env->envp));
+// }
 
 /* Check if environment variable name is valid */
 bool	check_env_var(char *str, bool unset)
