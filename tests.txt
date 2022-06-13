@@ -117,3 +117,34 @@ export TES^T=123
 export TES!T=123
 export TES\~T=123
 export TEST+=100
+
+
+
+Check env
+
+==25507== Conditional jump or move depends on uninitialised value(s)
+==25507==    at 0x1000046B8: builtin_env (builtins_2.c:50)
+==25507==    by 0x10000AAFF: run_builtin_parent (execute.c:106)
+==25507==    by 0x10000A9D7: execute (execute.c:45)
+==25507==    by 0x100009918: minishell (minishell.c:88)
+==25507==    by 0x1000096C1: main (minishell.c:19)
+
+
+check unset
+
+minishell-> unset ARG
+==25507== Invalid write of size 8
+==25507==    at 0x1000039AB: remove_env_var (builtins_utils.c:109)
+==25507==    by 0x10000465A: builtin_unset (builtins_2.c:35)
+==25507==    by 0x10000AAFF: run_builtin_parent (execute.c:106)
+==25507==    by 0x10000A9D7: execute (execute.c:45)
+==25507==    by 0x100009918: minishell (minishell.c:88)
+==25507==    by 0x1000096C1: main (minishell.c:19)
+==25507==  Address 0x10093d238 is 0 bytes after a block of size 280 alloc'd
+==25507==    at 0x100198545: malloc (in /Users/jgoad/homebrew/Cellar/valgrind/HEAD-6ff08b6/libexec/valgrind/vgpreload_memcheck-amd64-darwin.so)
+==25507==    by 0x10000399E: remove_env_var (builtins_utils.c:108)
+==25507==    by 0x10000465A: builtin_unset (builtins_2.c:35)
+==25507==    by 0x10000AAFF: run_builtin_parent (execute.c:106)
+==25507==    by 0x10000A9D7: execute (execute.c:45)
+==25507==    by 0x100009918: minishell (minishell.c:88)
+==25507==    by 0x1000096C1: main (minishell.c:19)

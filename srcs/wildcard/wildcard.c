@@ -6,7 +6,7 @@
 /*   By: jgoad <jgoad@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/06/09 14:51:21 by jgoad             #+#    #+#             */
-/*   Updated: 2022/06/13 12:47:57 by jgoad            ###   ########.fr       */
+/*   Updated: 2022/06/13 13:15:54 by jgoad            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,17 +27,17 @@ void	check_wildcard(t_cmd *cmd)
 	while (i < cmd->nb_args)
 	{
 		result = expand_wildcard(cmd->args[i]);
-		if (!result)														/* If no result copy string to output array, adding back in the asterisk if it existed */
+		if (!result)
 			output = add_str_array(output, replace_wildcard(cmd->args[i]));
-		else																/* If there is a result copy result to output array */
-			output = join_array_array(output, result);									
+		else
+			output = join_array_array(output, result);
 		i++;
 	}
-	free_array((void **)cmd->args);											/* Free args array and then assign new array to pointer */
+	free_array((void **)cmd->args);
 	cmd->args = output;
-	free(cmd->exe);															/* Free exe and set to first element of new args array */
+	free(cmd->exe);
 	cmd->exe = ft_strdup(output[0]);
-	cmd->nb_args = count_array((void **)output);							/* Update new args number */
+	cmd->nb_args = count_array((void **)output);
 }
 
 /* Initialize wildcard data */
@@ -45,8 +45,8 @@ void	init_wildcard(t_wildcard *wc, char *arg)
 {
 	split_path_wildcard(wc, arg);
 	wc->ends = ft_xalloc(sizeof(int) * 2);
-	check_ends(wc->str, wc->ends);									/* Check for end wildcards */
-	wc->search = ft_split(wc->str, WILDCARD);						/* Split remaining string using asterisk */
+	check_ends(wc->str, wc->ends);
+	wc->search = ft_split(wc->str, WILDCARD);
 }
 
 /* If a wildcard is found, expand and return an array of strings containing all results */
@@ -54,10 +54,10 @@ char	**expand_wildcard(char *arg)
 {
 	t_wildcard	wc;
 
-	if (!is_set(WILDCARD, arg))	/* Check if any wildcards exist, if not return NULL */
+	if (!is_set(WILDCARD, arg))
 		return (NULL);
 	init_wildcard(&wc, arg);
-	if (wc.path)													/* If there is a relative path use for getting folder */
+	if (wc.path)
 		wc.output = read_directory(wc.path);
 	else															/* Else open current directory */
 		wc.output = read_directory(".");

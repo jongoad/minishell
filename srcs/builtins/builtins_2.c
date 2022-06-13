@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   builtins_2.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: iyahoui- <iyahoui-@student.42quebec.com    +#+  +:+       +#+        */
+/*   By: jgoad <jgoad@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/06/09 14:43:36 by jgoad             #+#    #+#             */
-/*   Updated: 2022/06/13 00:07:05 by iyahoui-         ###   ########.fr       */
+/*   Updated: 2022/06/13 13:53:51 by jgoad            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,7 +32,10 @@ int	builtin_unset(t_shell *sh, t_cmd *cmd)
 			while (sh->env.envp[j])								/* Find and remove variable if it exists */
 			{
 				if (env_var_cmp(cmd->args[i], sh->env.envp[j]))
+				{
 					remove_env_var(&sh->env, j);
+					break;
+				}
 				j++;
 			}
 		}

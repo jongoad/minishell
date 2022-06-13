@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   builtins_utils.c                                   :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: iyahoui- <iyahoui-@student.42quebec.com    +#+  +:+       +#+        */
+/*   By: jgoad <jgoad@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/06/09 14:49:38 by jgoad             #+#    #+#             */
-/*   Updated: 2022/06/13 00:53:12 by iyahoui-         ###   ########.fr       */
+/*   Updated: 2022/06/13 13:49:03 by jgoad            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -94,6 +94,7 @@ int	change_env_var(t_env *env, char *arg)
 		}
 		i++;
 	}
+	free_array((void **)split);
 	return (0);
 }
 
@@ -103,13 +104,15 @@ void	remove_env_var(t_env *env, int n)
 	int		i;
 	int		j;
 	char	**tmp;
+	int count;
 
 	i = count_array((void **)env->envp);
-	tmp = (char **)malloc(sizeof(char *) * i);
-	tmp[i] = NULL;
+	count = i;
+	tmp = ft_xalloc(sizeof(char *) * i);
 	i = 0;
 	j = 0;
-	while (env->envp[i])
+	// while (env->envp[i])
+	while (i < count)
 	{
 		if (i == n)
 			i++;
@@ -122,6 +125,7 @@ void	remove_env_var(t_env *env, int n)
 	}
 	free_array((void **)env->envp);
 	env->envp = tmp;
+	//printf("Size of envp: %lu\n", sizeof(env->envp));
 }
 
 /* Check if environment variable name is valid */

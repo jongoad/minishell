@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   init.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: iyahoui- <iyahoui-@student.42quebec.com    +#+  +:+       +#+        */
+/*   By: jgoad <jgoad@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/06/09 15:02:11 by jgoad             #+#    #+#             */
-/*   Updated: 2022/06/13 00:45:23 by iyahoui-         ###   ########.fr       */
+/*   Updated: 2022/06/13 13:26:01 by jgoad            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -67,7 +67,7 @@ void	init_env_vars(t_shell *sh, char **envp)
 	while (*envp)
 	{
 		sh->env.envp[i] = ft_strdup(*envp);
-		// if (ft_strncmp(*envp, "OLDPWD=", 7))
+		// if (ft_strncmp(*envp, "OLDPWD=", 7)) FIX WHATS GOING ON HERE?
 		if (!ft_strncmp(*envp, "PATH=", 5))
 			sh->env.path = ft_split(*envp + 5, ':');
 		else if (!ft_strncmp(*envp, "SHLVL=", 6))

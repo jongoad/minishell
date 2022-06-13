@@ -35,6 +35,7 @@ void	clean_env(t_shell *sh)
 			i++;
 		}
 		free(sh->env.envp);
+		sh->env.envp = NULL;
 	}
 	i = 0;
 	while (sh->env.path && sh->env.path[i])
