@@ -164,7 +164,8 @@ t_cmd	*add_new_cmd(t_shell *sh);
 t_cmd	*get_new_cmd(void);
 
 //	print_utils.c
-void	print_redirs(t_cmd *cmd);
+void	print_ins(t_cmd *cmd);
+void	print_outs(t_cmd *cmd);
 void	print_cmd_args(t_cmd *cmd);
 void	print_cmds_info(t_shell *sh);
 void	print_char_arr(char **arr);

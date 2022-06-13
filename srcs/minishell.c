@@ -26,7 +26,7 @@ bool	command_line_input(t_shell *sh, int argc, char **argv)
 {
 	bool	is_single_command;
 	int		i;
-	
+
 	if (!ft_strncmp(argv[1], "-c", 2) && !argv[1][2])	//If first argument is -c, run a single command then exit
 	{
 		is_single_command = true;

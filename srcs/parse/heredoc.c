@@ -13,8 +13,7 @@ char	*expand_heredoc_tok(char **envp, char **ptr)
 		tok_len = get_tok_len(*ptr, "$");
 		token = ft_xalloc((tok_len + 1) * sizeof(char));
 		token = ft_strncpy(token, *ptr, tok_len);
-		*ptr += tok_len;
-		return (token);
+		return (*ptr += tok_len, token);
 	}
 	*ptr += 1;
 	tok_len = 0;
@@ -27,8 +26,7 @@ char	*expand_heredoc_tok(char **envp, char **ptr)
 	var_name[i] = 0;
 	token = expand_env_var(envp, var_name);
 	free(var_name);
-	*ptr += tok_len;
-	return (token);
+	return (*ptr += tok_len, token);
 }
 
 void	expand_heredoc(t_cmd *cmd, t_infile *in, char *heredoc)

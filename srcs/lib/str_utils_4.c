@@ -5,8 +5,8 @@
 /*                                                    +:+ +:+         +:+     */
 /*   By: iyahoui- <iyahoui-@student.42quebec.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2022/06/09 14:36:04 by jgoad             #+#    #+#             */
-/*   Updated: 2022/06/12 13:36:47 by iyahoui-         ###   ########.fr       */
+/*   Created: 2022/06/13 01:21:37 by iyahoui-          #+#    #+#             */
+/*   Updated: 2022/06/13 01:21:39 by iyahoui-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,4 +51,3 @@ int	is_set_ret(char const c, char const *set)
 	}
 	return (-1);
 }
-

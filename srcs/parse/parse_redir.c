@@ -69,9 +69,9 @@ void	parse_out(t_cmd *cmd, char **line, bool is_double)
 	new_out = ft_xalloc(sizeof(t_outfile));
 	new_out->fd = -1;
 	if (BONUS)
-		set_cl_tok_bonus(&new_out->out_lst, line);	
+		set_cl_tok_bonus(&new_out->out_lst, line);
 	else
-		set_cl_tok(&new_out->out_lst, line);	
+		set_cl_tok(&new_out->out_lst, line);
 	new_out->append_mode = is_double;
 	add_outfile(cmd, new_out);
 	cmd->nb_outs++;

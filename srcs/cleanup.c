@@ -68,7 +68,7 @@ void	clean_fork(t_shell *sh, t_cmd *cmd)
 /* Close all open file descriptors */
 void	close_files(t_cmd *cmd)
 {
-	int i;
+	int	i;
 
 	i = 0;
 	while (cmd->ins && i < cmd->nb_ins)

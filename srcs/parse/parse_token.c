@@ -48,7 +48,7 @@ void	parse_squotes(t_arglst **lst, char **line)
 void	parse_env_var(t_arglst **lst, char **line)
 {
 	*line += 1;
-	if (**line && (ft_isalnum(**line) 
+	if (**line && (ft_isalnum(**line)
 			|| (**line == '?' && (ft_isspace(*(*line + 1)) || !*(*line + 1)))))
 	{
 		if (**line == '?')

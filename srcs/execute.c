@@ -18,7 +18,7 @@ static int	handle_error_return(t_shell *sh)
 	{
 		if (WIFEXITED(stat_loc))
 			sh->ret_val = WEXITSTATUS(stat_loc);
-		else if (WTERMSIG(stat_loc) )
+		else if (WTERMSIG(stat_loc))
 			sh->ret_val = 128 + WTERMSIG(stat_loc);
 		// printf("ret_val = %d\n", sh->ret_val);
 	}
@@ -89,7 +89,7 @@ void	run_cmd(t_shell *sh, t_cmd *cmd, int i)
 void	run_cmd_external(t_shell *sh, t_cmd *cmd)
 {
 	char	*exe;
-	
+
 	exe = build_cmd_path(sh->env.path, cmd->exe);
 	if (exe)
 		cmd->errnum = execve(exe, cmd->args, sh->env.envp);

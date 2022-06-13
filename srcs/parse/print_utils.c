@@ -1,6 +1,6 @@
 #include "minishell.h"
 
-void	print_redirs(t_cmd *cmd)
+void	print_ins(t_cmd *cmd)
 {
 	int	i;
 
@@ -15,9 +15,16 @@ void	print_redirs(t_cmd *cmd)
 		if (cmd->ins[i]->infile)
 			printf("in[%d]: \"%s\"\n", i, cmd->ins[i]->infile);
 		if (cmd->ins[i]->delim)
-			printf(RED"------> in[%d] is HEREDOC; delim: \"%s\"\n"GREEN, i, cmd->ins[i]->delim);
+			printf(RED"------> in[%d] is HEREDOC; delim: \"%s\"\n"GREEN,
+				i, cmd->ins[i]->delim);
 		i++;
 	}
+}
+
+void	print_outs(t_cmd *cmd)
+{
+	int	i;
+
 	if (cmd->nb_outs)
 		printf("\n-------- OUT FILE --------\n");
 	else
@@ -68,7 +75,8 @@ void	print_cmds_info(t_shell *sh)
 			printf("*** NO CMD_FILEPATH*** \n");
 		printf(RESET_COL);
 		print_cmd_args(sh->cmds[i]);
-		print_redirs(sh->cmds[i]);
+		print_ins(sh->cmds[i]);
+		print_outs(sh->cmds[i]);
 		i++;
 	}
 	return ;
@@ -77,7 +85,7 @@ void	print_cmds_info(t_shell *sh)
 void	print_char_arr(char **arr)
 {
 	int	i;
-	
+
 	i = 0;
 	if (!arr)
 	{

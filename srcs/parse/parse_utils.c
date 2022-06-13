@@ -16,9 +16,9 @@ void	skip_whitespaces(char **line)
  * @return int 		 tok_len until the first delimiter encountered
  * 					 -1 if an arg is NULL
  */
-int get_tok_len(char *token, char *delimiters)
+int	get_tok_len(char *token, char *delimiters)
 {
-	int  tok_len;
+	int	tok_len;
 
 	if (!token)
 		return (-1);
@@ -32,7 +32,7 @@ int get_tok_len(char *token, char *delimiters)
 
 int	get_tok_len_set(char *token, char *set)
 {
-	int  tok_len;
+	int	tok_len;
 
 	if (!token)
 		return (-1);

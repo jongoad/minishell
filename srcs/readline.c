@@ -42,7 +42,6 @@ void	init_history(t_shell *sh)
 	return ;
 }
 
-
 /* Read a string, and return a pointer to it.  Returns NULL on EOF. */
 char	*rl_getline(t_shell *sh)
 {
