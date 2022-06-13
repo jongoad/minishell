@@ -2,18 +2,19 @@
 
 bool	is_valid_hist_entry(char *entry)
 {
+	int	ret;
 	int	i;
 
 	i = 0;
+	ret = false;
 	while (entry[i])
 	{
 		if (entry[i] < 9 || (entry[i] > 13 && entry[i] != 32))
-			break ;
+			ret = true;
 		i++;
 	}
-	if (entry[i])
-		return (true);
-	return (false);
+	*(entry + i) = '\0';
+	return (ret);
 }
 
 /* Init history */
