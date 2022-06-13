@@ -19,10 +19,16 @@ void	signal_handler(int signum)
 	}
 	if (signum == SIGQUIT)
 	{
-		printf("Quit: %d\n", signum);
-		rl_replace_line("", 1);
-		rl_on_new_line();
-		if (!sh->cmds)
+		if (sh->cmds)
+		{
+			printf("Quit: %d\n", signum);
+			rl_replace_line("", 1);
+			rl_on_new_line();
+		}
+		else
+		{
+			rl_on_new_line();
 			rl_redisplay();
+		}
 	}
 }	
