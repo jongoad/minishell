@@ -6,7 +6,7 @@
 /*   By: iyahoui- <iyahoui-@student.42quebec.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/06/09 14:46:44 by jgoad             #+#    #+#             */
-/*   Updated: 2022/06/13 17:14:18 by iyahoui-         ###   ########.fr       */
+/*   Updated: 2022/06/13 17:22:12 by iyahoui-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -56,6 +56,8 @@ int	builtin_cd(t_shell *sh, t_cmd *cmd)
 	char	*buf;
 	char	*res;
 
+	buf = NULL;
+	res = NULL;
 	if (!sh->pwd)
 	{
 		buf = (char *)malloc(sizeof(char) * 1025);

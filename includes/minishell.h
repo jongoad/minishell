@@ -83,6 +83,8 @@ int			builtin_exit(t_shell *sh, t_cmd *cmd);
 
 /* Builtin command utilities */
 void		builtins_cd_2(t_shell *sh, t_cmd *cmd, char *res, char *buf);
+int			handle_cd_error(t_shell *sh);
+void		cd_no_arg(t_shell *sh, t_cmd *cmd);
 void		add_env_var(t_env *env, char *str);
 void		remove_env_var(t_env *env, int n);
 bool		check_env_var(char *str, bool unset);

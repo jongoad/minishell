@@ -6,7 +6,7 @@
 /*   By: iyahoui- <iyahoui-@student.42quebec.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/06/13 17:02:49 by jgoad             #+#    #+#             */
-/*   Updated: 2022/06/13 17:09:40 by iyahoui-         ###   ########.fr       */
+/*   Updated: 2022/06/13 17:23:35 by iyahoui-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -116,10 +116,10 @@ void	remove_env_var(t_env *env, int n)
 	unset_path = false;
 	while (env->envp[++i])
 	{
-		if (i == n)
-			if (!ft_strncmp(env->envp[i], "PATH=", 5))
-				unset_path = true;
-		else
+		//MODIFIED
+		if (i == n && !ft_strncmp(env->envp[i], "PATH=", 5))
+			unset_path = true;
+		else if (i != n)
 			tmp[j++] = ft_strdup(env->envp[i]);
 	}
 	free_array((void **)env->envp);
