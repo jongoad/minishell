@@ -6,7 +6,7 @@
 /*   By: iyahoui- <iyahoui-@student.42quebec.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/06/09 14:49:38 by jgoad             #+#    #+#             */
-/*   Updated: 2022/06/12 19:26:51 by iyahoui-         ###   ########.fr       */
+/*   Updated: 2022/06/13 00:53:12 by iyahoui-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -71,9 +71,11 @@ int	change_env_var(t_env *env, char *arg)
 	int		i;
 	char	**split;
 	char	*tmp;
+	t_shell	*sh;
 
 	i = 0;
 	split = ft_split(arg, '=');
+	sh = get_data();
 	while (env->envp[i])
 	{
 		if (!ft_strncmp(split[0], env->envp[i], ft_strlen(split[0]))
@@ -83,6 +85,10 @@ int	change_env_var(t_env *env, char *arg)
 			tmp = ft_strjoin(split[0], "=");
 			env->envp[i] = ft_strjoin(tmp, split[1]);
 			free(tmp);
+			// FIXME: path not properly updated
+			// 	added this, but a bit janky -isma
+			if (!ft_strncmp(split[0], "PATH", ft_strlen(split[0])))
+				init_path(sh);
 			free_array((void **)split);
 			return (1);
 		}

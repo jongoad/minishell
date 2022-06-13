@@ -6,7 +6,7 @@
 /*   By: iyahoui- <iyahoui-@student.42quebec.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/06/09 15:02:11 by jgoad             #+#    #+#             */
-/*   Updated: 2022/06/12 23:56:26 by iyahoui-         ###   ########.fr       */
+/*   Updated: 2022/06/13 00:45:23 by iyahoui-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -66,8 +66,8 @@ void	init_env_vars(t_shell *sh, char **envp)
 	sh->env.envp[count_array((void **)envp)] = NULL;
 	while (*envp)
 	{
-		if (ft_strncmp(*envp, "OLDPWD=", 7))
-			sh->env.envp[i] = ft_strdup(*envp);
+		sh->env.envp[i] = ft_strdup(*envp);
+		// if (ft_strncmp(*envp, "OLDPWD=", 7))
 		if (!ft_strncmp(*envp, "PATH=", 5))
 			sh->env.path = ft_split(*envp + 5, ':');
 		else if (!ft_strncmp(*envp, "SHLVL=", 6))

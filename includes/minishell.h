@@ -124,13 +124,17 @@ void	set_cl_tok(t_arglst **lst, char **line);
 void	add_cl_tok(t_arglst **lst, char **line);
 void	set_cl_tok_bonus(t_arglst **lst, char **line);
 void	add_cl_tok_bonus(t_arglst **lst, char **line);
-void	add_token(t_arglst **lst, char **line, char *delim, bool is_env_var);
-void	add_token_by_set(t_arglst **lst, char **line, char *set, bool is_env_var);
-void	add_token_by_len(t_arglst **lst, char **line, int tok_len, bool is_env_var);
+
+//	parse_token.c
 void	parse_dquotes(t_arglst **lst, char **line);
 void	parse_squotes(t_arglst **lst, char **line);
 void	parse_env_var(t_arglst **lst, char **line);
 void	parse_wildcard(t_arglst **lst, char **line);
+
+//	add_token.c
+void	add_token(t_arglst **lst, char **line, char *delim, bool is_env_var);
+void	add_token_by_set(t_arglst **lst, char **line, char *set, bool is_env_var);
+void	add_token_by_len(t_arglst **lst, char **line, int tok_len, bool is_env_var);
 
 //	heredoc.c
 void	parse_heredoc(t_cmd *cmd, t_infile *in);

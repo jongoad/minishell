@@ -2,8 +2,8 @@
 # define ENUMS_H
 
 /* Parse defines */
-# define CL_SPEC_CH "\"\'$"
-# define CL_SAME_TOK "\"\'$/"
+# define CL_SPEC_CH "\"\'$="
+# define CL_SAME_TOK "\"\'$/="
 # define CL_SAME_TOK_BONUS "\"\'$/*"
 # define WHITESPACES " \n\t\v\r\f"
 # define CL_TOK_LIM " \n\t\v\r\f<>|$\"\'"		// to add: &()
