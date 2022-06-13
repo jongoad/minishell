@@ -6,7 +6,7 @@
 /*   By: jgoad <jgoad@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/06/09 15:16:30 by jgoad             #+#    #+#             */
-/*   Updated: 2022/06/13 12:53:03 by jgoad            ###   ########.fr       */
+/*   Updated: 2022/06/13 13:05:54 by jgoad            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -94,6 +94,8 @@ void	clean_io(t_cmd *cmd)
 		cmd->ins[i]->infile = NULL;
 		free(cmd->ins[i]->delim);
 		cmd->ins[i]->delim = NULL;
+		free(cmd->ins[i]);
+		cmd->ins[i] = NULL;
 		i++;
 	}
 	i = 0;
@@ -103,6 +105,8 @@ void	clean_io(t_cmd *cmd)
 		cmd->outs[i]->out_lst = NULL;
 		free(cmd->outs[i]->outfile);
 		cmd->outs[i]->outfile = NULL;
+		free(cmd->outs[i]);
+		cmd->outs[i] = NULL;
 		i++;
 	}
 }
