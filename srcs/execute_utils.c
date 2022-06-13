@@ -6,7 +6,7 @@
 /*   By: iyahoui- <iyahoui-@student.42quebec.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/06/09 15:09:17 by jgoad             #+#    #+#             */
-/*   Updated: 2022/06/13 14:25:18 by iyahoui-         ###   ########.fr       */
+/*   Updated: 2022/06/13 15:08:21 by iyahoui-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,7 +18,6 @@ char	*build_cmd_path(char **cmd_path, char *cmd)
 	char	*tmp;
 	char	*cmd_res;
 
-	print_char_arr(cmd_path);
 	if (is_set('/', cmd) && access(cmd, X_OK) == 0)
 		return (ft_strdup(cmd));
 	else

@@ -6,7 +6,7 @@
 /*   By: iyahoui- <iyahoui-@student.42quebec.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/06/09 14:53:42 by jgoad             #+#    #+#             */
-/*   Updated: 2022/06/13 00:32:01 by iyahoui-         ###   ########.fr       */
+/*   Updated: 2022/06/13 15:44:41 by iyahoui-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -70,11 +70,11 @@ void	split_path_wildcard(t_wildcard *wc, char *arg)
 			break ;
 		i--;
 	}
-	if	(i != -1)							/* If a slash found */
+	if (i != -1)
 	{
-		wc->str = get_last_token(tmp, '/');	/* Copy non-path segment */
+		wc->str = get_last_token(tmp, '/');
 		tmp[i + 1] = '\0';
-		wc->path = ft_strdup(tmp);			/* Copy the path segment */
+		wc->path = ft_strdup(tmp);
 	}
 	else
 	{

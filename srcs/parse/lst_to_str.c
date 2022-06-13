@@ -75,6 +75,7 @@ char	*lst_to_str_no_exp(t_arglst *lst)
 		else
 			curr_arg = ft_strdup(ptr->str);
 		str = ft_strjoin_free(str, curr_arg);
+		free(curr_arg);
 		ptr = ptr->next;
 	}
 	return (str);
@@ -123,8 +124,9 @@ void	cmds_lst_to_str(t_shell *sh)
 			expand_cmd_args(sh, cmd);
 		j = -1;
 		while (++j < cmd->nb_ins)
-			cmd->ins[j]->infile
-				= lst_to_str(sh->env.envp, cmd->ins[j]->in_lst);
+			if (cmd->ins[j]->infile == NULL)
+				cmd->ins[j]->infile
+					= lst_to_str(sh->env.envp, cmd->ins[j]->in_lst);
 		j = -1;
 		while (++j < cmd->nb_outs)
 			cmd->outs[j]->outfile

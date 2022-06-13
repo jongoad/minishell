@@ -6,7 +6,7 @@
 /*   By: iyahoui- <iyahoui-@student.42quebec.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/06/09 15:02:11 by jgoad             #+#    #+#             */
-/*   Updated: 2022/06/13 14:30:16 by iyahoui-         ###   ########.fr       */
+/*   Updated: 2022/06/13 15:34:32 by iyahoui-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -96,10 +96,8 @@ void	init_path(t_shell *sh)
 	{
 		if (!ft_strncmp(sh->env.envp[i], "PATH=", 5))
 		{
-			printf("yay\n");
 			sh->env.path = ft_split(sh->env.envp[i] + 5, ':');
 		}
 		i++;
 	}
-	print_char_arr(sh->env.path);
 }

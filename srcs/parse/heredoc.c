@@ -72,24 +72,32 @@ static void	read_heredoc(t_cmd *cmd, t_infile *in)
 	exit (0);
 }
 
-void	parse_heredoc(t_cmd *cmd, t_infile *in)
+char	*get_heredoc_filename(void)
 {
 	char	*suffix;
+	char	*filename;
 	uint	n;
-	int		status;
-	pid_t	pid;
 
 	n = 0;
 	suffix = ft_itoa(n++);
-	in->infile = ft_strjoin(HEREDOC_PATH, suffix);
-	while (access(in->infile, F_OK) == 0)
+	filename = ft_strjoin(HEREDOC_PATH, suffix);
+	while (access(filename, F_OK) == 0)
 	{
 		free(suffix);
-		free(in->infile);
+		free(filename);
 		suffix = ft_itoa(n++);
-		in->infile = ft_strjoin(HEREDOC_PATH, suffix);
+		filename = ft_strjoin(HEREDOC_PATH, suffix);
 	}
 	free(suffix);
+	return (filename);
+}
+
+void	parse_heredoc(t_cmd *cmd, t_infile *in)
+{
+	int		status;
+	pid_t	pid;
+
+	in->infile = get_heredoc_filename();
 	in->in_lst = ms_lstnew(ft_strdup(in->infile), false);
 	in->delim = lst_to_str_no_exp(in->delim_lst);
 	in->fd = open(in->infile, O_TRUNC | O_CREAT | O_CLOEXEC | O_RDWR, 0644);

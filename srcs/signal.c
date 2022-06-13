@@ -23,12 +23,9 @@ void	signal_handler(int signum)
 		{
 			printf("Quit: %d\n", signum);
 			rl_replace_line("", 1);
-			rl_on_new_line();
 		}
-		else
-		{
-			rl_on_new_line();
+		rl_on_new_line();
+		if (!sh->cmds)
 			rl_redisplay();
-		}
 	}
 }	
