@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   wildcard_utils.c                                   :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jgoad <jgoad@student.42.fr>                +#+  +:+       +#+        */
+/*   By: iyahoui- <iyahoui-@student.42quebec.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/06/09 14:52:35 by jgoad             #+#    #+#             */
-/*   Updated: 2022/06/09 14:53:29 by jgoad            ###   ########.fr       */
+/*   Updated: 2022/06/13 00:32:51 by iyahoui-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,6 +46,7 @@ void	check_ends(char *str, int *ends)
 bool	free_return_bool(char *str, bool ret)
 {
 	free(str);
+	str = NULL;
 	return (ret);
 }
 

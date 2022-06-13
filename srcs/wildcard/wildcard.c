@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   wildcard.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jgoad <jgoad@student.42.fr>                +#+  +:+       +#+        */
+/*   By: iyahoui- <iyahoui-@student.42quebec.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/06/09 14:51:21 by jgoad             #+#    #+#             */
-/*   Updated: 2022/06/09 14:54:42 by jgoad            ###   ########.fr       */
+/*   Updated: 2022/06/13 00:36:41 by iyahoui-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,7 +44,7 @@ void	check_wildcard(t_cmd *cmd)
 void	init_wildcard(t_wildcard *wc, char *arg)
 {
 	split_path_wildcard(wc, arg);
-	wc->ends = malloc(sizeof(int) * 2);
+	wc->ends = ft_xalloc(sizeof(int) * 2);
 	check_ends(wc->str, wc->ends);									/* Check for end wildcards */
 	wc->search = ft_split(wc->str, WILDCARD);						/* Split remaining string using asterisk */
 }
@@ -87,11 +87,11 @@ bool	is_wildcard_match(char *direct, char **search, int *ends)
 	wc.end = count_array((void **)search) - 1;
 	wc.tmp = ft_strdup(direct);
 	wc.p_tmp = wc.tmp;
-	if (!search[0])															/* If there are search tokens (only wildcard chars were entered) */
+	if (!search[0])
 		return (free_return_bool(wc.tmp, true));
-	if (ft_strlen(wc.tmp) < (size_t)get_search_tot(search))					/* If total length of string is not equal to or greater than sum of search strings return false */
+	if (ft_strlen(wc.tmp) < (size_t)get_search_tot(search))	
 		return (free_return_bool(wc.tmp, false));
-	if (!is_wildcard_match_ends(&wc, search, ends))								/* Check end cases */
+	if (!is_wildcard_match_ends(&wc, search, ends))	
 		return (free_return_bool(wc.tmp, false));
 	while (wc.start <= wc.end)												/* Handle middle wildcard matches */
 	{
@@ -114,7 +114,8 @@ bool	is_wildcard_match_ends(t_wildcard *wc, char **search, int *ends)
 	{
 		if (ft_strncmp(wc->tmp, search[wc->start], ft_strlen(search[wc->start])))
 			return (false);
-		wc->tmp = wc->tmp + ft_strlen(search[wc->start]);						/* Shorten string from front */
+		//	FIXME: This incrementation was causing a free error
+		// wc->tmp = wc->tmp + ft_strlen(search[wc->start]);						/* Shorten string from front */
 		wc->start++;
 	}
 	if (ends[1] == 0)															/* If no ending wildcard and no match end return false */

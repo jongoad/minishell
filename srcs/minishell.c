@@ -53,13 +53,11 @@ void	run_single_command(t_shell *sh)
 	
 	ret = parse(sh, sh->line);
 	if (ret)
-	{
-		parse_error(ret);
-		ret = 1;
-	}
+		ret = parse_error(ret);
 	else
 	{
 		cmds_lst_to_str(sh);
+		// print_cmds_info(sh);
 		if (sh->cmds)
 			execute(sh);
 		ret = sh->ret_val;
@@ -78,17 +76,16 @@ int	minishell(t_shell *sh)
 		sh->cmd_line = false;
 		if (!sh->line)									/* If readline returns a null line, CTRL-D has been entered. Free and exit */
 			readline_exit(sh);
-		printf("%s: %d\n", __FUNCTION__, __LINE__);
 		sh->err_char = parse(sh, sh->line);
 		if (sh->err_char)								/* Print parse error and set ret value */
 			sh->ret_val = parse_error(sh->err_char);
 		else
 		{
 			cmds_lst_to_str(sh);
-			clean_linked_lists(sh);
-			print_cmds_info(sh);
-			// if (sh->cmds)
-			// 	execute(sh);
+			// clean_linked_lists(sh);
+			// print_cmds_info(sh);
+			if (sh->cmds)
+				execute(sh);
 		}
 		reset_shell(sh);
 	}

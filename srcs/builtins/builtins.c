@@ -88,7 +88,6 @@ int	builtin_cd(t_shell *sh, t_cmd *cmd)
 		res = getcwd(buf, 1025);
 		if (!res)
 		{
-			printf("oops\n");
 			if (cmd->nb_args == 1)
 				cd_no_arg(sh, cmd);
 			chdir(cmd->args[cmd->nb_args - 1]);

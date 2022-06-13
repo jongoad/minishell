@@ -6,7 +6,7 @@
 /*   By: iyahoui- <iyahoui-@student.42quebec.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/06/09 14:43:36 by jgoad             #+#    #+#             */
-/*   Updated: 2022/06/12 18:54:33 by iyahoui-         ###   ########.fr       */
+/*   Updated: 2022/06/13 00:07:05 by iyahoui-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -63,27 +63,23 @@ int	builtin_exit(t_shell *sh, t_cmd *cmd)
 	long long	ret;
 
 	ret = 0;
+	putstr_fd("exit\n", 2);
 	if (cmd->args[1])
 	{
 		ret = ft_atoll(cmd->args[1], &is_valid);
-		printf("%lld\n", ret);
+		// printf("%lld\n", ret);
 		if (is_valid && cmd->args[2])
 		{
-			putstr_fd("exit\n", 2);
 			put_err_msg(sh->sh_name, cmd->args[0], NULL, ERR_EXIT_ARGS_NUM);
 			return (1);
 		}
 		else if (!is_valid)
 		{
 			ret = 255;
-			putstr_fd("exit\n", 2);
 			put_err_msg(sh->sh_name, cmd->args[0], cmd->args[1], ERR_EXIT_NON_NUMERIC);
 		}
-		else
-			putstr_fd("exit\n", 2);
 	}
-	else
-		putstr_fd("exit\n", 2);
 	cleanup(sh);						/* Cleanup ALL shell memory before exit */
 	exit(ret);
+	return (ret);
 }
