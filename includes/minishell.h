@@ -6,7 +6,7 @@
 /*   By: iyahoui- <iyahoui-@student.42quebec.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/06/13 19:29:54 by iyahoui-          #+#    #+#             */
-/*   Updated: 2022/06/13 19:29:54 by iyahoui-         ###   ########.fr       */
+/*   Updated: 2022/06/14 14:34:23 by iyahoui-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,6 +50,7 @@
 
 /* Function prototypes */
 void		signal_handler(int signum);
+void		void_sig(int sig);
 t_shell		*get_data(void);
 void		readline_exit(t_shell *sh);
 

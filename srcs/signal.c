@@ -6,11 +6,16 @@
 /*   By: iyahoui- <iyahoui-@student.42quebec.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/06/13 15:56:00 by jgoad             #+#    #+#             */
-/*   Updated: 2022/06/14 14:28:29 by iyahoui-         ###   ########.fr       */
+/*   Updated: 2022/06/14 14:34:48 by iyahoui-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
+
+void	void_sig(int sig)
+{
+	(void) sig;
+}
 
 /* Signal handler function */
 void	signal_handler(int signum)

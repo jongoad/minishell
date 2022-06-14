@@ -6,7 +6,7 @@
 /*   By: iyahoui- <iyahoui-@student.42quebec.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/06/13 16:46:59 by jgoad             #+#    #+#             */
-/*   Updated: 2022/06/14 14:29:45 by iyahoui-         ###   ########.fr       */
+/*   Updated: 2022/06/14 14:34:27 by iyahoui-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -68,6 +68,7 @@ void	run_cmd(t_shell *sh, t_cmd *cmd, int i)
 {
 	int		ret;
 
+	signal(SIGINT, void_sig);
 	sh->pids[i] = fork();
 	if (sh->pids[i] == 0)
 	{

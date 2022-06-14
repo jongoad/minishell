@@ -6,7 +6,7 @@
 /*   By: iyahoui- <iyahoui-@student.42quebec.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/06/13 16:48:19 by jgoad             #+#    #+#             */
-/*   Updated: 2022/06/14 14:28:02 by iyahoui-         ###   ########.fr       */
+/*   Updated: 2022/06/14 14:33:56 by iyahoui-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -65,7 +65,8 @@ void	reset_shell(t_shell *sh)
 {
 	if (sh->cmds)
 		clean_cmds(sh);
-	signal(SIGQUIT, SIG_IGN);
+	signal(SIGQUIT, void_sig);
+	signal(SIGINT, signal_handler);
 	sh->nb_cmds = 0;
 	sh->cmd_iter = 0;
 	sh->nb_pipes = 0;
