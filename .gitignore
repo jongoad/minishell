@@ -1,4 +1,4 @@
-# Prerequisites
+# Prerequisite
 *.d
 
 # Object files
@@ -59,4 +59,6 @@ minishell
 minishell_bonus
 .minishell_history
 readline*/
-
+test*
+sandbox/
+archive/
