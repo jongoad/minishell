@@ -3,17 +3,17 @@
 /*                                                        :::      ::::::::   */
 /*   wildcard_2.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: iyahoui- <iyahoui-@student.42quebec.com    +#+  +:+       +#+        */
+/*   By: jgoad <jgoad@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/06/09 14:53:42 by jgoad             #+#    #+#             */
-/*   Updated: 2022/06/13 16:45:45 by iyahoui-         ###   ########.fr       */
+/*   Updated: 2022/06/14 14:48:55 by jgoad            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
 /* Open and read directory, returning an array of file names */
-char	**read_directory(char *path)
+char	**read_directory(t_wildcard *wc, char *path)
 {
 	DIR				*fd;
 	struct dirent	*direct;
@@ -31,7 +31,10 @@ char	**read_directory(char *path)
 	}
 	while (direct)
 	{
-		ret = add_str_array(ret, direct->d_name);
+		if (wc->ret_dot)
+			ret = add_str_array(ret, direct->d_name);
+		else if (!wc->ret_dot && direct->d_name[0] != '.')
+			ret = add_str_array(ret, direct->d_name);
 		direct = readdir(fd);
 	}
 	closedir(fd);

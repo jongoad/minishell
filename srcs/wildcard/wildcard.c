@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   wildcard.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: iyahoui- <iyahoui-@student.42quebec.com    +#+  +:+       +#+        */
+/*   By: jgoad <jgoad@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/06/09 14:51:21 by jgoad             #+#    #+#             */
-/*   Updated: 2022/06/13 16:45:45 by iyahoui-         ###   ########.fr       */
+/*   Updated: 2022/06/14 14:50:40 by jgoad            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,6 +44,10 @@ void	check_wildcard(t_cmd *cmd)
 void	init_wildcard(t_wildcard *wc, char *arg)
 {
 	split_path_wildcard(wc, arg);
+	if (wc->str && wc->str[0] == '.')
+		wc->ret_dot = true;
+	else
+		wc->ret_dot = false;
 	wc->ends = ft_xalloc(sizeof(int) * 2);
 	check_ends(wc->str, wc->ends);
 	wc->search = ft_split(wc->str, WILDCARD);
@@ -58,9 +62,9 @@ char	**expand_wildcard(char *arg)
 		return (NULL);
 	init_wildcard(&wc, arg);
 	if (wc.path)
-		wc.output = read_directory(wc.path);
+		wc.output = read_directory(&wc, wc.path);
 	else
-		wc.output = read_directory(".");
+		wc.output = read_directory(&wc, ".");
 	if (!wc.output)
 		return (wildcard_error_return((&wc)));
 	wc.output = search_directory(wc.output, wc.search, wc.ends);

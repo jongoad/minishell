@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: iyahoui- <iyahoui-@student.42quebec.com    +#+  +:+       +#+        */
+/*   By: jgoad <jgoad@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/06/13 19:29:54 by iyahoui-          #+#    #+#             */
-/*   Updated: 2022/06/14 14:34:23 by iyahoui-         ###   ########.fr       */
+/*   Updated: 2022/06/14 14:49:12 by jgoad            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -210,7 +210,7 @@ void		check_ends(char *str, int *ends);
 char		**search_directory(char **direct, char **search, int *ends);
 bool		is_wildcard_match(char *direct, char **search, int *ends);
 int			get_search_tot(char **search);
-char		**read_directory(char *path);
+char		**read_directory(t_wildcard *wc, char *path);
 char		**add_str_array(char **array, char *str);
 void		split_path_wildcard(t_wildcard *wc, char *arg);
 void		add_path_wildcard(char **results, char *path);

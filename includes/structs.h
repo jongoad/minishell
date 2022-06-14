@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   structs.h                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: iyahoui- <iyahoui-@student.42quebec.com    +#+  +:+       +#+        */
+/*   By: jgoad <jgoad@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/06/13 19:21:29 by iyahoui-          #+#    #+#             */
-/*   Updated: 2022/06/13 19:22:12 by iyahoui-         ###   ########.fr       */
+/*   Updated: 2022/06/14 14:44:36 by jgoad            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -126,6 +126,7 @@ typedef struct s_wildcard
 	char	*ret;
 	char	*tmp;
 	char	*p_tmp;
+	bool	ret_dot;
 }	t_wildcard;
 
 #endif
