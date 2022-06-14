@@ -138,7 +138,7 @@ clean_readline:
 				echo "Cleaning readline-8.1 obj files"
 				@make clean -sC readline-8.1
 
-fclean:			clean clean_readline
+fclean:			clean
 				$(RM) $(NAME) $(NAME_BONUS) ~/.inputrc
 
 re:				fclean $(NAME)

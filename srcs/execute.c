@@ -6,7 +6,7 @@
 /*   By: iyahoui- <iyahoui-@student.42quebec.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/06/13 16:46:59 by jgoad             #+#    #+#             */
-/*   Updated: 2022/06/13 19:00:16 by iyahoui-         ###   ########.fr       */
+/*   Updated: 2022/06/14 14:29:45 by iyahoui-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,6 +25,8 @@ static int	handle_error_return(t_shell *sh)
 	{
 		if (WIFEXITED(stat_loc))
 			sh->ret_val = WEXITSTATUS(stat_loc);
+		if (WIFSIGNALED(stat_loc) && WTERMSIG(stat_loc) == SIGQUIT)
+			printf("Quit: 3\n");
 		else if (WTERMSIG(stat_loc))
 			sh->ret_val = 128 + WTERMSIG(stat_loc);
 	}
@@ -43,6 +45,7 @@ void	execute(t_shell *sh)
 		return ;
 	while (i < sh->nb_cmds)
 	{
+		signal(SIGQUIT, signal_handler);
 		check_builtins(sh, sh->cmds[i]);
 		if (BONUS)
 			check_wildcard(sh->cmds[i]);
