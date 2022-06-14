@@ -109,7 +109,7 @@ CFLAGS_BONUS	= -Wall -Wextra -Werror -I./includes/ -I./readline-8.1 -g -D READLI
 #   Makefile rules and targets   #
 #--------------------------------#
 
-all:			readline $(NAME)
+all:			$(NAME)
 				@$(ECHO) Done
 
 $(NAME):		$(OBJS)
