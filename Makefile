@@ -109,7 +109,7 @@ CFLAGS_BONUS	= -Wall -Wextra -Werror -I./includes/ -I./readline-8.1 -g -D READLI
 #   Makefile rules and targets   #
 #--------------------------------#
 
-all:			$(NAME)
+all:			readline $(NAME)
 				@$(ECHO) Done
 
 $(NAME):		$(OBJS)
@@ -117,7 +117,7 @@ $(NAME):		$(OBJS)
 				@$(ECHO) Linking $@
 				@$(CC) $(CFLAGS) -o $(NAME) $(OBJS) -Lreadline-8.1 -lreadline -lcurses
 
-bonus:			$(NAME_BONUS)
+bonus:			readline $(NAME_BONUS)
 				@$(ECHO) Done
 
 $(NAME_BONUS):	$(OBJS_BONUS)
@@ -126,13 +126,19 @@ $(NAME_BONUS):	$(OBJS_BONUS)
 				@$(CC) $(CFLAGS_BONUS) -o $(NAME_BONUS) $(OBJS_BONUS) -Lreadline-8.1 -lreadline -lcurses
 
 readline:
-				@cd readline-8.1 && ./configure
-				@make -sC readline-8.1/
+ifeq (,$(wildcard ./readline-8.1/is_configured))
+	@cd readline-8.1 && ./configure --silent && make -s && touch is_configured
+endif
 
 clean:
 				$(RM) $(OBJ_DIR) $(OBJ_DIR_BONUS)
 
-fclean:			clean
+clean_readline:
+				$(RM) readline-8.1/is_configured
+				echo "Cleaning readline-8.1 obj files"
+				@make clean -sC readline-8.1
+
+fclean:			clean clean_readline
 				$(RM) $(NAME) $(NAME_BONUS) ~/.inputrc
 
 re:				fclean $(NAME)
