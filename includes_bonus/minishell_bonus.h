@@ -1,17 +1,17 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   minishell.h                                        :+:      :+:    :+:   */
+/*   minishell_bonus.h                                  :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: iyahoui- <iyahoui-@student.42quebec.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/06/13 19:29:54 by iyahoui-          #+#    #+#             */
-/*   Updated: 2022/06/16 17:54:25 by iyahoui-         ###   ########.fr       */
+/*   Updated: 2022/06/16 18:03:37 by iyahoui-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#ifndef MINISHELL_H
-# define MINISHELL_H
+#ifndef MINISHELL_BONUS_H
+# define MINISHELL_BONUS_H
 
 /* System includes */
 # include <dirent.h>
@@ -41,12 +41,12 @@
 # include "history.h"
 
 /* User includes */
-# include "colors.h"
-# include "enums.h"
-# include "structs.h"
-# include "library.h"
-# include "error.h"
-# include "get_next_line.h"
+# include "colors_bonus.h"
+# include "enums_bonus.h"
+# include "structs_bonus.h"
+# include "library_bonus.h"
+# include "error_bonus.h"
+# include "get_next_line_bonus.h"
 
 /* Function prototypes */
 void		signal_handler(int signum);
@@ -198,5 +198,26 @@ t_arglst	*ms_lstlast(t_arglst *lst);
 /* Readline functions */
 char		*rl_getline(t_shell *sh);
 void		init_history(t_shell *sh);
+
+/* Wildcard functions */
+void		check_wildcards_debug(t_shell *sh);
+void		check_wildcard(t_cmd *cmd);
+char		**join_array_array(char **arr1, char **arr2);
+char		**expand_wildcard(char *arg);
+void		check_ends(char *str, int *ends);
+char		**search_directory(char **direct, char **search, int *ends);
+bool		is_wildcard_match(char *direct, char **search, int *ends);
+int			get_search_tot(char **search);
+char		**read_directory(t_wildcard *wc, char *path);
+char		**add_str_array(char **array, char *str);
+void		split_path_wildcard(t_wildcard *wc, char *arg);
+void		add_path_wildcard(char **results, char *path);
+char		*ft_strjoin_free_rev(char *s1, char *s2);
+bool		free_return_bool(char *str, bool ret);
+char		**wildcard_error_return(t_wildcard *wc);
+void		init_wildcard(t_wildcard *wc, char *arg);
+bool		check_no_wildcard(t_cmd *cmd);
+char		*replace_wildcard(char *str);
+bool		is_wildcard_match_ends(t_wildcard *wc, char **search, int *ends);
 
 #endif

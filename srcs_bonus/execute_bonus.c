@@ -1,16 +1,16 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   execute.c                                          :+:      :+:    :+:   */
+/*   execute_bonus.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: iyahoui- <iyahoui-@student.42quebec.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/06/13 16:46:59 by jgoad             #+#    #+#             */
-/*   Updated: 2022/06/16 17:57:44 by iyahoui-         ###   ########.fr       */
+/*   Updated: 2022/06/16 18:00:57 by iyahoui-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "minishell.h"
+#include "minishell_bonus.h"
 
 /* Check return values from children and control process waiting */
 static int	handle_error_return(t_shell *sh)
@@ -49,6 +49,7 @@ void	execute(t_shell *sh)
 	{
 		signal(SIGQUIT, signal_handler);
 		check_builtins(sh, sh->cmds[i]);
+		check_wildcard(sh->cmds[i]);
 		if (sh->nb_cmds == 1 && sh->cmds[i]->builtin >= 0)
 			sh->ret_val = run_builtin_parent(sh, sh->cmds[i]);
 		else

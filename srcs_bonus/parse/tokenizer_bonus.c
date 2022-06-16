@@ -1,16 +1,16 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   tokenizer.c                                        :+:      :+:    :+:   */
+/*   tokenizer_bonus.c                                  :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: iyahoui- <iyahoui-@student.42quebec.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/06/13 16:59:59 by jgoad             #+#    #+#             */
-/*   Updated: 2022/06/16 17:55:02 by iyahoui-         ###   ########.fr       */
+/*   Updated: 2022/06/16 18:00:57 by iyahoui-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "minishell.h"
+#include "minishell_bonus.h"
 
 /**
  * @brief 	Set the cl token as a linked list of strings
@@ -29,8 +29,10 @@ void	set_cl_tok(t_arglst **lst, char **line)
 		parse_squotes(lst, line);
 	else if (**line == '$')
 		parse_env_var(lst, line);
+	else if (**line == '*')
+		parse_wildcard(lst, line);
 	else
-		add_token(lst, line, CL_TOK_LIM, false);
+		add_token(lst, line, CL_TOK_LIM_BONUS, false);
 	if (**line && !ft_isspace(**line) && **line != '|')
 		return (add_cl_tok(lst, line));
 	return ;
@@ -47,8 +49,10 @@ void	add_cl_tok(t_arglst **lst, char **line)
 		parse_squotes(lst, line);
 	else if (**line == '$')
 		parse_env_var(lst, line);
+	else if (**line == '*')
+		parse_wildcard(lst, line);
 	else
-		add_token(lst, line, CL_TOK_LIM, false);
+		add_token(lst, line, CL_TOK_LIM_BONUS, false);
 	ms_lstlast(*lst)->is_joined = true;
 	if (**line && !ft_isspace(**line) && **line != '|')
 		return (add_cl_tok(lst, line));

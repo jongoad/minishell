@@ -6,11 +6,11 @@
 /*   By: iyahoui- <iyahoui-@student.42quebec.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/06/13 16:54:58 by jgoad             #+#    #+#             */
-/*   Updated: 2022/06/16 17:52:50 by iyahoui-         ###   ########.fr       */
+/*   Updated: 2022/06/16 18:00:57 by iyahoui-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "minishell.h"
+#include "minishell_bonus.h"
 
 /* Expand an environment variable to its true value */
 char	*expand_env_var(char **envp, char *var_name)
@@ -25,6 +25,13 @@ char	*expand_env_var(char **envp, char *var_name)
 	sh = get_data();
 	if (var_name[0] == '?' && !var_name[1])
 		return (ft_itoa(sh->ret_val));
+	if (var_name[0] == '*' && !var_name[1])
+	{
+		expanded = malloc(2);
+		expanded[0] = WILDCARD;
+		expanded[1] = '\0';
+		return (expanded);
+	}
 	var_len = ft_strlen(var_name);
 	i = -1;
 	while (envp[++i])

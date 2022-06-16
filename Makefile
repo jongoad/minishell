@@ -44,8 +44,6 @@ NAME_BONUS		:= minishell_bonus
 
 CFILES			:=	builtins/builtins_utils.c	builtins/builtins_utils_2.c \
 					builtins/builtins.c			builtins/builtins_2.c \
-					wildcard/wildcard.c			wildcard/wildcard_2.c \
-					wildcard/wildcard_utils.c \
 					parse/add_token.c			parse/args_list.c		parse/tokenizer.c		parse/heredoc.c 		parse/lst_to_str.c \
 					parse/parse_cmds.c			parse/parse_redir.c		parse/parse_token.c		parse/parse_utils.c		parse/parse.c \
 					parse/print_utils.c  \
@@ -57,28 +55,32 @@ CFILES			:=	builtins/builtins_utils.c	builtins/builtins_utils_2.c \
 					signal.c					error.c					cleanup.c				cleanup_2.c				cleanup_3.c \
 
 
-CFILES_BONUS	:=	builtins/builtins_utils.c	builtins/builtins_utils_2.c \
-					builtins/builtins.c			builtins/builtins_2.c \
-					wildcard/wildcard.c			wildcard/wildcard_2.c \
-					wildcard/wildcard_utils.c	\
-					parse/add_token.c			parse/args_list.c		parse/tokenizer.c		parse/heredoc.c 		parse/lst_to_str.c \
-					parse/parse_cmds.c			parse/parse_redir.c		parse/parse_token.c		parse/parse_utils.c		parse/parse.c \
-					parse/print_utils.c \
-					lib/gnl/gnl_utils.c			lib/gnl/gnl.c			lib/array.c				lib/math.c \
-					lib/memory.c				lib/split.c				lib/str_utils.c			lib/str_utils_2.c \
-					lib/str_utils_3.c			lib/str_utils_4.c		lib/write.c \
-					minishell.c					readline.c				init.c					init_2.c \
-					io.c						pipes.c					execute.c				execute_utils.c	\
-					signal.c					error.c					cleanup.c				cleanup_2.c 			cleanup_3.c \
+CFILES_BONUS	:=	builtins/builtins_utils_bonus.c	builtins/builtins_utils_2_bonus.c \
+					builtins/builtins_bonus.c		builtins/builtins_2_bonus.c \
+					wildcard/wildcard_bonus.c		wildcard/wildcard_2_bonus.c \
+					wildcard/wildcard_utils_bonus.c	\
+					parse/add_token_bonus.c			parse/args_list_bonus.c		parse/tokenizer_bonus.c		parse/heredoc_bonus.c 		parse/lst_to_str_bonus.c \
+					parse/parse_cmds_bonus.c		parse/parse_redir_bonus.c	parse/parse_token_bonus.c	parse/parse_utils_bonus.c	parse/parse_bonus.c \
+					parse/print_utils_bonus.c \
+					lib/gnl/gnl_utils_bonus.c		lib/gnl/gnl_bonus.c			lib/array_bonus.c			lib/math_bonus.c \
+					lib/memory_bonus.c				lib/split_bonus.c			lib/str_utils_bonus.c		lib/str_utils_2_bonus.c \
+					lib/str_utils_3_bonus.c			lib/str_utils_4_bonus.c		lib/write_bonus.c \
+					minishell_bonus.c				readline_bonus.c			init_bonus.c				init_2_bonus.c \
+					io_bonus.c						pipes_bonus.c				execute_bonus.c				execute_utils_bonus.c	\
+					signal_bonus.c					error_bonus.c				cleanup_bonus.c				cleanup_2_bonus.c 			cleanup_3_bonus.c \
 
 #---------------------------------------------------------#
 #   Directory information and object directory building   #
 #---------------------------------------------------------#
 
 INC				:= ./includes
+INC_BONUS		:= ./includes_bonus
 
 SRC_DIR			= ./srcs
 SRCS			= $(addprefix $(SRC_DIR)/, $(CFILES))
+
+SRC_DIR_BONUS	= ./srcs_bonus
+SRCS_BONUS		= $(addprefix $(SRC_DIR_BONUS)/, $(CFILES_BONUS))
 
 OBJ_DIR			= ./obj
 OBJS			= $(addprefix $(OBJ_DIR)/, $(CFILES:.c=.o))
@@ -91,7 +93,7 @@ $(OBJ_DIR)/%.o:	$(SRC_DIR)/%.c
 	@$(ECHO) Compiling $@
 	@$(CC) $(CFLAGS) -o $@ -c $<
 
-$(OBJ_DIR_BONUS)/%.o:	$(SRC_DIR)/%.c
+$(OBJ_DIR_BONUS)/%.o:	$(SRC_DIR_BONUS)/%.c
 	@mkdir -p $(@D)
 	@$(ECHO) Compiling $@
 	@$(CC) $(CFLAGS_BONUS) -o $@ -c $<
@@ -102,8 +104,8 @@ $(OBJ_DIR_BONUS)/%.o:	$(SRC_DIR)/%.c
 
 CC				= gcc
 RM				= rm -rf
-CFLAGS			= -Wall -Wextra -Werror -I./includes/ -I./readline-8.1 -g -D READLINE_LIBRARY=1
-CFLAGS_BONUS	= -Wall -Wextra -Werror -I./includes/ -I./readline-8.1 -g -D READLINE_LIBRARY=1 -D BONUS=1
+CFLAGS			= -Wall -Wextra -Werror -I$(INC) -I./readline-8.1 -g -D READLINE_LIBRARY=1
+CFLAGS_BONUS	= -Wall -Wextra -Werror -I$(INC_BONUS) -I./readline-8.1 -g -D READLINE_LIBRARY=1
 
 #--------------------------------#
 #   Makefile rules and targets   #
