@@ -6,7 +6,7 @@
 /*   By: iyahoui- <iyahoui-@student.42quebec.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/06/13 16:59:59 by jgoad             #+#    #+#             */
-/*   Updated: 2022/06/14 14:15:33 by iyahoui-         ###   ########.fr       */
+/*   Updated: 2022/06/16 14:50:30 by iyahoui-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,8 +31,9 @@ void	set_cl_tok(t_arglst **lst, char **line)
 		parse_env_var(lst, line);
 	else
 		add_token(lst, line, CL_TOK_LIM, false);
-	if (**line && !ft_isspace(**line))
+	if (**line && !ft_isspace(**line) && **line != '|')
 		return (add_cl_tok(lst, line));
+	return ;
 }
 
 // Adds tokens that belong together by setting the arglst->is_joined flag
@@ -49,8 +50,9 @@ void	add_cl_tok(t_arglst **lst, char **line)
 	else
 		add_token(lst, line, CL_TOK_LIM, false);
 	ms_lstlast(*lst)->is_joined = true;
-	if (**line && !ft_isspace(**line))
+	if (**line && !ft_isspace(**line) && **line != '|')
 		return (add_cl_tok(lst, line));
+	return ;
 }
 
 /**
@@ -74,8 +76,9 @@ void	set_cl_tok_bonus(t_arglst **lst, char **line)
 		parse_wildcard(lst, line);
 	else
 		add_token(lst, line, CL_TOK_LIM_BONUS, false);
-	if (**line && !ft_isspace(**line))
+	if (**line && !ft_isspace(**line) && **line != '|')
 		return (add_cl_tok_bonus(lst, line));
+	return ;
 }
 
 // Adds tokens that belong together by setting the arglst->is_joined flag
@@ -94,6 +97,7 @@ void	add_cl_tok_bonus(t_arglst **lst, char **line)
 	else
 		add_token(lst, line, CL_TOK_LIM_BONUS, false);
 	ms_lstlast(*lst)->is_joined = true;
-	if (**line && !ft_isspace(**line))
+	if (**line && !ft_isspace(**line) && **line != '|')
 		return (add_cl_tok_bonus(lst, line));
+	return ;
 }
