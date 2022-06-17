@@ -6,7 +6,7 @@
 /*   By: iyahoui- <iyahoui-@student.42quebec.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/06/13 16:54:58 by jgoad             #+#    #+#             */
-/*   Updated: 2022/06/16 17:52:50 by iyahoui-         ###   ########.fr       */
+/*   Updated: 2022/06/17 14:18:26 by iyahoui-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,7 +16,6 @@
 char	*expand_env_var(char **envp, char *var_name)
 {
 	t_shell	*sh;
-	char	*expanded;
 	int		var_len;
 	int		i;
 
