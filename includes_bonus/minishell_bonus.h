@@ -6,7 +6,7 @@
 /*   By: iyahoui- <iyahoui-@student.42quebec.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/06/13 19:29:54 by iyahoui-          #+#    #+#             */
-/*   Updated: 2022/06/16 21:58:21 by iyahoui-         ###   ########.fr       */
+/*   Updated: 2022/06/16 22:40:17 by iyahoui-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -138,6 +138,9 @@ int			validate_input(char *line);
 //	parse.c
 int			parse(t_shell *sh, char *rem_line);
 int			check_parse(t_shell *sh, t_cmd *cmd, char *line);
+
+//	parse_jobs.c
+int			parse_jobs(t_shell *sh, char *line);
 
 //	tokenizer.c
 void		set_cl_tok(t_arglst **lst, char **line);

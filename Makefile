@@ -61,7 +61,7 @@ CFILES_BONUS	:=	builtins/builtins_utils_bonus.c	builtins/builtins_utils_2_bonus.
 					wildcard/wildcard_utils_bonus.c	\
 					parse/add_token_bonus.c			parse/args_list_bonus.c		parse/tokenizer_bonus.c		parse/heredoc_bonus.c 		parse/lst_to_str_bonus.c \
 					parse/parse_cmds_bonus.c		parse/parse_redir_bonus.c	parse/parse_token_bonus.c	parse/parse_utils_bonus.c	parse/parse_bonus.c \
-					parse/print_utils_bonus.c		parse/validate_cli_bonus.c \
+					parse/print_utils_bonus.c		parse/validate_cli_bonus.c  parse/parse_jobs.c \
 					lib/gnl/gnl_utils_bonus.c		lib/gnl/gnl_bonus.c			lib/array_bonus.c			lib/math_bonus.c \
 					lib/memory_bonus.c				lib/split_bonus.c			lib/str_utils_bonus.c		lib/str_utils_2_bonus.c \
 					lib/str_utils_3_bonus.c			lib/str_utils_4_bonus.c		lib/write_bonus.c \

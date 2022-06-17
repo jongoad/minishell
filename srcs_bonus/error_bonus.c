@@ -6,7 +6,7 @@
 /*   By: iyahoui- <iyahoui-@student.42quebec.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/06/13 16:48:00 by jgoad             #+#    #+#             */
-/*   Updated: 2022/06/16 22:08:16 by iyahoui-         ###   ########.fr       */
+/*   Updated: 2022/06/16 23:02:44 by iyahoui-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -61,7 +61,7 @@ int	parse_error(char err_char)
 		printf("minishell: ");
 		if (err_char == '\n')
 			printf("parse error near unexpected token `newline\'\n");
-		else if (err_char == '(')
+		else if (err_char == UNCLOSED_PARENTHESIS)
 			printf("parse error: unclosed parenthesis\n");
 		else if (err_char == EMPTY)
 			printf("parse error: empty parenthesis\n");

@@ -6,7 +6,7 @@
 /*   By: iyahoui- <iyahoui-@student.42quebec.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/06/13 15:57:48 by jgoad             #+#    #+#             */
-/*   Updated: 2022/06/16 22:07:54 by iyahoui-         ###   ########.fr       */
+/*   Updated: 2022/06/16 22:40:40 by iyahoui-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -93,16 +93,17 @@ int	minishell(t_shell *sh)
 		sh->err_char = validate_input(sh->line);
 		if (sh->err_char)
 			sh->ret_val = parse_error(sh->err_char);
-		sh->err_char = parse(sh, sh->line);
-		if (sh->err_char)
-			sh->ret_val = parse_error(sh->err_char);
-		else
-		{
-			cmds_lst_to_str(sh);
-			// print_cmds_info(sh);
-			if (sh->cmds)
-				execute(sh);
-		}
+		sh->err_char = parse_jobs(sh, sh->line);
+		// sh->err_char = parse(sh, sh->line);
+		// if (sh->err_char)
+		// 	sh->ret_val = parse_error(sh->err_char);
+		// else
+		// {
+		// 	cmds_lst_to_str(sh);
+		// 	// print_cmds_info(sh);
+		// 	if (sh->cmds)
+		// 		execute(sh);
+		// }
 		reset_shell(sh);
 	}
 	return (sh->ret_val);

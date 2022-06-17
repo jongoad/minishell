@@ -6,7 +6,7 @@
 /*   By: iyahoui- <iyahoui-@student.42quebec.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/06/13 19:27:08 by iyahoui-          #+#    #+#             */
-/*   Updated: 2022/06/16 18:05:33 by iyahoui-         ###   ########.fr       */
+/*   Updated: 2022/06/16 23:26:25 by iyahoui-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,6 +34,7 @@ int			ft_isspace(char c);
 char		*ft_itoa(int n);
 int			ft_atoi(const char *str);
 char		*ft_strnstr(const char *haystack, const char *needle, size_t len);
+char		*ft_strrchr(char *s, int c);
 
 /* Writing utilities */
 int			putchar_fd(char c, int fd);

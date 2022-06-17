@@ -6,7 +6,7 @@
 /*   By: iyahoui- <iyahoui-@student.42quebec.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/06/13 01:21:37 by iyahoui-          #+#    #+#             */
-/*   Updated: 2022/06/16 18:00:57 by iyahoui-         ###   ########.fr       */
+/*   Updated: 2022/06/16 23:28:48 by iyahoui-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,4 +50,15 @@ int	is_set_ret(char const c, char const *set)
 		i++;
 	}
 	return (-1);
+}
+
+char	*ft_strrchr(char *s, int c)
+{
+	if (!s)
+		return (NULL);
+	while (*s && *s != c)
+		s++;
+	if (c == '\0' || *s)
+		return ((char *) s);
+	return (NULL);
 }
