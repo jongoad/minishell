@@ -6,7 +6,7 @@
 /*   By: iyahoui- <iyahoui-@student.42quebec.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/06/13 16:58:05 by jgoad             #+#    #+#             */
-/*   Updated: 2022/06/16 18:00:57 by iyahoui-         ###   ########.fr       */
+/*   Updated: 2022/06/16 22:21:13 by iyahoui-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,9 +42,7 @@ int	check_parse(t_shell *sh, t_cmd *cmd, char *line)
 	if (!cmd->ins && !cmd->outs && !cmd->args_lst)
 		return (*(line - 1));
 	skip_whitespaces(&line);
-	if (*line == '|')
-		return (*line);
-	else if (!*line)
+	if (!*line)
 		return ('\n');
 	return (parse(sh, line));
 }

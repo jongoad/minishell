@@ -6,7 +6,7 @@
 /*   By: iyahoui- <iyahoui-@student.42quebec.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/06/13 16:48:00 by jgoad             #+#    #+#             */
-/*   Updated: 2022/06/16 18:00:57 by iyahoui-         ###   ########.fr       */
+/*   Updated: 2022/06/16 22:08:16 by iyahoui-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -56,11 +56,17 @@ void	put_err_msg(char *sh_name, char *cmd, char *arg, char *msg)
 /* Parse error printing function */
 int	parse_error(char err_char)
 {
-	putstr_fd("minishell: syntax error near unexpected token `", 2);
-	if (err_char == '\n')
-		write(2, "newline", 7);
-	else
-		write(2, &err_char, 1);
-	write(2, "\'\n", 2);
+	if (err_char)
+	{
+		printf("minishell: ");
+		if (err_char == '\n')
+			printf("parse error near unexpected token `newline\'\n");
+		else if (err_char == '(')
+			printf("parse error: unclosed parenthesis\n");
+		else if (err_char == EMPTY)
+			printf("parse error: empty parenthesis\n");
+		else
+			printf("parse error near unexpected token `%c\'\n", err_char);
+	}
 	return (1);
 }

@@ -6,7 +6,7 @@
 /*   By: iyahoui- <iyahoui-@student.42quebec.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/06/13 19:22:23 by iyahoui-          #+#    #+#             */
-/*   Updated: 2022/06/16 18:04:19 by iyahoui-         ###   ########.fr       */
+/*   Updated: 2022/06/16 22:00:34 by iyahoui-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,6 +27,7 @@
 	ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789"
 # define CL_TOK_LIM_BONUS "* \n\t\v\r\f<>|$\"\'"
 # define CL_SPEC_CH_BONUS "*\"\'$"
+
 # define HEREDOC_PATH "/tmp/heredoc"
 # define HIST_LOG ".minishell_history"
 # define WILDCARD 26
@@ -35,16 +36,13 @@
 #  define BONUS 0
 # endif
 
-/* Parsing result flags */
-typedef enum e_parse
+/* validate.c flags */
+typedef enum e_validation_states
 {
-	INVALID = 0,
-	CMD = 1,
-	REDIR = 2,
-	ENV_VAR = 3,
-	INFILE = 4,
-	OUTFILE = 5
-}	t_parse_enum;
+	VALID = 0,
+	EMPTY = 1,
+	REDIR = 2
+}	t_validation_states;
 
 /* Builtin command flags */
 typedef enum e_builtin

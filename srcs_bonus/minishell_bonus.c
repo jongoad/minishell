@@ -6,7 +6,7 @@
 /*   By: iyahoui- <iyahoui-@student.42quebec.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/06/13 15:57:48 by jgoad             #+#    #+#             */
-/*   Updated: 2022/06/16 18:00:57 by iyahoui-         ###   ########.fr       */
+/*   Updated: 2022/06/16 22:07:54 by iyahoui-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -63,6 +63,9 @@ void	run_single_command(t_shell *sh)
 {
 	int		ret;
 
+	ret = validate_input(sh->line);
+	if (ret)
+		ret = parse_error(ret);
 	ret = parse(sh, sh->line);
 	if (ret)
 		ret = parse_error(ret);
@@ -87,6 +90,9 @@ int	minishell(t_shell *sh)
 		sh->cmd_line = false;
 		if (!sh->line)
 			readline_exit(sh);
+		sh->err_char = validate_input(sh->line);
+		if (sh->err_char)
+			sh->ret_val = parse_error(sh->err_char);
 		sh->err_char = parse(sh, sh->line);
 		if (sh->err_char)
 			sh->ret_val = parse_error(sh->err_char);

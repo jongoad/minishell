@@ -6,7 +6,7 @@
 /*   By: iyahoui- <iyahoui-@student.42quebec.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/06/13 19:21:29 by iyahoui-          #+#    #+#             */
-/*   Updated: 2022/06/16 18:05:43 by iyahoui-         ###   ########.fr       */
+/*   Updated: 2022/06/16 21:55:47 by iyahoui-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -120,6 +120,7 @@ struct s_job
 	t_cmd	**cmds;
 	t_job	*next;
 	pid_t	*pids;
+	int		*pipes;
 	char	*operator;
 	int		nb_cmds;
 	int		ret_val;

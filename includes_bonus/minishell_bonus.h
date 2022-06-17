@@ -6,7 +6,7 @@
 /*   By: iyahoui- <iyahoui-@student.42quebec.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/06/13 19:29:54 by iyahoui-          #+#    #+#             */
-/*   Updated: 2022/06/16 18:03:37 by iyahoui-         ###   ########.fr       */
+/*   Updated: 2022/06/16 21:58:21 by iyahoui-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -131,6 +131,9 @@ void		clean_fork(t_shell *sh, t_cmd *cmd);
 void		reset_shell(t_shell *sh);
 
 /* Parsing functions */
+
+//	validate.c
+int			validate_input(char *line);
 
 //	parse.c
 int			parse(t_shell *sh, char *rem_line);
