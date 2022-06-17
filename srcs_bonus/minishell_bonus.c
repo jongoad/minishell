@@ -6,7 +6,7 @@
 /*   By: iyahoui- <iyahoui-@student.42quebec.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/06/13 15:57:48 by jgoad             #+#    #+#             */
-/*   Updated: 2022/06/17 12:36:11 by iyahoui-         ###   ########.fr       */
+/*   Updated: 2022/06/17 15:06:07 by iyahoui-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -73,7 +73,7 @@ void	run_single_command(t_shell *sh)
 	{
 		cmds_lst_to_str(sh);
 		if (sh->cmds)
-			execute(sh);
+			execute(sh, true);
 		ret = sh->ret_val;
 	}
 	cleanup(sh);
@@ -104,7 +104,7 @@ int	minishell(t_shell *sh)
 		// 	cmds_lst_to_str(sh);
 		// 	// print_cmds_info(sh);
 		// 	if (sh->cmds)
-		// 		execute(sh);
+		// 		execute(sh, false);
 		// }
 		reset_shell(sh);
 	}

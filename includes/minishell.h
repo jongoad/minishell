@@ -6,7 +6,7 @@
 /*   By: iyahoui- <iyahoui-@student.42quebec.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/06/13 19:29:54 by iyahoui-          #+#    #+#             */
-/*   Updated: 2022/06/16 17:54:25 by iyahoui-         ###   ########.fr       */
+/*   Updated: 2022/06/17 15:04:38 by iyahoui-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -67,8 +67,8 @@ void		init_path(t_shell *sh);
 void		init_pwd(t_shell *sh);
 
 /* Execution functions */
-void		execute(t_shell *sh);
-void		run_cmd(t_shell *sh, t_cmd *cmd, int i);
+void		execute(t_shell *sh, bool interpret_mode);
+void		run_cmd(t_shell *sh, t_cmd *cmd, int i, bool interpret_mode);
 void		run_cmd_external(t_shell *sh, t_cmd *cmd);
 int			check_builtins(t_shell *sh, t_cmd *cmd);
 int			run_builtin_parent(t_shell *sh, t_cmd *cmd);

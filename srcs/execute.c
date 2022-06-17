@@ -6,7 +6,7 @@
 /*   By: iyahoui- <iyahoui-@student.42quebec.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/06/13 16:46:59 by jgoad             #+#    #+#             */
-/*   Updated: 2022/06/16 17:57:44 by iyahoui-         ###   ########.fr       */
+/*   Updated: 2022/06/17 15:05:30 by iyahoui-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,10 +36,12 @@ static int	handle_error_return(t_shell *sh)
 }
 
 /* Control function for executing commands */
-void	execute(t_shell *sh)
+void	execute(t_shell *sh, bool interpret_mode)
 {
 	int	i;
 
+	if (!interpret_mode)
+		signal(SIGINT, void_sig);
 	i = 0;
 	sh->cmd_iter = 0;
 	sh->pids = ft_xalloc(sizeof(pid_t) * sh->nb_cmds);
@@ -47,12 +49,11 @@ void	execute(t_shell *sh)
 		return ;
 	while (i < sh->nb_cmds)
 	{
-		signal(SIGQUIT, signal_handler);
 		check_builtins(sh, sh->cmds[i]);
 		if (sh->nb_cmds == 1 && sh->cmds[i]->builtin >= 0)
 			sh->ret_val = run_builtin_parent(sh, sh->cmds[i]);
 		else
-			run_cmd(sh, sh->cmds[i], i);
+			run_cmd(sh, sh->cmds[i], i, interpret_mode);
 		close_files(sh->cmds[i]);
 		i++;
 		sh->cmd_iter++;
@@ -64,11 +65,12 @@ void	execute(t_shell *sh)
 }
 
 /* Fork process and run a command */
-void	run_cmd(t_shell *sh, t_cmd *cmd, int i)
+void	run_cmd(t_shell *sh, t_cmd *cmd, int i, bool interpret_mode)
 {
 	int		ret;
 
-	signal(SIGINT, void_sig);
+	if (!interpret_mode)
+		signal(SIGQUIT, signal_handler);
 	sh->pids[i] = fork();
 	if (sh->pids[i] == 0)
 	{
