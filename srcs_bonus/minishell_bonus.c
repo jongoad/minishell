@@ -6,7 +6,7 @@
 /*   By: iyahoui- <iyahoui-@student.42quebec.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/06/13 15:57:48 by jgoad             #+#    #+#             */
-/*   Updated: 2022/06/16 22:40:40 by iyahoui-         ###   ########.fr       */
+/*   Updated: 2022/06/17 12:36:11 by iyahoui-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,8 +17,8 @@ int	main(int argc, char *argv[], char **envp)
 	t_shell	*sh;
 	int		ret;
 
-	signal(SIGINT, signal_handler);
-	signal(SIGQUIT, SIG_IGN);
+	// signal(SIGINT, signal_handler);
+	// signal(SIGQUIT, SIG_IGN);
 	sh = NULL;
 	sh = init_shell(sh, argv, envp);
 	if (argc > 1)
@@ -83,6 +83,8 @@ void	run_single_command(t_shell *sh)
 /* Container function for one iteration (loop) of shell */
 int	minishell(t_shell *sh)
 {
+	signal(SIGINT, signal_handler);
+	signal(SIGQUIT, SIG_IGN);
 	while (1)
 	{
 		if (!sh->cmd_line)
