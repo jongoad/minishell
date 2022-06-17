@@ -6,7 +6,7 @@
 /*   By: iyahoui- <iyahoui-@student.42quebec.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/06/13 01:21:37 by iyahoui-          #+#    #+#             */
-/*   Updated: 2022/06/16 23:28:48 by iyahoui-         ###   ########.fr       */
+/*   Updated: 2022/06/17 15:55:39 by iyahoui-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -52,13 +52,31 @@ int	is_set_ret(char const c, char const *set)
 	return (-1);
 }
 
-char	*ft_strrchr(char *s, int c)
+char	*ft_strchr(char *s, int c)
 {
 	if (!s)
 		return (NULL);
 	while (*s && *s != c)
 		s++;
 	if (c == '\0' || *s)
+		return ((char *) s);
+	return (NULL);
+}
+
+char	*ft_strrchr(char *s, int c)
+{
+	char	*ptr;
+
+	ptr = s;
+	if (!s)
+		return (NULL);
+	while (*s)
+		s++;
+	if (c == '\0')
+		return ((char *) s);
+	while (s != ptr && *s != c)
+		s--;
+	if (s != ptr)
 		return ((char *) s);
 	return (NULL);
 }

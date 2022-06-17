@@ -6,7 +6,7 @@
 /*   By: iyahoui- <iyahoui-@student.42quebec.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/06/13 19:22:23 by iyahoui-          #+#    #+#             */
-/*   Updated: 2022/06/16 23:09:50 by iyahoui-         ###   ########.fr       */
+/*   Updated: 2022/06/17 18:15:54 by iyahoui-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,10 +40,13 @@
 typedef enum e_validation_states
 {
 	VALID = 0,
-	EMPTY = 0x1,
+	EMPTY_ARG = 0x1,
 	REDIR = 0x2,
 	PARENTHESIS = 0x4,
-	UNCLOSED_PARENTHESIS = 0x8
+	UNCLOSED_PARENTHESIS = 0x8,
+	DQUOTE = 0x10,
+	SQUOTE = 0x20,
+	REDIR_CHAR = 0x40
 }	t_validation_states;
 
 /* Builtin command flags */
