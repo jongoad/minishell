@@ -138,7 +138,6 @@ int	validate_char(char **line, int *state)
 	ret = validate_redir(line, state);
 	if (ret)
 		return (ret);
-
 	/* Note: the current parsing seems to have issues with the states. 
 		I need to review when to add a state and when to replace it. */
 
