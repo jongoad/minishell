@@ -1,6 +1,10 @@
 #include "minishell_bonus.h"
 
-void	skip_quotes(char **line)
+#define IGREEN "\033[38;5;10m"
+#define IRED "\033[38;5;9m"
+#define RESET_COL "\033[0m"
+
+int	skip_quotes(char **line)
 {
 	char	*ptr;
 	char	c;
@@ -12,6 +16,9 @@ void	skip_quotes(char **line)
 		if (ptr)
 			*line = ptr;
 	}
+	else
+		return (0);
+	return (1);
 }
 
 int	validate_parenthesis_contents(char *open_par_pos, int len)
@@ -20,28 +27,36 @@ int	validate_parenthesis_contents(char *open_par_pos, int len)
 	char	*ptr;
 	int		ret;
 
-	parenthesis_contents = ft_xalloc(len + 1);
-	parenthesis_contents = ft_strncpy(parenthesis_contents, open_par_pos, len);
+	parenthesis_contents = ft_xalloc(len);
+	parenthesis_contents = ft_strncpy(parenthesis_contents, open_par_pos, len - 1); // to discard trailing `)'
+	printf("%s:%d : len = %d\n", __FUNCTION__, __LINE__, len);
+	len--;
+	while (ft_isspace(open_par_pos[len]) && len)
+		len--;
+	if (!len)
+		return (EMPTY_ARG);
 	ret = validate_input(parenthesis_contents);
 	printf("%s:%d : parenthesis contents: %s\nret = %d\n", __FUNCTION__, __LINE__, parenthesis_contents, ret);
 	free(parenthesis_contents);
 	parenthesis_contents = NULL;
 	if (ret)
-		return (ret);
+		return ((ret == '\n') * ')' + ret);		// to account for nested parsing
+	
 	ptr = open_par_pos + len + 1;
+	printf("%s:%d : ptr = %s\n", __FUNCTION__, __LINE__, ptr);
 	return (0);
 }
 
 int	validate_parenthesis(char **line, int *state)
 {
-	char	*ptr;
+	char	*parenthesis;
 	int		open_parentheses;
 	
 	if (**line != '(')
 		return (0);
 	open_parentheses = 0;
-	ptr = *line;
-	if (!(*state & EMPTY_ARG))
+	parenthesis = *line + 1;	// to discard leading `('
+	if (!(*state & EMPTY_ARG) && !(*state & REDIR))
 	{
 		printf("error : parenthesis reached while state = %d\n", *state);
 		return (**line);
@@ -54,15 +69,40 @@ int	validate_parenthesis(char **line, int *state)
 			open_parentheses -= 1;
 		if (open_parentheses < 0)
 			return (**line);
-		else if (open_parentheses == 0)
-			break ;
 		skip_quotes(line);
 		*line += 1;
+		if (open_parentheses == 0)
+			break ;
 	}
 	if (open_parentheses > 0)
 		return (UNCLOSED_PARENTHESIS);
 	*state = PARENTHESIS;
-	return (validate_parenthesis_contents(ptr, *line - ptr));
+	return (validate_parenthesis_contents(parenthesis, *line - parenthesis));
+}
+
+int	validate_redir(char **line, int *state)
+{
+	if (!is_set(**line, "<>"))
+		return (0);
+	printf("%s:%d : line = %s\n", __FUNCTION__, __LINE__, *line);
+	*line += 1;
+	if (*(*line - 1) == **line)
+		*line += 1;
+	skip_whitespaces(line);
+	while (**line)
+	{
+		if (skip_quotes(line))
+			*state |= REDIR;
+		else if (ft_isspace(**line) || is_set(**line, "()<>&|"))
+			break;
+		else
+			*state |= REDIR;
+		*line += 1;
+	}
+	if (!(*state & REDIR))
+		return (**line + (!**line) * '\n');
+	return (0);
+	
 }
 
 int	validate_char(char **line, int *state)
@@ -80,60 +120,62 @@ int	validate_char(char **line, int *state)
 	/* endcase */
 
 	/* Check validity statement; should be a function call */
-	if ((is_set(**line, "|&") && ((*state & EMPTY_ARG) || (*state & REDIR_CHAR)))
-		|| (is_set(**line, "><") && (*state & REDIR_CHAR))
-		|| (**line == '&' && *(*line + 1) != '&'))
+	if ((**line == '&' && *(*line + 1) != '&'))
 		return (**line);
 	/* endcase */
 
 	/* Special char check */
-	else if (is_set(**line, "><") || is_set(**line, "|&"))
+	else if (is_set(**line, "|&"))
 	{
-		if (((*state & EMPTY_ARG) || (*state & REDIR_CHAR)) && is_set(**line, "|&"))	// If new_token is hit, but last one is not valid
+		if (((*state & EMPTY_ARG) && !(*state & REDIR)))	// If new_token is hit, but last one is not valid
 			return (**line);
-		*state = EMPTY_ARG * is_set(**line, "|&");
-		*state |= REDIR_CHAR * is_set(**line, "><");
+		*state = EMPTY_ARG;
 		printf("%s:%d : char = %c, state = %d\n", __FUNCTION__, __LINE__, **line, *state);
 		if (*(*line + 1) == **line)
 			*line += 1;
 	}
 	/* endcase */
-	
+	ret = validate_redir(line, state);
+	if (ret)
+		return (ret);
+
+	/* Note: the current parsing seems to have issues with the states. 
+		I need to review when to add a state and when to replace it. */
+
+	if ((*state & PARENTHESIS) && !ft_isspace(**line) && **line && !is_set(**line, "()<>&|"))
+		return (**line);
+
 	/* Validity check needs to be a little more convoluted to encapsulate redirections but NOTHING else */
 	else if (!ft_isspace(**line) && **line && !is_set(**line, "()<>&|"))
+	{
+		*state &= ~(EMPTY_ARG);
 		*state = VALID;
+	}
 	return (0);
 }
 
 int	validate_input(char *line)
 {
-	int	state;
-	int	ret;
-
-	/** Idea : parenthesis validation should be done in a roundabout way ;
-			Each open parenthesis should be matched to a validate_parenthesis() call, 
-				which checks that the amount of closed parentheses is at least equal to the amount of open ones.
-			This way, validate_char() can simply return an error when it sees a ')',
-				as validate_parenthesis() should have moved the line pointer past its own sets of brackets
-	**/
+	char	*line_ptr;
+	int		state;
+	int		ret;
 
 	if (!line)
 		return (-1);
-	skip_whitespaces(&line);
-	if (!*line)
+	line_ptr = line;
+	skip_whitespaces(&line_ptr);
+	if (!*line_ptr)
 		return (0);
 	state = EMPTY_ARG;
-	while (*line)
+	while (*line_ptr)
 	{
-		ret = validate_char(&line, &state);
+		ret = validate_char(&line_ptr, &state);
 		printf("ret = %d\n", ret);
 		if (ret)
 			return (ret);
-		if (*line)
-			line++;
+		if (*line_ptr)
+			line_ptr++;
 	}
-	if ((state & EMPTY_ARG) || (state & REDIR_CHAR))
-		return ('\n');
-	printf("line is valid\n");
+	printf(IGREEN"-------------line is valid--------------"RESET_COL"\n");
 	return (0);
 }

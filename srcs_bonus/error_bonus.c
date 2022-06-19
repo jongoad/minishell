@@ -6,7 +6,7 @@
 /*   By: iyahoui- <iyahoui-@student.42quebec.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/06/13 16:48:00 by jgoad             #+#    #+#             */
-/*   Updated: 2022/06/17 18:15:54 by iyahoui-         ###   ########.fr       */
+/*   Updated: 2022/06/19 17:20:41 by iyahoui-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -58,7 +58,7 @@ int	parse_error(char err_char)
 {
 	if (err_char)
 	{
-		printf("minishell: ");
+		printf("\033[38;5;9mminishell: ");
 		if (err_char == '\n')
 			printf("parse error near unexpected token `newline\'\n");
 		else if (err_char == UNCLOSED_PARENTHESIS)
@@ -69,6 +69,7 @@ int	parse_error(char err_char)
 			printf("parse error: empty token\n");
 		else
 			printf("parse error near unexpected token `%c\'\n", err_char);
+		printf("\033[0m\n");
 	}
 	return (1);
 }
