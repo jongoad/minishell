@@ -6,7 +6,7 @@
 /*   By: iyahoui- <iyahoui-@student.42quebec.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/06/13 19:21:29 by iyahoui-          #+#    #+#             */
-/*   Updated: 2022/06/16 21:55:47 by iyahoui-         ###   ########.fr       */
+/*   Updated: 2022/06/19 22:59:40 by iyahoui-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -97,6 +97,7 @@ struct s_shell
 {
 	t_env		env;
 	t_builtin	builtins;
+	t_jobs		*jobs;
 	t_cmd		**cmds;
 	pid_t		*pids;
 	char		*line;
@@ -121,7 +122,7 @@ struct s_job
 	t_job	*next;
 	pid_t	*pids;
 	int		*pipes;
-	char	*operator;
+	char	operator;
 	int		nb_cmds;
 	int		ret_val;
 };

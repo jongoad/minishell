@@ -143,6 +143,13 @@ int			check_parse(t_shell *sh, t_cmd *cmd, char *line);
 //	parse_jobs.c
 int			parse_jobs(t_shell *sh, char *line);
 
+//	job_lst_utils.c
+void	ms_jobadd(t_job **lst, t_job *new);
+t_job	*ms_jobnew(t_cmd **cmds, char operator);
+void	ms_jobclear(t_job **lst);
+void	ms_jobdelone(t_job *lst);
+t_job	*ms_joblast(t_job *lst);
+
 //	tokenizer.c
 void		set_cl_tok(t_arglst **lst, char **line);
 void		add_cl_tok(t_arglst **lst, char **line);

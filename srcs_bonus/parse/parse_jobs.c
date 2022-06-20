@@ -12,11 +12,6 @@ char	*get_job_string(char **line)
 	while (*ptr && *ptr != '&' && !(*ptr == '|' && *(ptr + 1) == '|'))
 	{
 		printf("ptr = %c\n", *ptr);
-		// Deal with parentheses
-		// For redirections after parenthesis, simply run parse() three times.
-		//	Once for the content of the parenthesis
-		//	Once for redirections before
-		//	Once for redirections after
 		ptr++;
 	}
 	job_len = ptr - *line;
@@ -29,36 +24,50 @@ char	*get_job_string(char **line)
 	return (job);
 }
 
+void	steal_job(sh, line)
+{
+
+}
+
 int	parse_jobs(t_shell *sh, char *line)
 {
-	char	*job;
+	char	*job_string;
+	char	*job_ptr;
+	char	*line_ptr;
 	int		i;
 
-	if (line)
-		skip_whitespaces(&line);
 	if (!line || !*line)
 		return (EXIT_SUCCESS);
+	line_ptr = line;
+	if (line_ptr)
+		skip_whitespaces(&line_ptr);
 	i = 0;
-	job = get_job_string(&line);
-	while (job)
+	while (job_string)
 	{
-		printf("job[%d] = %s\n", i++, job);
-		free(job);
-		while (*line == '&' || *line == '|')
-			line++;
-		job = get_job_string(&line);
+		job_string = get_job_string(&line_ptr);
+		parse(sh, job_string);
+		printf("job[%d] = %s\n", i++, job_string);
+
+		/* This is the risky part, literally just taking cmds and storing it in jobs
+			The idea is to simply replace cmds->pointer by jobs */
+		ms_jobadd(&sh->jobs, ms_jobnew(sh->cmds, *line_ptr));
+		sh->cmds = NULL;
+		free(job_string);
+		while (*line_ptr == '&' || *line_ptr == '|')
+			line_ptr++;
+		job = get_job_string(&line_ptr);
 	}
-	printf("job[%d] = %s\n", i++, job);
-	free(job);
-	job = get_job_string(&line);
-	printf("job[%d] = %s\n", i++, job);
-	free(job);
-	job = get_job_string(&line);
-	printf("job[%d] = %s\n", i++, job);
-	free(job);
-	job = get_job_string(&line);
-	printf("job[%d] = %s\n", i++, job);
-	free(job);
-	(void)sh;
+	// printf("job[%d] = %s\n", i++, job);
+	// free(job);
+	// job = get_job_string(&line);
+	// printf("job[%d] = %s\n", i++, job);
+	// free(job);
+	// job = get_job_string(&line);
+	// printf("job[%d] = %s\n", i++, job);
+	// free(job);
+	// job = get_job_string(&line);
+	// printf("job[%d] = %s\n", i++, job);
+	// free(job);
+	// (void)sh;
 	return (0);
 }
