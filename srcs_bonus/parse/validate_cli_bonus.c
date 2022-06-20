@@ -4,23 +4,6 @@
 #define IRED "\033[38;5;9m"
 #define RESET_COL "\033[0m"
 
-int	skip_quotes(char **line)
-{
-	char	*ptr;
-	char	c;
-
-	c = **line;
-	if (is_set(c, "\"\'"))
-	{
-		ptr = ft_strchr(*line + 1, c);
-		if (ptr)
-			*line = ptr;
-	}
-	else
-		return (0);
-	return (1);
-}
-
 int	validate_parenthesis_contents(char *open_par_pos, int len)
 {
 	char	*parenthesis_contents;
@@ -138,9 +121,9 @@ int	validate_char(char **line, int *state)
 	ret = validate_redir(line, state);
 	if (ret)
 		return (ret);
+
 	/* Note: the current parsing seems to have issues with the states. 
 		I need to review when to add a state and when to replace it. */
-
 	if ((*state & PARENTHESIS) && !ft_isspace(**line) && **line && !is_set(**line, "()<>&|"))
 		return (**line);
 
@@ -173,14 +156,14 @@ int	validate_input(char *line)
 		ret = validate_char(&line_ptr, &state);
 		if (state)
 			empty_line = false;
-		printf("ret = %d\n", ret);
+		printf("ret for *line = %c = %d\n", *line_ptr, ret);
 		if (ret)
 			return (ret);
 		if (*line_ptr)
 			line_ptr++;
 	}
 	if (!empty_line && (state & EMPTY_ARG) && !(state & REDIR))
-		return ((ret == '\n') * ')' + ret);
+		return ('\n');
 	printf(IGREEN"-------------line is valid--------------"RESET_COL"\n");
 	return (0);
 }

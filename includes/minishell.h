@@ -6,7 +6,7 @@
 /*   By: iyahoui- <iyahoui-@student.42quebec.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/06/13 19:29:54 by iyahoui-          #+#    #+#             */
-/*   Updated: 2022/06/17 15:04:38 by iyahoui-         ###   ########.fr       */
+/*   Updated: 2022/06/20 17:21:45 by iyahoui-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -137,8 +137,8 @@ int			parse(t_shell *sh, char *rem_line);
 int			check_parse(t_shell *sh, t_cmd *cmd, char *line);
 
 //	tokenizer.c
-void		set_cl_tok(t_arglst **lst, char **line);
-void		add_cl_tok(t_arglst **lst, char **line);
+void		tokenize(t_arglst **lst, char **line);
+void		add_to_token(t_arglst **lst, char **line);
 
 //	parse_token.c
 void		parse_dquotes(t_arglst **lst, char **line);

@@ -6,7 +6,7 @@
 /*   By: iyahoui- <iyahoui-@student.42quebec.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/06/13 16:59:59 by jgoad             #+#    #+#             */
-/*   Updated: 2022/06/16 17:55:02 by iyahoui-         ###   ########.fr       */
+/*   Updated: 2022/06/20 17:21:45 by iyahoui-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,7 +19,7 @@
  * @param lst	The address of the linked list to which the token will be added
  * @param line 	The pointer to the beginning of the token
  */
-void	set_cl_tok(t_arglst **lst, char **line)
+void	tokenize(t_arglst **lst, char **line)
 {
 	if (!line || !*line)
 		return ;
@@ -32,12 +32,12 @@ void	set_cl_tok(t_arglst **lst, char **line)
 	else
 		add_token(lst, line, CL_TOK_LIM, false);
 	if (**line && !ft_isspace(**line) && **line != '|')
-		return (add_cl_tok(lst, line));
+		return (add_to_token(lst, line));
 	return ;
 }
 
 // Adds tokens that belong together by setting the arglst->is_joined flag
-void	add_cl_tok(t_arglst **lst, char **line)
+void	add_to_token(t_arglst **lst, char **line)
 {
 	if (!line || !*line)
 		return ;
@@ -51,6 +51,6 @@ void	add_cl_tok(t_arglst **lst, char **line)
 		add_token(lst, line, CL_TOK_LIM, false);
 	ms_lstlast(*lst)->is_joined = true;
 	if (**line && !ft_isspace(**line) && **line != '|')
-		return (add_cl_tok(lst, line));
+		return (add_to_token(lst, line));
 	return ;
 }

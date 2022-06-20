@@ -1,6 +1,22 @@
 #include "minishell_bonus.h"
 
-char	*get_ms_job_string(char **line)
+int	get_job_len(char *str)
+{
+	int	len;
+
+	len = 0;
+	while (*str)
+	{
+		skip_quotes(&str);
+		if (*str == '(')
+			str += get_parenthesis_len(str);
+		*ptr != '&' && !(*ptr == '|' && *(ptr + 1) == '|')
+		str++;
+		len++;
+	}
+}
+
+char	*get_job_string(char **line)
 {
 	char	*ptr;
 	char	*job;
@@ -10,10 +26,7 @@ char	*get_ms_job_string(char **line)
 		return (NULL);
 	ptr = *line;
 	while (*ptr && *ptr != '&' && !(*ptr == '|' && *(ptr + 1) == '|'))
-	{
-		printf("ptr = %c\n", *ptr);
 		ptr++;
-	}
 	job_len = ptr - *line;
 	job = ft_xalloc(job_len + 1);
 	printf("job_len = %d\n", job_len);
@@ -31,6 +44,7 @@ void	steal_job(t_shell *sh, char *line)
 	new = ms_jobnew(sh->cmds, sh->nb_cmds, *line);
 	ms_jobadd(&sh->jobs, new);
 	sh->cmds = NULL;
+	sh->nb_cmds = 0;
 }
 
 int	parse_jobs(t_shell *sh, char *line)
@@ -45,7 +59,11 @@ int	parse_jobs(t_shell *sh, char *line)
 	if (line_ptr)
 		skip_whitespaces(&line_ptr);
 	i = 0;
-	job_string = get_ms_job_string(&line_ptr);
+	job_string = get_job_string(&line_ptr);
+
+	/* FIXME: parse_jobs needs to keep parentheses intact, but tokenize their contents accordingly
+		i.e. by matching the outermost bracket level */
+	
 	while (job_string)
 	{
 		parse(sh, job_string);
@@ -58,17 +76,5 @@ int	parse_jobs(t_shell *sh, char *line)
 			line_ptr++;
 		job_string = get_ms_job_string(&line_ptr);
 	}
-	// printf("job[%d] = %s\n", i++, job);
-	// free(job);
-	// job = get_ms_job_string(&line);
-	// printf("job[%d] = %s\n", i++, job);
-	// free(job);
-	// job = get_ms_job_string(&line);
-	// printf("job[%d] = %s\n", i++, job);
-	// free(job);
-	// job = get_ms_job_string(&line);
-	// printf("job[%d] = %s\n", i++, job);
-	// free(job);
-	// (void)sh;
 	return (0);
 }

@@ -6,7 +6,7 @@
 /*   By: iyahoui- <iyahoui-@student.42quebec.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/06/13 16:58:16 by jgoad             #+#    #+#             */
-/*   Updated: 2022/06/16 18:00:57 by iyahoui-         ###   ########.fr       */
+/*   Updated: 2022/06/20 17:21:12 by iyahoui-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -54,7 +54,7 @@ void	add_cmd_arg(t_cmd *cmd, char **line)
 	while (++i < cmd->nb_args)
 		new_arr[i] = cmd->args_lst[i];
 	lst = NULL;
-	set_cl_tok(&lst, line);
+	tokenize(&lst, line);
 	new_arr[i++] = lst;
 	new_arr[i] = NULL;
 	free(cmd->args_lst);

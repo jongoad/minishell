@@ -6,7 +6,7 @@
 /*   By: iyahoui- <iyahoui-@student.42quebec.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/06/13 16:58:55 by jgoad             #+#    #+#             */
-/*   Updated: 2022/06/16 18:00:57 by iyahoui-         ###   ########.fr       */
+/*   Updated: 2022/06/20 17:18:11 by iyahoui-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -71,4 +71,23 @@ void	parse_wildcard(t_arglst **lst, char **line)
 	add_token_by_len(lst, line, 1, true);
 	while (**line && **line == '*')
 		*line += 1;
+}
+
+void	parse_parenthesis(t_arglst **lst, char **line)
+{
+	t_shell	*sh;
+	char	*arg;
+	int		parenthesis_len;
+
+	sh = get_data();
+	arg = ft_strdup(sh->ms_path);
+	ms_lstadd(lst, ms_lstnew(arg, false));
+	arg = ft_strdup("-c");
+	ms_lstadd(lst, ms_lstnew(arg, false));
+	parenthesis_len = get_parenthesis_len(*line);
+	arg = ft_xalloc(parenthesis_len - 1);
+	arg = ft_strncpy(arg, *(line + 1), parenthesis_len - 2);
+	printf("%s:%d : parenthesis contents: %s\n", __FUNCTION__, __LINE__, arg);
+	ms_lstadd(lst, ms_lstnew(arg, false));
+	return ;
 }

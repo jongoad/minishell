@@ -151,14 +151,15 @@ void		ms_jobclear(t_ms_job **lst);
 void		ms_jobdelone(t_ms_job *lst);
 
 //	tokenizer.c
-void		set_cl_tok(t_arglst **lst, char **line);
-void		add_cl_tok(t_arglst **lst, char **line);
+void		tokenize(t_arglst **lst, char **line);
+void		add_to_token(t_arglst **lst, char **line);
 
 //	parse_token.c
 void		parse_dquotes(t_arglst **lst, char **line);
 void		parse_squotes(t_arglst **lst, char **line);
 void		parse_env_var(t_arglst **lst, char **line);
 void		parse_wildcard(t_arglst **lst, char **line);
+void		parse_parenthesis(t_arglst **lst, char **line);
 
 //	add_token.c
 void		add_token(
@@ -180,8 +181,10 @@ void		cmds_lst_to_str(t_shell *sh);
 
 //	parse_utils.c
 void		skip_whitespaces(char **line);
+int			skip_quotes(char **line);
 int			get_tok_len(char *token, char *delimiters);
 int			get_tok_len_set(char *token, char *set);
+int			get_parenthesis_len(char *line);
 
 //	parse_redir.c
 int			parse_redir(t_cmd *cmd, char **line);
