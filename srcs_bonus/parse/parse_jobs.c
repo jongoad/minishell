@@ -1,6 +1,6 @@
 #include "minishell_bonus.h"
 
-char	*get_job_string(char **line)
+char	*get_ms_job_string(char **line)
 {
 	char	*ptr;
 	char	*job;
@@ -24,15 +24,18 @@ char	*get_job_string(char **line)
 	return (job);
 }
 
-void	steal_job(sh, line)
+void	steal_job(t_shell *sh, char *line)
 {
+	t_ms_job	*new;
 
+	new = ms_jobnew(sh->cmds, sh->nb_cmds, *line);
+	ms_jobadd(&sh->jobs, new);
+	sh->cmds = NULL;
 }
 
 int	parse_jobs(t_shell *sh, char *line)
 {
 	char	*job_string;
-	char	*job_ptr;
 	char	*line_ptr;
 	int		i;
 
@@ -42,30 +45,28 @@ int	parse_jobs(t_shell *sh, char *line)
 	if (line_ptr)
 		skip_whitespaces(&line_ptr);
 	i = 0;
+	job_string = get_ms_job_string(&line_ptr);
 	while (job_string)
 	{
-		job_string = get_job_string(&line_ptr);
 		parse(sh, job_string);
 		printf("job[%d] = %s\n", i++, job_string);
 
 		/* This is the risky part, literally just taking cmds and storing it in jobs
-			The idea is to simply replace cmds->pointer by jobs */
-		ms_jobadd(&sh->jobs, ms_jobnew(sh->cmds, *line_ptr));
-		sh->cmds = NULL;
+			The idea is to simply replace shell's cmds pointer by current job's */
 		free(job_string);
 		while (*line_ptr == '&' || *line_ptr == '|')
 			line_ptr++;
-		job = get_job_string(&line_ptr);
+		job_string = get_ms_job_string(&line_ptr);
 	}
 	// printf("job[%d] = %s\n", i++, job);
 	// free(job);
-	// job = get_job_string(&line);
+	// job = get_ms_job_string(&line);
 	// printf("job[%d] = %s\n", i++, job);
 	// free(job);
-	// job = get_job_string(&line);
+	// job = get_ms_job_string(&line);
 	// printf("job[%d] = %s\n", i++, job);
 	// free(job);
-	// job = get_job_string(&line);
+	// job = get_ms_job_string(&line);
 	// printf("job[%d] = %s\n", i++, job);
 	// free(job);
 	// (void)sh;

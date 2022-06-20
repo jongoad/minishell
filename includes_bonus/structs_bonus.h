@@ -6,7 +6,7 @@
 /*   By: iyahoui- <iyahoui-@student.42quebec.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/06/13 19:21:29 by iyahoui-          #+#    #+#             */
-/*   Updated: 2022/06/19 22:59:40 by iyahoui-         ###   ########.fr       */
+/*   Updated: 2022/06/20 14:02:43 by iyahoui-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,7 +18,7 @@
 typedef struct s_cmd	t_cmd;
 typedef struct s_shell	t_shell;
 typedef struct s_arglst	t_arglst;
-typedef struct s_job	t_job;
+typedef struct s_ms_job	t_ms_job;
 
 /* Builtin command access data */
 typedef struct s_builtin
@@ -97,7 +97,7 @@ struct s_shell
 {
 	t_env		env;
 	t_builtin	builtins;
-	t_jobs		*jobs;
+	t_ms_job	*jobs;
 	t_cmd		**cmds;
 	pid_t		*pids;
 	char		*line;
@@ -115,16 +115,14 @@ struct s_shell
 	char		*pwd;
 };
 
-struct s_job
+struct s_ms_job
 {
 	/* Jobs should be self-sufficient. In meantime, cmds represent strict minimum */
-	t_cmd	**cmds;
-	t_job	*next;
-	pid_t	*pids;
-	int		*pipes;
-	char	operator;
-	int		nb_cmds;
-	int		ret_val;
+	t_cmd		**cmds;
+	t_ms_job	*next;
+	char		operator;
+	int			nb_cmds;
+	int			ret_val;
 };
 
 typedef struct s_wildcard

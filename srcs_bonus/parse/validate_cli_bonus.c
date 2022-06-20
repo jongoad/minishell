@@ -158,6 +158,7 @@ int	validate_input(char *line)
 	char	*line_ptr;
 	int		state;
 	int		ret;
+	bool	empty_line;
 
 	if (!line)
 		return (-1);
@@ -165,16 +166,21 @@ int	validate_input(char *line)
 	skip_whitespaces(&line_ptr);
 	if (!*line_ptr)
 		return (0);
+	empty_line = true;
 	state = EMPTY_ARG;
 	while (*line_ptr)
 	{
 		ret = validate_char(&line_ptr, &state);
+		if (state)
+			empty_line = false;
 		printf("ret = %d\n", ret);
 		if (ret)
 			return (ret);
 		if (*line_ptr)
 			line_ptr++;
 	}
+	if (!empty_line && (state & EMPTY_ARG) && !(state & REDIR))
+		return ((ret == '\n') * ')' + ret);
 	printf(IGREEN"-------------line is valid--------------"RESET_COL"\n");
 	return (0);
 }
