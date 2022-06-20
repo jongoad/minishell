@@ -6,7 +6,7 @@
 /*   By: iyahoui- <iyahoui-@student.42quebec.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/06/13 15:57:48 by jgoad             #+#    #+#             */
-/*   Updated: 2022/06/20 14:48:19 by iyahoui-         ###   ########.fr       */
+/*   Updated: 2022/06/20 18:37:18 by iyahoui-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -63,6 +63,7 @@ void	run_single_command(t_shell *sh)
 {
 	int		ret;
 
+	sh->interpret_mode = true;
 	ret = validate_input(sh->line);
 	if (ret)
 		ret = parse_error(ret);
@@ -73,7 +74,7 @@ void	run_single_command(t_shell *sh)
 	{
 		cmds_lst_to_str(sh);
 		if (sh->cmds)
-			execute(sh, true);
+			execute(sh);
 		ret = sh->ret_val;
 	}
 	cleanup(sh);
@@ -97,17 +98,19 @@ int	minishell(t_shell *sh)
 		if (sh->err_char)
 			sh->ret_val = parse_error(sh->err_char);
 		sh->err_char = parse_jobs(sh, sh->line);
+		if (sh->cmds)
+			execute_jobs(sh);
 		// sh->err_char = parse(sh, sh->line);
 		// if (sh->err_char)
 		// 	sh->ret_val = parse_error(sh->err_char);
 		// else
 		// {
-		// 	cmds_lst_to_str(sh);
-		// 	// print_cmds_info(sh);
+			// cmds_lst_to_str(sh);
+		// 	print_cmds_info(sh);
 		// 	if (sh->cmds)
-		// 		execute(sh, false);
+		// 		execute(sh);
 		// }
-		reset_shell(sh);
+		// reset_shell(sh);
 	}
 	return (sh->ret_val);
 }

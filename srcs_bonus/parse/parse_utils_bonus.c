@@ -6,7 +6,7 @@
 /*   By: iyahoui- <iyahoui-@student.42quebec.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/06/13 16:59:24 by jgoad             #+#    #+#             */
-/*   Updated: 2022/06/20 17:17:15 by iyahoui-         ###   ########.fr       */
+/*   Updated: 2022/06/20 17:30:17 by iyahoui-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,18 +23,23 @@ void	skip_whitespaces(char **line)
 int	skip_quotes(char **line)
 {
 	char	*ptr;
+	int		len;
 	char	c;
 
+	if (!line || !*line || !**line)
+		return (0);
 	c = **line;
+	len = 0;
 	if (is_set(c, "\"\'"))
 	{
 		ptr = ft_strchr(*line + 1, c);
 		if (ptr)
+		{
+			len = ptr - *line;
 			*line = ptr;
+		}
 	}
-	else
-		return (0);
-	return (1);
+	return (len);
 }
 
 int	get_tok_len(char *token, char *delimiters)

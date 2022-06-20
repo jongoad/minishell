@@ -6,11 +6,30 @@
 /*   By: iyahoui- <iyahoui-@student.42quebec.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/06/13 16:46:59 by jgoad             #+#    #+#             */
-/*   Updated: 2022/06/17 15:04:20 by iyahoui-         ###   ########.fr       */
+/*   Updated: 2022/06/20 18:42:34 by iyahoui-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell_bonus.h"
+
+void	execute_jobs(t_shell *sh)
+{
+	t_ms_job	*ptr;
+
+	ptr = sh->jobs;
+	while (ptr)
+	{
+		sh->cmds = ptr->cmds;
+		sh->nb_cmds = ptr->nb_cmds;
+		execute(sh);
+		if (sh->ret_val)
+			while (ptr && ptr->operator != '|')
+				ptr = ptr->next;
+		else
+			while (ptr && ptr->operator != '&')
+				ptr = ptr->next;
+	}
+}
 
 /* Check return values from children and control process waiting */
 static int	handle_error_return(t_shell *sh)
@@ -35,13 +54,12 @@ static int	handle_error_return(t_shell *sh)
 	return (ret);
 }
 
-
 /* Control function for executing commands */
-void	execute(t_shell *sh, bool interpret_mode)
+void	execute(t_shell *sh)
 {
 	int	i;
 
-	if (!interpret_mode)
+	if (!sh->interpret_mode)
 		signal(SIGINT, void_sig);
 	i = 0;
 	sh->cmd_iter = 0;
@@ -54,7 +72,7 @@ void	execute(t_shell *sh, bool interpret_mode)
 		if (sh->nb_cmds == 1 && sh->cmds[i]->builtin >= 0)
 			sh->ret_val = run_builtin_parent(sh, sh->cmds[i]);
 		else
-			run_cmd(sh, sh->cmds[i], i, interpret_mode);
+			run_cmd(sh, sh->cmds[i], i);
 		close_files(sh->cmds[i]);
 		i++;
 		sh->cmd_iter++;
@@ -66,11 +84,11 @@ void	execute(t_shell *sh, bool interpret_mode)
 }
 
 /* Fork process and run a command */
-void	run_cmd(t_shell *sh, t_cmd *cmd, int i, bool interpret_mode)
+void	run_cmd(t_shell *sh, t_cmd *cmd, int i)
 {
 	int		ret;
 
-	if (!interpret_mode)
+	if (!sh->interpret_mode)
 		signal(SIGQUIT, signal_handler);
 	sh->pids[i] = fork();
 	if (sh->pids[i] == 0)

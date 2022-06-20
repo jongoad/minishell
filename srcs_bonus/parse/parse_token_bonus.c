@@ -6,7 +6,7 @@
 /*   By: iyahoui- <iyahoui-@student.42quebec.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/06/13 16:58:55 by jgoad             #+#    #+#             */
-/*   Updated: 2022/06/20 17:18:11 by iyahoui-         ###   ########.fr       */
+/*   Updated: 2022/06/20 18:47:00 by iyahoui-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -80,14 +80,14 @@ void	parse_parenthesis(t_arglst **lst, char **line)
 	int		parenthesis_len;
 
 	sh = get_data();
-	arg = ft_strdup(sh->ms_path);
-	ms_lstadd(lst, ms_lstnew(arg, false));
-	arg = ft_strdup("-c");
+	arg = ft_strjoin(sh->ms_path, " -c ");
 	ms_lstadd(lst, ms_lstnew(arg, false));
 	parenthesis_len = get_parenthesis_len(*line);
+	printf("%s:%d : parenthesis len: %d\n", __FUNCTION__, __LINE__, parenthesis_len);
 	arg = ft_xalloc(parenthesis_len - 1);
-	arg = ft_strncpy(arg, *(line + 1), parenthesis_len - 2);
+	arg = ft_strncpy(arg, *line + 1, parenthesis_len - 2);
 	printf("%s:%d : parenthesis contents: %s\n", __FUNCTION__, __LINE__, arg);
 	ms_lstadd(lst, ms_lstnew(arg, false));
+	*line += parenthesis_len;
 	return ;
 }

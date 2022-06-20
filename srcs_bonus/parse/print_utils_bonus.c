@@ -6,7 +6,7 @@
 /*   By: iyahoui- <iyahoui-@student.42quebec.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/06/13 16:59:34 by jgoad             #+#    #+#             */
-/*   Updated: 2022/06/16 18:00:57 by iyahoui-         ###   ########.fr       */
+/*   Updated: 2022/06/20 17:50:57 by iyahoui-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,7 +44,7 @@ void	print_outs(t_cmd *cmd)
 	i = 0;
 	while (i < cmd->nb_outs)
 	{
-		printf("in[%d]: \"%s\"\n", i, cmd->outs[i]->outfile);
+		printf("out[%d]: \"%s\"\n", i, cmd->outs[i]->outfile);
 		if (cmd->outs[i]->append_mode)
 			printf(RED"------> file is O_APPEND\n"GREEN);
 		i++;

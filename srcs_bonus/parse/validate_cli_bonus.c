@@ -4,6 +4,8 @@
 #define IRED "\033[38;5;9m"
 #define RESET_COL "\033[0m"
 
+#define DEBUG 0
+
 int	validate_parenthesis_contents(char *open_par_pos, int len)
 {
 	char	*parenthesis_contents;
@@ -12,21 +14,23 @@ int	validate_parenthesis_contents(char *open_par_pos, int len)
 
 	parenthesis_contents = ft_xalloc(len);
 	parenthesis_contents = ft_strncpy(parenthesis_contents, open_par_pos, len - 1); // to discard trailing `)'
-	printf("%s:%d : len = %d\n", __FUNCTION__, __LINE__, len);
+	if (DEBUG)
+		printf("%s:%d : len = %d\n", __FUNCTION__, __LINE__, len);
 	len--;
 	while (ft_isspace(open_par_pos[len]) && len)
 		len--;
 	if (!len)
 		return (EMPTY_ARG);
 	ret = validate_input(parenthesis_contents);
-	printf("%s:%d : parenthesis contents: %s\nret = %d\n", __FUNCTION__, __LINE__, parenthesis_contents, ret);
+	if (DEBUG)
+		printf("%s:%d : parenthesis contents: %s\nret = %d\n", __FUNCTION__, __LINE__, parenthesis_contents, ret);
 	free(parenthesis_contents);
 	parenthesis_contents = NULL;
 	if (ret)
 		return ((ret == '\n') * ')' + ret);		// to account for nested parsing
-	
 	ptr = open_par_pos + len + 1;
-	printf("%s:%d : ptr = %s\n", __FUNCTION__, __LINE__, ptr);
+	if (DEBUG)
+		printf("%s:%d : ptr = %s\n", __FUNCTION__, __LINE__, ptr);
 	return (0);
 }
 
@@ -41,7 +45,8 @@ int	validate_parenthesis(char **line, int *state)
 	parenthesis = *line + 1;	// to discard leading `('
 	if (!(*state & EMPTY_ARG) && !(*state & REDIR))
 	{
-		printf("error : parenthesis reached while state = %d\n", *state);
+		if (DEBUG)
+			printf("error : parenthesis reached while state = %d\n", *state);
 		return (**line);
 	}
 	while (**line)
@@ -67,7 +72,8 @@ int	validate_redir(char **line, int *state)
 {
 	if (!is_set(**line, "<>"))
 		return (0);
-	printf("%s:%d : line = %s\n", __FUNCTION__, __LINE__, *line);
+		if (DEBUG)
+		printf("%s:%d : line = %s\n", __FUNCTION__, __LINE__, *line);
 	*line += 1;
 	if (*(*line - 1) == **line)
 		*line += 1;
@@ -93,7 +99,8 @@ int	validate_char(char **line, int *state)
 	int	ret;
 	
 	skip_whitespaces(line);
-	printf("%s:%d : \'%c\', state = %d\n", __FUNCTION__, __LINE__, **line, *state);
+	if (DEBUG)
+		printf("%s:%d : \'%c\', state = %d\n", __FUNCTION__, __LINE__, **line, *state);
 	/* Check parenthesis validity should be a function call */
 	if (**line == ')')
 		return (**line);
@@ -113,7 +120,8 @@ int	validate_char(char **line, int *state)
 		if (((*state & EMPTY_ARG) && !(*state & REDIR)))	// If new_token is hit, but last one is not valid
 			return (**line);
 		*state = EMPTY_ARG;
-		printf("%s:%d : char = %c, state = %d\n", __FUNCTION__, __LINE__, **line, *state);
+		if (DEBUG)
+			printf("%s:%d : char = %c, state = %d\n", __FUNCTION__, __LINE__, **line, *state);
 		if (*(*line + 1) == **line)
 			*line += 1;
 	}
@@ -156,7 +164,8 @@ int	validate_input(char *line)
 		ret = validate_char(&line_ptr, &state);
 		if (state)
 			empty_line = false;
-		printf("ret for *line = %c = %d\n", *line_ptr, ret);
+			if (DEBUG)
+			printf("ret for *line = %c = %d\n", *line_ptr, ret);
 		if (ret)
 			return (ret);
 		if (*line_ptr)

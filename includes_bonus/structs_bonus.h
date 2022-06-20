@@ -6,7 +6,7 @@
 /*   By: iyahoui- <iyahoui-@student.42quebec.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/06/13 19:21:29 by iyahoui-          #+#    #+#             */
-/*   Updated: 2022/06/20 14:02:43 by iyahoui-         ###   ########.fr       */
+/*   Updated: 2022/06/20 18:36:40 by iyahoui-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -111,6 +111,7 @@ struct s_shell
 	int			cmd_iter;
 	int			history_fd;
 	bool		cmd_line;
+	bool		interpret_mode;
 	char		err_char;
 	char		*pwd;
 };

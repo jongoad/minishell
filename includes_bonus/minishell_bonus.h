@@ -68,8 +68,9 @@ void		init_path(t_shell *sh);
 void		init_pwd(t_shell *sh);
 
 /* Execution functions */
-void		execute(t_shell *sh, bool interpret_mode);
-void		run_cmd(t_shell *sh, t_cmd *cmd, int i, bool interpret_mode);
+void		execute_jobs(t_shell *sh);
+void		execute(t_shell *sh);
+void		run_cmd(t_shell *sh, t_cmd *cmd, int i);
 void		run_cmd_external(t_shell *sh, t_cmd *cmd);
 int			check_builtins(t_shell *sh, t_cmd *cmd);
 int			run_builtin_parent(t_shell *sh, t_cmd *cmd);

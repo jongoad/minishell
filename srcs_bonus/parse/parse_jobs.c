@@ -2,38 +2,43 @@
 
 int	get_job_len(char *str)
 {
-	int	len;
+	int	job_len;
+	int	parenthesis_len;
 
-	len = 0;
+	job_len = 0;
 	while (*str)
 	{
-		skip_quotes(&str);
+		job_len += skip_quotes(&str);
 		if (*str == '(')
-			str += get_parenthesis_len(str);
-		*ptr != '&' && !(*ptr == '|' && *(ptr + 1) == '|')
+		{
+			parenthesis_len = get_parenthesis_len(str);
+			str += parenthesis_len;
+			job_len += parenthesis_len;
+		}
+		if (*str == '&' || (*str == '|' && *(str + 1) == '|'))
+			break ;
 		str++;
-		len++;
+		job_len++;
 	}
+	return (job_len);
 }
 
 char	*get_job_string(char **line)
 {
-	char	*ptr;
 	char	*job;
 	int		job_len;
 
 	if (!line || !*line || !**line)
 		return (NULL);
-	ptr = *line;
-	while (*ptr && *ptr != '&' && !(*ptr == '|' && *(ptr + 1) == '|'))
-		ptr++;
-	job_len = ptr - *line;
+	job_len = get_job_len(*line);
 	job = ft_xalloc(job_len + 1);
 	printf("job_len = %d\n", job_len);
-	*line = ptr;
-	job[job_len] = '\0';
-	while (job_len)
-		job[--job_len] = *(--ptr);
+	job = ft_strncpy(job, *line, job_len);
+	*line += job_len;
+	// *line = ptr;
+	// job[job_len] = '\0';
+	// while (job_len)
+	// 	job[--job_len] = *(--ptr);
 	return (job);
 }
 
@@ -66,15 +71,17 @@ int	parse_jobs(t_shell *sh, char *line)
 	
 	while (job_string)
 	{
-		parse(sh, job_string);
 		printf("job[%d] = %s\n", i++, job_string);
-
+		parse(sh, job_string);
+		cmds_lst_to_str(sh);
+		print_cmds_info(sh);
+		steal_job(sh, line_ptr);
 		/* This is the risky part, literally just taking cmds and storing it in jobs
 			The idea is to simply replace shell's cmds pointer by current job's */
 		free(job_string);
 		while (*line_ptr == '&' || *line_ptr == '|')
 			line_ptr++;
-		job_string = get_ms_job_string(&line_ptr);
+		job_string = get_job_string(&line_ptr);
 	}
 	return (0);
 }
