@@ -6,7 +6,7 @@
 /*   By: iyahoui- <iyahoui-@student.42quebec.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/06/13 16:46:59 by jgoad             #+#    #+#             */
-/*   Updated: 2022/06/21 17:03:11 by iyahoui-         ###   ########.fr       */
+/*   Updated: 2022/06/21 17:57:52 by iyahoui-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,6 +17,7 @@ void	execute_jobs(t_shell *sh)
 	t_ms_job	*ptr;
 
 	ptr = sh->jobs;
+	printf("%s:%d : ptr = %p\n", __FUNCTION__, __LINE__, ptr);
 	while (ptr)
 	{
 		sh->cmds = ptr->cmds;

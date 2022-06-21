@@ -12,8 +12,8 @@ int	validate_parenthesis_contents(char *open_par_pos, int len)
 	char	*ptr;
 	int		ret;
 
-	parenthesis_contents = ft_xalloc(len);
-	parenthesis_contents = ft_strncpy(parenthesis_contents, open_par_pos, len - 1); // to discard trailing `)'
+	parenthesis_contents = ft_xalloc(len + 1);
+	parenthesis_contents = ft_strncpy(parenthesis_contents, open_par_pos, len); // to discard trailing `)'
 	if (DEBUG)
 		printf("%s:%d : len = %d\n", __FUNCTION__, __LINE__, len);
 	len--;
@@ -28,7 +28,7 @@ int	validate_parenthesis_contents(char *open_par_pos, int len)
 	parenthesis_contents = NULL;
 	if (ret)
 		return ((ret == '\n') * ')' + ret);		// to account for nested parsing
-	ptr = open_par_pos + len;
+	ptr = open_par_pos + len + 1;
 	if (DEBUG)
 		printf("%s:%d : ptr = %s\n", __FUNCTION__, __LINE__, ptr);
 	return (0);
@@ -58,9 +58,9 @@ int	validate_parenthesis(char **line, int *state)
 		if (open_parentheses < 0)
 			return (**line);
 		skip_quotes(line);
-		*line += 1;
 		if (open_parentheses == 0)
 			break ;
+		*line += 1;
 	}
 	if (open_parentheses > 0)
 		return (UNCLOSED_PARENTHESIS);
