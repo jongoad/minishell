@@ -6,11 +6,21 @@
 /*   By: iyahoui- <iyahoui-@student.42quebec.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/06/13 16:57:54 by jgoad             #+#    #+#             */
-/*   Updated: 2022/06/16 18:00:57 by iyahoui-         ###   ########.fr       */
+/*   Updated: 2022/06/21 14:59:05 by iyahoui-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell_bonus.h"
+
+void	close_heredoc(int signum)
+{
+	t_shell	*sh;
+
+	sh = get_data();
+	cleanup(sh);
+	(void)signum;
+	exit(0);
+}
 
 char	*expand_heredoc_tok(char **envp, char **ptr)
 {
@@ -61,11 +71,14 @@ void	expand_heredoc(t_cmd *cmd, t_infile *in, char *heredoc)
 
 static void	read_heredoc(t_cmd *cmd, t_infile *in)
 {
+	t_shell	*sh;
 	char	*heredoc;
 	char	*buff;
 	int		len;
 
 	(void)cmd;
+	sh = get_data();
+	signal(SIGINT, close_heredoc);
 	heredoc = NULL;
 	while (1)
 	{
@@ -81,6 +94,7 @@ static void	read_heredoc(t_cmd *cmd, t_infile *in)
 	expand_heredoc(cmd, in, heredoc);
 	free (heredoc);
 	close(in->fd);
+	cleanup(sh);
 	exit (0);
 }
 
@@ -119,4 +133,5 @@ void	parse_heredoc(t_cmd *cmd, t_infile *in)
 	status = 0;
 	waitpid(pid, &status, 0);
 	close(in->fd);
+	signal(SIGINT, signal_handler);
 }
