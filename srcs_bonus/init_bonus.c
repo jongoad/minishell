@@ -6,7 +6,7 @@
 /*   By: iyahoui- <iyahoui-@student.42quebec.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/06/09 15:02:11 by jgoad             #+#    #+#             */
-/*   Updated: 2022/06/16 18:00:57 by iyahoui-         ###   ########.fr       */
+/*   Updated: 2022/06/21 17:37:07 by iyahoui-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,24 +25,28 @@ t_shell	*get_data(void)
 /* Initialize shell variables and do preliminary setup */
 t_shell	*init_shell(t_shell *sh, char **argv, char **envp)
 {
-	int	i;
+	char	*temp_pwd;
+	int		i;
 
 	sh = get_data();
-	if (is_set('/', argv[0]))
+	init_shell_prompt(sh, argv[0]);
+	init_env_vars(sh, envp);
+	init_builtins(sh);
+	init_pwd(sh);
+	if (argv[0][0] == '/')
+		sh->ms_path = ft_strdup(argv[0]);
+	else
 	{
 		i = ft_strlen(argv[0]);
 		while (argv[0][i] != '/')
 			i--;
 		sh->ms_path = ft_xalloc(i + 2);
 		sh->ms_path = ft_strncpy(sh->ms_path, argv[0], i + 1);
+		temp_pwd = ft_strjoin(sh->pwd, "/");
+		sh->ms_path = ft_strjoin_free_rev(temp_pwd, sh->ms_path);
+		free(temp_pwd);
 	}
-	else
-		sh->ms_path = ft_strdup(argv[0]);
-	init_shell_prompt(sh, argv[0]);
-	init_env_vars(sh, envp);
-	init_builtins(sh);
 	init_history(sh);
-	init_pwd(sh);
 	sh->ret_val = 0;
 	sh->line = (char *) NULL;
 	sh->cmd_line = false;

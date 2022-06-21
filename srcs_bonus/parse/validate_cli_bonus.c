@@ -4,7 +4,7 @@
 #define IRED "\033[38;5;9m"
 #define RESET_COL "\033[0m"
 
-#define DEBUG 0
+#define DEBUG 1
 
 int	validate_parenthesis_contents(char *open_par_pos, int len)
 {
@@ -28,7 +28,7 @@ int	validate_parenthesis_contents(char *open_par_pos, int len)
 	parenthesis_contents = NULL;
 	if (ret)
 		return ((ret == '\n') * ')' + ret);		// to account for nested parsing
-	ptr = open_par_pos + len + 1;
+	ptr = open_par_pos + len;
 	if (DEBUG)
 		printf("%s:%d : ptr = %s\n", __FUNCTION__, __LINE__, ptr);
 	return (0);
@@ -149,7 +149,7 @@ int	validate_input(char *line)
 	char	*line_ptr;
 	int		state;
 	int		ret;
-	bool	empty_line;
+	bool	is_empty_line;
 
 	if (!line)
 		return (-1);
@@ -157,21 +157,21 @@ int	validate_input(char *line)
 	skip_whitespaces(&line_ptr);
 	if (!*line_ptr)
 		return (0);
-	empty_line = true;
+	is_empty_line = true;
 	state = EMPTY_ARG;
 	while (*line_ptr)
 	{
 		ret = validate_char(&line_ptr, &state);
 		if (state)
-			empty_line = false;
-			if (DEBUG)
+			is_empty_line = false;
+		if (DEBUG)
 			printf("ret for *line = %c = %d\n", *line_ptr, ret);
 		if (ret)
 			return (ret);
 		if (*line_ptr)
 			line_ptr++;
 	}
-	if (!empty_line && (state & EMPTY_ARG) && !(state & REDIR))
+	if (!is_empty_line && (state & EMPTY_ARG) && !(state & REDIR))
 		return ('\n');
 	printf(IGREEN"-------------line is valid--------------"RESET_COL"\n");
 	return (0);

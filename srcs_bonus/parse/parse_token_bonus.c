@@ -6,7 +6,7 @@
 /*   By: iyahoui- <iyahoui-@student.42quebec.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/06/13 16:58:55 by jgoad             #+#    #+#             */
-/*   Updated: 2022/06/20 18:47:00 by iyahoui-         ###   ########.fr       */
+/*   Updated: 2022/06/21 17:32:43 by iyahoui-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -80,7 +80,7 @@ void	parse_parenthesis(t_arglst **lst, char **line)
 	int		parenthesis_len;
 
 	sh = get_data();
-	arg = ft_strjoin(sh->ms_path, " -c ");
+	arg = ft_strjoin(sh->ms_path, "minishell -c ");
 	ms_lstadd(lst, ms_lstnew(arg, false));
 	parenthesis_len = get_parenthesis_len(*line);
 	printf("%s:%d : parenthesis len: %d\n", __FUNCTION__, __LINE__, parenthesis_len);

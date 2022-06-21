@@ -6,7 +6,7 @@
 /*   By: iyahoui- <iyahoui-@student.42quebec.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/06/09 15:02:58 by jgoad             #+#    #+#             */
-/*   Updated: 2022/06/13 17:16:34 by iyahoui-         ###   ########.fr       */
+/*   Updated: 2022/06/21 16:58:26 by iyahoui-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,6 +39,7 @@ void	init_pwd(t_shell *sh)
 		if (!ft_strncmp(sh->env.envp[i], "PWD=", 4))
 		{
 			tmp = pwd_to_str();
+			printf("getcwd = %s\n", tmp);
 			if (!tmp)
 			{
 				put_err_msg("minishell-init", ERR_PWD, ERR_CWD, ERR_FILE);
