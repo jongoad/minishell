@@ -4,7 +4,7 @@
 #define IRED "\033[38;5;9m"
 #define RESET_COL "\033[0m"
 
-#define DEBUG 1
+#define DEBUG 0
 
 int	validate_parenthesis_contents(char *open_par_pos, int len)
 {
