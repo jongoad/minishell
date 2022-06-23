@@ -16,6 +16,8 @@ int	validate_parenthesis_contents(char *open_par_pos, int len)
 	parenthesis_contents = ft_strncpy(parenthesis_contents, open_par_pos, len); // to discard trailing `)'
 	if (DEBUG)
 		printf("%s:%d : len = %d\n", __FUNCTION__, __LINE__, len);
+	if (!len)
+		return (EMPTY_ARG);
 	len--;
 	while (ft_isspace(open_par_pos[len]) && len)
 		len--;
