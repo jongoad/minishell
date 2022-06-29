@@ -74,7 +74,7 @@ int	validate_redir(char **line, int *state)
 {
 	if (!is_set(**line, "<>"))
 		return (0);
-		if (DEBUG)
+	if (DEBUG)
 		printf("%s:%d : line = %s\n", __FUNCTION__, __LINE__, *line);
 	*line += 1;
 	if (*(*line - 1) == **line)
@@ -175,6 +175,7 @@ int	validate_input(char *line)
 	}
 	if (!is_empty_line && (state & EMPTY_ARG) && !(state & REDIR))
 		return ('\n');
-	printf(IGREEN"-------------line is valid--------------"RESET_COL"\n");
+	if (DEBUG)
+		printf(IGREEN"-------------line is valid--------------"RESET_COL"\n");
 	return (0);
 }

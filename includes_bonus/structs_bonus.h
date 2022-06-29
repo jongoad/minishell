@@ -6,7 +6,7 @@
 /*   By: iyahoui- <iyahoui-@student.42quebec.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/06/13 19:21:29 by iyahoui-          #+#    #+#             */
-/*   Updated: 2022/06/21 17:37:27 by iyahoui-         ###   ########.fr       */
+/*   Updated: 2022/06/29 17:53:23 by iyahoui-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -118,12 +118,10 @@ struct s_shell
 
 struct s_ms_job
 {
-	/* Jobs should be self-sufficient. In meantime, cmds represent strict minimum */
 	t_cmd		**cmds;
 	t_ms_job	*next;
 	char		operator;
 	int			nb_cmds;
-	int			ret_val;
 };
 
 typedef struct s_wildcard

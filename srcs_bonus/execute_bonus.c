@@ -6,7 +6,7 @@
 /*   By: iyahoui- <iyahoui-@student.42quebec.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/06/13 16:46:59 by jgoad             #+#    #+#             */
-/*   Updated: 2022/06/21 17:57:52 by iyahoui-         ###   ########.fr       */
+/*   Updated: 2022/06/29 19:21:46 by iyahoui-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,22 +15,56 @@
 void	execute_jobs(t_shell *sh)
 {
 	t_ms_job	*ptr;
+	t_ms_job	*prev;
+	int			ret;
+	char		operator;
 
 	ptr = sh->jobs;
-	printf("%s:%d : ptr = %p\n", __FUNCTION__, __LINE__, ptr);
+	operator = 0;
+	prev = NULL;
 	while (ptr)
 	{
 		sh->cmds = ptr->cmds;
 		sh->nb_cmds = ptr->nb_cmds;
-		execute(sh);
-		if (sh->ret_val)
-			while (ptr && ptr->operator != '|')
-				ptr = ptr->next;
-		else
-			while (ptr && ptr->operator != '&')
-				ptr = ptr->next;
+		// for (int i = 0; i < sh->nb_cmds; i++)
+		// 	printf("cmd[%d]: \'%s\'\n", i, sh->cmds[i]->exe);
+		// printf("%s:%d :\t ret = %d\nptr->operator = \'%c\'\n", __FUNCTION__, __LINE__, ret, ptr->operator);
+		if (!prev || (ret && operator == '|') || (!ret && operator == '&'))
+		{
+			execute(sh);
+			ret = sh->ret_val;
+			operator = ptr->operator;
+			// printf("%s:%d : ret after execute = %d\noperator: \'%c\'\n", __FUNCTION__, __LINE__, ret, operator);
+		}
+		prev = ptr;
+		ptr = ptr->next;
+		free(prev);
+		reset_shell(sh);
 	}
+	sh->jobs = NULL;
 }
+
+// void	execute_jobs(t_shell *sh)
+// {
+// 	t_ms_job	*ptr;
+
+// 	ptr = sh->jobs;
+// 	printf("%s:%d : ptr = %p\n", __FUNCTION__, __LINE__, ptr);
+// 	while (ptr)
+// 	{
+// 		sh->cmds = ptr->cmds;
+// 		sh->nb_cmds = ptr->nb_cmds;
+// 		execute(sh);
+// 		printf("%s:%d : sh->ret_val after execute = %d\n", __FUNCTION__, __LINE__, sh->ret_val);
+// 		if (sh->ret_val)
+// 			while (ptr && ptr->operator != '|')
+// 				ptr = ptr->next;
+// 		else
+// 			while (ptr && ptr->operator != '&')
+// 				ptr = ptr->next;
+// 		reset_shell(sh);
+// 	}
+// }
 
 /* Check return values from children and control process waiting */
 static int	handle_error_return(t_shell *sh)
