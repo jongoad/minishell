@@ -6,7 +6,7 @@
 /*   By: iyahoui- <iyahoui-@student.42quebec.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/06/13 16:58:55 by jgoad             #+#    #+#             */
-/*   Updated: 2022/06/23 16:17:29 by iyahoui-         ###   ########.fr       */
+/*   Updated: 2022/06/29 20:30:56 by iyahoui-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -94,7 +94,7 @@ void	parse_parenthesis(t_arglst **lst, char **line)
 	// arg = ft_strjoin_free(arg, temp);
 	// free(temp);
 	// temp = arg;
-	printf("%s:%d : parenthesis contents: `%s\'\n", __FUNCTION__, __LINE__, arg);
+	// printf("%s:%d : parenthesis contents: `%s\'\n", __FUNCTION__, __LINE__, arg);
 	// printf("%s:%d : entire arg = `%s\'\n", __FUNCTION__, __LINE__, arg);
 	ms_lstadd(lst, ms_lstnew(arg, false));
 	*line += parenthesis_len + 1;

@@ -6,7 +6,7 @@
 /*   By: iyahoui- <iyahoui-@student.42quebec.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/06/13 16:46:59 by jgoad             #+#    #+#             */
-/*   Updated: 2022/06/29 19:21:46 by iyahoui-         ###   ########.fr       */
+/*   Updated: 2022/06/29 20:34:22 by iyahoui-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,16 +26,18 @@ void	execute_jobs(t_shell *sh)
 	{
 		sh->cmds = ptr->cmds;
 		sh->nb_cmds = ptr->nb_cmds;
-		// for (int i = 0; i < sh->nb_cmds; i++)
-		// 	printf("cmd[%d]: \'%s\'\n", i, sh->cmds[i]->exe);
+		// print_cmds_info(sh);
 		// printf("%s:%d :\t ret = %d\nptr->operator = \'%c\'\n", __FUNCTION__, __LINE__, ret, ptr->operator);
 		if (!prev || (ret && operator == '|') || (!ret && operator == '&'))
 		{
+			// printf("will execute!\n");
 			execute(sh);
 			ret = sh->ret_val;
-			operator = ptr->operator;
 			// printf("%s:%d : ret after execute = %d\noperator: \'%c\'\n", __FUNCTION__, __LINE__, ret, operator);
 		}
+		// else
+		// 	printf("wrong conditions?\n");
+		operator = ptr->operator;
 		prev = ptr;
 		ptr = ptr->next;
 		free(prev);
