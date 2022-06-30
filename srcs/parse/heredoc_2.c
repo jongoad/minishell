@@ -1,37 +1,31 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   signal.c                                           :+:      :+:    :+:   */
+/*   heredoc_2.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: jgoad <jgoad@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2022/06/13 15:56:00 by jgoad             #+#    #+#             */
-/*   Updated: 2022/06/30 15:07:01 by jgoad            ###   ########.fr       */
+/*   Created: 2022/06/30 15:08:05 by jgoad             #+#    #+#             */
+/*   Updated: 2022/06/30 15:08:31 by jgoad            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-void	void_sig(int sig)
+void	parse_heredoc(t_cmd *cmd, t_infile *in)
 {
-	(void) sig;
+	int		status;
+	pid_t	pid;
+
+	in->infile = get_heredoc_filename();
+	in->in_lst = ms_lstnew(ft_strdup(in->infile), false);
+	in->delim = lst_to_str_no_exp(in->delim_lst);
+	in->fd = open(in->infile, O_TRUNC | O_CREAT | O_CLOEXEC | O_RDWR, 0644);
+	pid = fork();
+	if (pid == 0)
+		read_heredoc(cmd, in);
+	status = 0;
+	waitpid(pid, &status, 0);
+	close(in->fd);
+	signal(SIGINT, signal_handler);
 }
-
-/* Signal handler function */
-void	signal_handler(int signum)
-{
-	t_shell	*sh;
-
-	sh = get_data();
-	if (signum == SIGINT)
-	{
-		printf("\n");
-		rl_replace_line("", 1);
-		rl_on_new_line();
-		if (!sh->cmds)
-		{
-			rl_redisplay();
-			sh->ret_val = 1;
-		}
-	}
-}	

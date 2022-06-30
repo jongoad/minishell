@@ -46,7 +46,7 @@ CFILES			:=	builtins/builtins_utils.c	builtins/builtins_utils_2.c \
 					builtins/builtins.c			builtins/builtins_2.c \
 					parse/add_token.c			parse/args_list.c		parse/tokenizer.c		parse/heredoc.c 		parse/lst_to_str.c \
 					parse/parse_cmds.c			parse/parse_redir.c		parse/parse_token.c		parse/parse_utils.c		parse/parse.c \
-					parse/print_utils.c  \
+					parse/print_utils.c  		parse/heredoc_2.c \
 					lib/gnl/gnl_utils.c			lib/gnl/gnl.c			lib/array.c				lib/math.c \
 					lib/memory.c				lib/split.c				lib/str_utils.c			lib/str_utils_2.c \
 					lib/str_utils_3.c			lib/str_utils_4.c		lib/write.c \

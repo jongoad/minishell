@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: iyahoui- <iyahoui-@student.42quebec.com    +#+  +:+       +#+        */
+/*   By: jgoad <jgoad@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/06/13 15:57:48 by jgoad             #+#    #+#             */
-/*   Updated: 2022/06/17 14:59:58 by iyahoui-         ###   ########.fr       */
+/*   Updated: 2022/06/30 15:06:36 by jgoad            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -93,7 +93,6 @@ int	minishell(t_shell *sh)
 		else
 		{
 			cmds_lst_to_str(sh);
-			// print_cmds_info(sh);
 			if (sh->cmds)
 				execute(sh, false);
 		}

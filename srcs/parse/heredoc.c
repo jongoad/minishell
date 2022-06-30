@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   heredoc.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: iyahoui- <iyahoui-@student.42quebec.com    +#+  +:+       +#+        */
+/*   By: jgoad <jgoad@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/06/13 16:57:54 by jgoad             #+#    #+#             */
-/*   Updated: 2022/06/21 14:58:02 by iyahoui-         ###   ########.fr       */
+/*   Updated: 2022/06/30 15:08:25 by jgoad            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -116,22 +116,4 @@ char	*get_heredoc_filename(void)
 	}
 	free(suffix);
 	return (filename);
-}
-
-void	parse_heredoc(t_cmd *cmd, t_infile *in)
-{
-	int		status;
-	pid_t	pid;
-
-	in->infile = get_heredoc_filename();
-	in->in_lst = ms_lstnew(ft_strdup(in->infile), false);
-	in->delim = lst_to_str_no_exp(in->delim_lst);
-	in->fd = open(in->infile, O_TRUNC | O_CREAT | O_CLOEXEC | O_RDWR, 0644);
-	pid = fork();
-	if (pid == 0)
-		read_heredoc(cmd, in);
-	status = 0;
-	waitpid(pid, &status, 0);
-	close(in->fd);
-	signal(SIGINT, signal_handler);
 }
