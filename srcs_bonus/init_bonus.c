@@ -6,7 +6,7 @@
 /*   By: iyahoui- <iyahoui-@student.42quebec.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/06/09 15:02:11 by jgoad             #+#    #+#             */
-/*   Updated: 2022/06/21 17:37:07 by iyahoui-         ###   ########.fr       */
+/*   Updated: 2022/06/29 22:30:43 by iyahoui-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,6 +29,8 @@ t_shell	*init_shell(t_shell *sh, char **argv, char **envp)
 	int		i;
 
 	sh = get_data();
+	if (argv[1] && !ft_strncmp(argv[1], "-c", 3))
+		sh->interpret_mode = true;
 	init_shell_prompt(sh, argv[0]);
 	init_env_vars(sh, envp);
 	init_builtins(sh);
@@ -73,7 +75,7 @@ void	init_env_vars(t_shell *sh, char **envp)
 		sh->env.envp[i] = ft_strdup(*envp);
 		if (!ft_strncmp(*envp, "PATH=", 5))
 			sh->env.path = ft_split(*envp + 5, ':');
-		else if (!ft_strncmp(*envp, "SHLVL=", 6))
+		else if (!sh->interpret_mode && !ft_strncmp(*envp, "SHLVL=", 6))
 		{
 			free(sh->env.envp[i]);
 			sh->env.envp[i] = increment_shlvl(*envp);
