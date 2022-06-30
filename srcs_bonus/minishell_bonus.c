@@ -6,7 +6,7 @@
 /*   By: iyahoui- <iyahoui-@student.42quebec.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/06/13 15:57:48 by jgoad             #+#    #+#             */
-/*   Updated: 2022/06/29 22:27:43 by iyahoui-         ###   ########.fr       */
+/*   Updated: 2022/06/29 22:39:07 by iyahoui-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -99,8 +99,17 @@ int	minishell(t_shell *sh)
 		// printf("%s:%d : ret = %d\n", __FUNCTION__, __LINE__, sh->err_char);
 		if (sh->err_char)
 			sh->ret_val = parse_error(sh->err_char);
-		sh->err_char = parse_jobs(sh, sh->line);
-		execute_jobs(sh);
+		else
+		{
+			sh->err_char = parse_jobs(sh, sh->line);
+			if (sh->err_char)
+			{
+				sh->ret_val = parse_error(sh->err_char);
+				clean_jobs(sh);
+			}
+			else
+				execute_jobs(sh);
+		}
 		// sh->err_char = parse(sh, sh->line);
 		// if (sh->err_char)
 		// 	sh->ret_val = parse_error(sh->err_char);

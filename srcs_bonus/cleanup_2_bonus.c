@@ -6,7 +6,7 @@
 /*   By: iyahoui- <iyahoui-@student.42quebec.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/06/09 15:16:30 by jgoad             #+#    #+#             */
-/*   Updated: 2022/06/16 18:00:57 by iyahoui-         ###   ########.fr       */
+/*   Updated: 2022/06/29 22:37:14 by iyahoui-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -104,4 +104,22 @@ void	clean_cmds(t_shell *sh)
 	sh->pids = NULL;
 	free(sh->cmds);
 	sh->cmds = NULL;
+}
+
+void	clean_jobs(t_shell *sh)
+{
+	t_ms_job	*ptr;
+	t_ms_job	*prev;
+
+	ptr = sh->jobs;
+	while (ptr)
+	{
+		sh->cmds = ptr->cmds;
+		sh->nb_cmds = ptr->nb_cmds;
+		reset_shell(sh);
+		prev = ptr;
+		ptr = ptr->next;
+		free(prev);
+	}
+	return ;
 }

@@ -131,6 +131,7 @@ void		clean_output(t_cmd *cmd);
 void		clean_cmds(t_shell *sh);
 void		clean_fork(t_shell *sh, t_cmd *cmd);
 void		reset_shell(t_shell *sh);
+void		clean_jobs(t_shell *sh);
 
 /* Parsing functions */
 
