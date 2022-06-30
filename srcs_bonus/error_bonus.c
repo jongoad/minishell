@@ -6,7 +6,7 @@
 /*   By: iyahoui- <iyahoui-@student.42quebec.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/06/13 16:48:00 by jgoad             #+#    #+#             */
-/*   Updated: 2022/06/20 18:39:32 by iyahoui-         ###   ########.fr       */
+/*   Updated: 2022/06/29 22:40:26 by iyahoui-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -60,15 +60,15 @@ int	parse_error(char err_char)
 	{
 		printf("\033[38;5;9mminishell: ");
 		if (err_char == '\n')
-			printf("parse error near unexpected token `newline\'\n");
+			printf("parse error near unexpected token `newline\'");
 		else if (err_char == UNCLOSED_PARENTHESIS)
-			printf("parse error: unclosed parenthesis\n");
+			printf("parse error: unclosed parenthesis");
 		else if (err_char == EMPTY_ARG)
-			printf("parse error: empty parenthesis\n");
+			printf("parse error: empty parenthesis");
 		else if (err_char == -1)
-			printf("parse error: empty token\n");
+			printf("parse error: empty token");
 		else
-			printf("parse error near unexpected token `%c\'\n", err_char);
+			printf("parse error near unexpected token `%c\'", err_char);
 		printf("\033[0m\n");
 	}
 	return (1);

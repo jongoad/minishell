@@ -29,7 +29,7 @@ int	validate_parenthesis_contents(char *open_par_pos, int len)
 	free(parenthesis_contents);
 	parenthesis_contents = NULL;
 	if (ret)
-		return ((ret == '\n') * ')' + ret);		// to account for nested parsing
+		return (ret);
 	ptr = open_par_pos + len + 1;
 	if (DEBUG)
 		printf("%s:%d : ptr = %s\n", __FUNCTION__, __LINE__, ptr);
