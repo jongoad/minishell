@@ -25,7 +25,7 @@ int	validate_parenthesis_contents(char *open_par_pos, int len)
 		return (EMPTY_ARG);
 	ret = validate_input(parenthesis_contents);
 	if (DEBUG)
-		printf("%s:%d : parenthesis contents: %s\nret = %d\n", __FUNCTION__, __LINE__, parenthesis_contents, ret);
+		printf("%s:%d : parenthesis contents: %s && ret = %d\n", __FUNCTION__, __LINE__, parenthesis_contents, ret);
 	free(parenthesis_contents);
 	parenthesis_contents = NULL;
 	if (ret)
@@ -131,9 +131,7 @@ int	validate_char(char **line, int *state)
 	ret = validate_redir(line, state);
 	if (ret)
 		return (ret);
-
-	/* Note: the current parsing seems to have issues with the states. 
-		I need to review when to add a state and when to replace it. */
+	/* To account for extra commands after subshell commands */
 	if ((*state & PARENTHESIS) && !ft_isspace(**line) && **line && !is_set(**line, "()<>&|"))
 		return (**line);
 
