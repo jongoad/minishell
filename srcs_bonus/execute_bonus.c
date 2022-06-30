@@ -6,7 +6,7 @@
 /*   By: iyahoui- <iyahoui-@student.42quebec.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/06/13 16:46:59 by jgoad             #+#    #+#             */
-/*   Updated: 2022/06/29 22:20:39 by iyahoui-         ###   ########.fr       */
+/*   Updated: 2022/06/30 14:52:28 by iyahoui-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,6 +26,7 @@ void	execute_jobs(t_shell *sh)
 	{
 		sh->cmds = ptr->cmds;
 		sh->nb_cmds = ptr->nb_cmds;
+		// printf("sh->nb_cmds = %d\n", sh->nb_cmds);
 		// print_cmds_info(sh);
 		// printf("%s:%d :\t ret = %d\nptr->operator = \'%c\'\n", __FUNCTION__, __LINE__, ret, ptr->operator);
 		if (!prev || (ret && operator == '|') || (!ret && operator == '&'))
@@ -41,6 +42,8 @@ void	execute_jobs(t_shell *sh)
 		prev = ptr;
 		ptr = ptr->next;
 		free(prev);
+		prev = NULL;
+		sh->jobs = ptr;
 		reset_shell(sh);
 	}
 	sh->jobs = NULL;
