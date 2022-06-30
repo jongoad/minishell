@@ -6,7 +6,7 @@
 /*   By: iyahoui- <iyahoui-@student.42quebec.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/06/13 16:46:59 by jgoad             #+#    #+#             */
-/*   Updated: 2022/06/30 14:52:28 by iyahoui-         ###   ########.fr       */
+/*   Updated: 2022/06/30 14:57:33 by iyahoui-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,18 +26,11 @@ void	execute_jobs(t_shell *sh)
 	{
 		sh->cmds = ptr->cmds;
 		sh->nb_cmds = ptr->nb_cmds;
-		// printf("sh->nb_cmds = %d\n", sh->nb_cmds);
-		// print_cmds_info(sh);
-		// printf("%s:%d :\t ret = %d\nptr->operator = \'%c\'\n", __FUNCTION__, __LINE__, ret, ptr->operator);
 		if (!prev || (ret && operator == '|') || (!ret && operator == '&'))
 		{
-			// printf("will execute!\n");
 			execute(sh);
 			ret = sh->ret_val;
-			// printf("%s:%d : ret after execute = %d\noperator: \'%c\'\n", __FUNCTION__, __LINE__, ret, operator);
 		}
-		// else
-		// 	printf("wrong conditions?\n");
 		operator = ptr->operator;
 		prev = ptr;
 		ptr = ptr->next;
@@ -48,28 +41,6 @@ void	execute_jobs(t_shell *sh)
 	}
 	sh->jobs = NULL;
 }
-
-// void	execute_jobs(t_shell *sh)
-// {
-// 	t_ms_job	*ptr;
-
-// 	ptr = sh->jobs;
-// 	printf("%s:%d : ptr = %p\n", __FUNCTION__, __LINE__, ptr);
-// 	while (ptr)
-// 	{
-// 		sh->cmds = ptr->cmds;
-// 		sh->nb_cmds = ptr->nb_cmds;
-// 		execute(sh);
-// 		printf("%s:%d : sh->ret_val after execute = %d\n", __FUNCTION__, __LINE__, sh->ret_val);
-// 		if (sh->ret_val)
-// 			while (ptr && ptr->operator != '|')
-// 				ptr = ptr->next;
-// 		else
-// 			while (ptr && ptr->operator != '&')
-// 				ptr = ptr->next;
-// 		reset_shell(sh);
-// 	}
-// }
 
 /* Check return values from children and control process waiting */
 static int	handle_error_return(t_shell *sh)

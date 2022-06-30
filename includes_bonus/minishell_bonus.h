@@ -1,4 +1,3 @@
-
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
@@ -7,7 +6,7 @@
 /*   By: iyahoui- <iyahoui-@student.42quebec.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/06/13 19:29:54 by iyahoui-          #+#    #+#             */
-/*   Updated: 2022/06/16 22:40:17 by iyahoui-         ###   ########.fr       */
+/*   Updated: 2022/06/30 15:30:02 by iyahoui-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -65,6 +64,7 @@ void		init_env_vars(t_shell *sh, char **envp);
 char		*increment_shlvl(char *str);
 void		init_builtins(t_shell *sh);
 void		init_path(t_shell *sh);
+void		init_ms_path(t_shell *sh, char *name);
 void		init_pwd(t_shell *sh);
 
 /* Execution functions */

@@ -13,7 +13,7 @@ int	validate_parenthesis_contents(char *open_par_pos, int len)
 	int		ret;
 
 	parenthesis_contents = ft_xalloc(len + 1);
-	parenthesis_contents = ft_strncpy(parenthesis_contents, open_par_pos, len); // to discard trailing `)'
+	parenthesis_contents = ft_strncpy(parenthesis_contents, open_par_pos, len);
 	if (DEBUG)
 		printf("%s:%d : len = %d\n", __FUNCTION__, __LINE__, len);
 	if (!len)

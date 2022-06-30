@@ -6,7 +6,7 @@
 /*   By: iyahoui- <iyahoui-@student.42quebec.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/06/09 15:02:11 by jgoad             #+#    #+#             */
-/*   Updated: 2022/06/29 22:30:43 by iyahoui-         ###   ########.fr       */
+/*   Updated: 2022/06/30 15:31:17 by iyahoui-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,8 +25,6 @@ t_shell	*get_data(void)
 /* Initialize shell variables and do preliminary setup */
 t_shell	*init_shell(t_shell *sh, char **argv, char **envp)
 {
-	char	*temp_pwd;
-	int		i;
 
 	sh = get_data();
 	if (argv[1] && !ft_strncmp(argv[1], "-c", 3))
@@ -35,19 +33,7 @@ t_shell	*init_shell(t_shell *sh, char **argv, char **envp)
 	init_env_vars(sh, envp);
 	init_builtins(sh);
 	init_pwd(sh);
-	if (argv[0][0] == '/')
-		sh->ms_path = ft_strdup(argv[0]);
-	else
-	{
-		i = ft_strlen(argv[0]);
-		while (argv[0][i] != '/')
-			i--;
-		sh->ms_path = ft_xalloc(i + 2);
-		sh->ms_path = ft_strncpy(sh->ms_path, argv[0], i + 1);
-		temp_pwd = ft_strjoin(sh->pwd, "/");
-		sh->ms_path = ft_strjoin_free_rev(temp_pwd, sh->ms_path);
-		free(temp_pwd);
-	}
+	init_ms_path(sh, argv[0]);
 	init_history(sh);
 	sh->ret_val = 0;
 	sh->line = (char *) NULL;
