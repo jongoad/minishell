@@ -6,7 +6,7 @@
 /*   By: iyahoui- <iyahoui-@student.42quebec.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/06/13 15:57:48 by jgoad             #+#    #+#             */
-/*   Updated: 2022/07/01 14:12:38 by iyahoui-         ###   ########.fr       */
+/*   Updated: 2022/07/01 18:18:44 by iyahoui-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,7 +27,7 @@ int	main(int argc, char *argv[], char **envp)
 			sh->cmd_line = true;
 	}
 	ret = minishell(sh);
-	cleanup(sh);
+	cleanup(sh, true);
 	exit(ret);
 }
 
@@ -73,7 +73,7 @@ void	run_single_command(t_shell *sh)
 		execute_jobs(sh);
 		ret = sh->ret_val;
 	}
-	cleanup(sh);
+	cleanup(sh, true);
 	exit(ret);
 }
 
@@ -98,7 +98,7 @@ int	minishell(t_shell *sh)
 			if (sh->err_char)
 			{
 				sh->ret_val = parse_error(sh->err_char);
-				clean_jobs(sh);
+				clean_jobs(sh, true);
 			}
 			else
 				execute_jobs(sh);
@@ -110,7 +110,7 @@ int	minishell(t_shell *sh)
 /* Handle CTRL-D exit from readline */
 void	readline_exit(t_shell *sh)
 {
-	cleanup(sh);
+	cleanup(sh, true);
 	sh = NULL;
 	printf("exit\n");
 	exit(0);

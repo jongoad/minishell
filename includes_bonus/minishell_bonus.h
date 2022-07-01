@@ -6,7 +6,7 @@
 /*   By: iyahoui- <iyahoui-@student.42quebec.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/06/13 19:29:54 by iyahoui-          #+#    #+#             */
-/*   Updated: 2022/07/01 13:30:13 by iyahoui-         ###   ########.fr       */
+/*   Updated: 2022/07/01 18:17:30 by iyahoui-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -121,17 +121,17 @@ char		*get_err_msg(int errnum);
 int			parse_error(char err_char);
 
 /* Memory management functions */
-void		cleanup(t_shell *sh);
+void		cleanup(t_shell *sh, bool delete_heredoc);
 void		clean_env(t_shell *sh);
 void		clean_linked_lists(t_shell *sh);
 void		clean_single_cmd_linked_lists(t_cmd *cmd);
-void		clean_single_cmd(t_cmd *cmd);
-void		clean_input(t_cmd *cmd);
+void		clean_cmds(t_shell *sh, bool delete_heredoc);
+void		clean_single_cmd(t_cmd *cmd, bool delete_heredoc);
+void		clean_input(t_cmd *cmd, bool delete_heredoc);
 void		clean_output(t_cmd *cmd);
-void		clean_cmds(t_shell *sh);
 void		clean_fork(t_shell *sh, t_cmd *cmd);
-void		reset_shell(t_shell *sh);
-void		clean_jobs(t_shell *sh);
+void		reset_shell(t_shell *sh, bool delete_heredoc);
+void		clean_jobs(t_shell *sh, bool delete_heredoc);
 
 /* Parsing functions */
 

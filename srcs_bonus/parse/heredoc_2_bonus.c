@@ -6,7 +6,7 @@
 /*   By: iyahoui- <iyahoui-@student.42quebec.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/06/13 16:57:54 by jgoad             #+#    #+#             */
-/*   Updated: 2022/07/01 13:29:39 by iyahoui-         ###   ########.fr       */
+/*   Updated: 2022/07/01 18:12:17 by iyahoui-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,7 +17,7 @@ void	close_heredoc(int signum)
 	t_shell	*sh;
 
 	sh = get_data();
-	cleanup(sh);
+	cleanup(sh, false);
 	(void)signum;
 	exit(0);
 }

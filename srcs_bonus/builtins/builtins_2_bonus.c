@@ -6,7 +6,7 @@
 /*   By: iyahoui- <iyahoui-@student.42quebec.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/06/09 14:43:36 by jgoad             #+#    #+#             */
-/*   Updated: 2022/06/16 18:00:57 by iyahoui-         ###   ########.fr       */
+/*   Updated: 2022/07/01 18:12:07 by iyahoui-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -110,7 +110,7 @@ int	builtin_exit(t_shell *sh, t_cmd *cmd)
 				cmd->args[1], ERR_EXIT_NON_NUMERIC);
 		}
 	}
-	cleanup(sh);
+	cleanup(sh, true);
 	exit(ret);
 	return (ret);
 }

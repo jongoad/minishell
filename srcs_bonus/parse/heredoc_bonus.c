@@ -6,7 +6,7 @@
 /*   By: iyahoui- <iyahoui-@student.42quebec.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/06/13 16:57:54 by jgoad             #+#    #+#             */
-/*   Updated: 2022/07/01 13:29:58 by iyahoui-         ###   ########.fr       */
+/*   Updated: 2022/07/01 18:12:11 by iyahoui-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,7 +37,7 @@ void	read_heredoc(t_cmd *cmd, t_infile *in)
 	expand_heredoc(cmd, in, heredoc);
 	free (heredoc);
 	close(in->fd);
-	cleanup(sh);
+	cleanup(sh, false);
 	exit (0);
 }
 
