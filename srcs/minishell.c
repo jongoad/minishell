@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jgoad <jgoad@student.42.fr>                +#+  +:+       +#+        */
+/*   By: iyahoui- <iyahoui-@student.42quebec.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/06/13 15:57:48 by jgoad             #+#    #+#             */
-/*   Updated: 2022/06/30 15:06:36 by jgoad            ###   ########.fr       */
+/*   Updated: 2022/07/01 17:38:04 by iyahoui-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,7 +27,7 @@ int	main(int argc, char *argv[], char **envp)
 			sh->cmd_line = true;
 	}
 	ret = minishell(sh);
-	cleanup(sh);
+	cleanup(sh, true);
 	exit(ret);
 }
 
@@ -71,7 +71,7 @@ void	run_single_command(t_shell *sh)
 			execute(sh, true);
 		ret = sh->ret_val;
 	}
-	cleanup(sh);
+	cleanup(sh, true);
 	exit(ret);
 }
 
@@ -104,7 +104,7 @@ int	minishell(t_shell *sh)
 /* Handle CTRL-D exit from readline */
 void	readline_exit(t_shell *sh)
 {
-	cleanup(sh);
+	cleanup(sh, true);
 	sh = NULL;
 	printf("exit\n");
 	exit(0);

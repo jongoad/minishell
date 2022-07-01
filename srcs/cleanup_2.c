@@ -6,14 +6,14 @@
 /*   By: iyahoui- <iyahoui-@student.42quebec.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/06/09 15:16:30 by jgoad             #+#    #+#             */
-/*   Updated: 2022/06/13 18:35:02 by iyahoui-         ###   ########.fr       */
+/*   Updated: 2022/07/01 17:36:47 by iyahoui-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
 /* Clean all memory for a single instance of command struct */
-void	clean_single_cmd(t_cmd *cmd)
+void	clean_single_cmd(t_cmd *cmd, bool delete_heredoc)
 {
 	int	i;
 
@@ -26,7 +26,7 @@ void	clean_single_cmd(t_cmd *cmd)
 	i = 0;
 	while (cmd->args_lst && cmd->args_lst[i])
 		ms_lstclear(&cmd->args_lst[i++]);
-	clean_input(cmd);
+	clean_input(cmd, delete_heredoc);
 	clean_output(cmd);
 	free(cmd->ins);
 	cmd->ins = NULL;
@@ -37,7 +37,7 @@ void	clean_single_cmd(t_cmd *cmd)
 }
 
 /* Clean input data */
-void	clean_input(t_cmd *cmd)
+void	clean_input(t_cmd *cmd, bool delete_heredoc)
 {
 	int	i;
 
@@ -46,7 +46,7 @@ void	clean_input(t_cmd *cmd)
 	{
 		ms_lstclear(&cmd->ins[i]->in_lst);
 		ms_lstclear(&cmd->ins[i]->delim_lst);
-		if (cmd->ins[i]->delim)
+		if (delete_heredoc && cmd->ins[i]->delim)
 			unlink(cmd->ins[i]->infile);
 		free(cmd->ins[i]->infile);
 		cmd->ins[i]->infile = NULL;
@@ -77,7 +77,7 @@ void	clean_output(t_cmd *cmd)
 }
 
 /* Free command memory before returning to readline loop */
-void	clean_cmds(t_shell *sh)
+void	clean_cmds(t_shell *sh, bool delete_heredoc)
 {
 	int	i;
 
@@ -94,7 +94,7 @@ void	clean_cmds(t_shell *sh)
 		if (sh->cmds[i])
 		{
 			close_files(sh->cmds[i]);
-			clean_single_cmd(sh->cmds[i]);
+			clean_single_cmd(sh->cmds[i], delete_heredoc);
 			free(sh->cmds[i]);
 			sh->cmds[i] = NULL;
 		}

@@ -6,17 +6,17 @@
 /*   By: iyahoui- <iyahoui-@student.42quebec.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/06/13 16:48:19 by jgoad             #+#    #+#             */
-/*   Updated: 2022/06/14 14:33:56 by iyahoui-         ###   ########.fr       */
+/*   Updated: 2022/07/01 17:39:05 by iyahoui-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
 /* Free all memory before program exit */
-void	cleanup(t_shell *sh)
+void	cleanup(t_shell *sh, bool delete_heredoc)
 {	
 	clean_env(sh);
-	clean_cmds(sh);
+	clean_cmds(sh, delete_heredoc);
 	free(sh->line);
 	sh->line = NULL;
 	free(sh->prompt);
@@ -64,8 +64,8 @@ void	clean_env(t_shell *sh)
 void	reset_shell(t_shell *sh)
 {
 	if (sh->cmds)
-		clean_cmds(sh);
-	signal(SIGQUIT, void_sig);
+		clean_cmds(sh, true);
+	signal(SIGQUIT, SIG_IGN);
 	signal(SIGINT, signal_handler);
 	sh->nb_cmds = 0;
 	sh->cmd_iter = 0;
@@ -77,7 +77,7 @@ void	reset_shell(t_shell *sh)
 void	clean_fork(t_shell *sh, t_cmd *cmd)
 {
 	close_files(cmd);
-	cleanup(sh);
+	cleanup(sh, false);
 }
 
 /* Close all open file descriptors */

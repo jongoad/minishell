@@ -6,7 +6,7 @@
 /*   By: iyahoui- <iyahoui-@student.42quebec.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/01 13:01:03 by iyahoui-          #+#    #+#             */
-/*   Updated: 2022/07/01 13:21:35 by iyahoui-         ###   ########.fr       */
+/*   Updated: 2022/07/01 17:27:55 by iyahoui-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,8 +48,8 @@ int	validate_input(char *line)
 	int		ret;
 	bool	is_empty_line;
 
-	if (!line)
-		return (-1);
+	// if (!line)
+	// 	return (-1);
 	line_ptr = line;
 	skip_whitespaces(&line_ptr);
 	if (!*line_ptr)
@@ -59,7 +59,8 @@ int	validate_input(char *line)
 	while (*line_ptr)
 	{
 		ret = validate_char(&line_ptr, &state);
-		is_empty_line = state * true;
+		if (state)
+			is_empty_line = false;
 		if (ret)
 			return (ret);
 		if (*line_ptr)

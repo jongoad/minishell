@@ -6,7 +6,7 @@
 /*   By: iyahoui- <iyahoui-@student.42quebec.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/06/13 16:46:59 by jgoad             #+#    #+#             */
-/*   Updated: 2022/06/17 15:07:37 by iyahoui-         ###   ########.fr       */
+/*   Updated: 2022/07/01 17:38:31 by iyahoui-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -87,7 +87,7 @@ void	run_cmd(t_shell *sh, t_cmd *cmd, int i, bool interpret_mode)
 			}
 		}
 		ret = cmd->errnum;
-		cleanup(sh);
+		cleanup(sh, false);
 		exit(ret);
 	}
 }

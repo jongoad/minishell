@@ -6,7 +6,7 @@
 /*   By: iyahoui- <iyahoui-@student.42quebec.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/06/13 16:59:59 by jgoad             #+#    #+#             */
-/*   Updated: 2022/06/20 17:21:45 by iyahoui-         ###   ########.fr       */
+/*   Updated: 2022/07/01 17:54:02 by iyahoui-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,7 +31,7 @@ void	tokenize(t_arglst **lst, char **line)
 		parse_env_var(lst, line);
 	else
 		add_token(lst, line, CL_TOK_LIM, false);
-	if (**line && !ft_isspace(**line) && **line != '|')
+	if (**line && !ft_isspace(**line) && !is_set(**line, "|<>"))
 		return (add_to_token(lst, line));
 	return ;
 }
@@ -50,7 +50,7 @@ void	add_to_token(t_arglst **lst, char **line)
 	else
 		add_token(lst, line, CL_TOK_LIM, false);
 	ms_lstlast(*lst)->is_joined = true;
-	if (**line && !ft_isspace(**line) && **line != '|')
+	if (**line && !ft_isspace(**line) && !is_set(**line, "|<>"))
 		return (add_to_token(lst, line));
 	return ;
 }
