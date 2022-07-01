@@ -6,7 +6,7 @@
 /*   By: iyahoui- <iyahoui-@student.42quebec.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/06/13 16:46:59 by jgoad             #+#    #+#             */
-/*   Updated: 2022/07/01 13:33:26 by iyahoui-         ###   ########.fr       */
+/*   Updated: 2022/07/01 13:55:07 by iyahoui-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -85,6 +85,7 @@ void	execute(t_shell *sh)
 	while (i < sh->nb_cmds)
 	{
 		check_builtins(sh, sh->cmds[i]);
+		check_wildcard(sh->cmds[i]);
 		if (sh->nb_cmds == 1 && sh->cmds[i]->builtin >= 0)
 			sh->ret_val = run_builtin_parent(sh, sh->cmds[i]);
 		else
