@@ -6,7 +6,7 @@
 /*   By: iyahoui- <iyahoui-@student.42quebec.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/06/09 15:02:11 by jgoad             #+#    #+#             */
-/*   Updated: 2022/06/13 17:16:34 by iyahoui-         ###   ########.fr       */
+/*   Updated: 2022/07/01 14:11:49 by iyahoui-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,24 +25,13 @@ t_shell	*get_data(void)
 /* Initialize shell variables and do preliminary setup */
 t_shell	*init_shell(t_shell *sh, char **argv, char **envp)
 {
-	int	i;
-
 	sh = get_data();
-	if (is_set('/', argv[0]))
-	{
-		i = ft_strlen(argv[0]);
-		while (argv[0][i] != '/')
-			i--;
-		sh->ms_path = ft_xalloc(i + 2);
-		sh->ms_path = ft_strncpy(sh->ms_path, argv[0], i + 1);
-	}
-	else
-		sh->ms_path = ft_strdup(argv[0]);
 	init_shell_prompt(sh, argv[0]);
 	init_env_vars(sh, envp);
 	init_builtins(sh);
-	init_history(sh);
 	init_pwd(sh);
+	init_ms_path(sh, argv[0]);
+	init_history(sh);
 	sh->ret_val = 0;
 	sh->line = (char *) NULL;
 	sh->cmd_line = false;

@@ -6,7 +6,7 @@
 /*   By: iyahoui- <iyahoui-@student.42quebec.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/06/13 19:29:54 by iyahoui-          #+#    #+#             */
-/*   Updated: 2022/07/01 13:18:17 by iyahoui-         ###   ########.fr       */
+/*   Updated: 2022/07/01 14:05:12 by iyahoui-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -65,6 +65,7 @@ char		*increment_shlvl(char *str);
 void		init_builtins(t_shell *sh);
 void		init_path(t_shell *sh);
 void		init_pwd(t_shell *sh);
+void		init_ms_path(t_shell *sh, char *name);
 
 /* Execution functions */
 void		execute(t_shell *sh, bool interpret_mode);

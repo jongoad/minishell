@@ -6,7 +6,7 @@
 /*   By: iyahoui- <iyahoui-@student.42quebec.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/06/09 15:02:58 by jgoad             #+#    #+#             */
-/*   Updated: 2022/06/30 15:31:06 by iyahoui-         ###   ########.fr       */
+/*   Updated: 2022/07/01 14:07:07 by iyahoui-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -75,7 +75,7 @@ void	init_builtins(t_shell *sh)
 	sh->builtins.f[6] = &builtin_exit;
 }
 
-/* Initialize ms_path to fet the absolute path to the minishell executable */
+/* Initialize ms_path to get the absolute path to the minishell executable */
 void	init_ms_path(t_shell *sh, char *name)
 {
 	char	*temp_pwd;
