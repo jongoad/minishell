@@ -6,7 +6,7 @@
 /*   By: iyahoui- <iyahoui-@student.42quebec.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/06/13 16:46:59 by jgoad             #+#    #+#             */
-/*   Updated: 2022/07/01 13:55:07 by iyahoui-         ###   ########.fr       */
+/*   Updated: 2022/07/01 14:28:30 by iyahoui-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,7 +40,6 @@ void	execute_jobs(t_shell *sh)
 		prev = ptr;
 		ptr = ptr->next;
 		free(prev);
-		prev = NULL;
 		sh->jobs = ptr;
 		reset_shell(sh);
 	}
