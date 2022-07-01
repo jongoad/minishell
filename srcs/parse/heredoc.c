@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   heredoc.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jgoad <jgoad@student.42.fr>                +#+  +:+       +#+        */
+/*   By: iyahoui- <iyahoui-@student.42quebec.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/06/13 16:57:54 by jgoad             #+#    #+#             */
-/*   Updated: 2022/06/30 15:08:25 by jgoad            ###   ########.fr       */
+/*   Updated: 2022/07/01 13:12:09 by iyahoui-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -69,7 +69,7 @@ void	expand_heredoc(t_cmd *cmd, t_infile *in, char *heredoc)
 	free(expanded);
 }
 
-static void	read_heredoc(t_cmd *cmd, t_infile *in)
+void	read_heredoc(t_cmd *cmd, t_infile *in)
 {
 	t_shell	*sh;
 	char	*heredoc;

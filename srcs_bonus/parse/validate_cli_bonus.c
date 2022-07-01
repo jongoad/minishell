@@ -16,9 +16,6 @@ int	validate_parenthesis_contents(char *open_par_pos, int len)
 	parenthesis_contents = ft_strncpy(parenthesis_contents, open_par_pos, len);
 	if (DEBUG)
 		printf("%s:%d : len = %d\n", __FUNCTION__, __LINE__, len);
-	if (!len)
-		return (EMPTY_ARG);
-	len--;
 	while (ft_isspace(open_par_pos[len]) && len)
 		len--;
 	if (!len)
@@ -96,6 +93,19 @@ int	validate_redir(char **line, int *state)
 	
 }
 
+int	validate_job(char **line, int *state)
+{
+	if (is_set(**line, "|&"))
+	{
+		if (((*state & EMPTY_ARG) && !(*state & REDIR)))
+			return (**line);
+		*state = EMPTY_ARG;
+		if (*(*line + 1) == **line)
+			*line += 1;
+	}
+	return (0);
+}
+
 int	validate_char(char **line, int *state)
 {
 	int	ret;
@@ -117,16 +127,19 @@ int	validate_char(char **line, int *state)
 	/* endcase */
 
 	/* Special char check */
-	else if (is_set(**line, "|&"))
-	{
-		if (((*state & EMPTY_ARG) && !(*state & REDIR)))	// If new_token is hit, but last one is not valid
-			return (**line);
-		*state = EMPTY_ARG;
-		if (DEBUG)
-			printf("%s:%d : char = %c, state = %d\n", __FUNCTION__, __LINE__, **line, *state);
-		if (*(*line + 1) == **line)
-			*line += 1;
-	}
+	ret = validate_job(line, state);
+	if (ret)
+		return (ret);
+	// else if (is_set(**line, "|&"))
+	// {
+	// 	if (((*state & EMPTY_ARG) && !(*state & REDIR)))	// If new_token is hit, but last one is not valid
+	// 		return (**line);
+	// 	*state = EMPTY_ARG;
+	// 	if (DEBUG)
+	// 		printf("%s:%d : char = %c, state = %d\n", __FUNCTION__, __LINE__, **line, *state);
+	// 	if (*(*line + 1) == **line)
+	// 		*line += 1;
+	// }
 	/* endcase */
 	ret = validate_redir(line, state);
 	if (ret)

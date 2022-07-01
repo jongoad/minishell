@@ -6,7 +6,7 @@
 /*   By: iyahoui- <iyahoui-@student.42quebec.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/06/13 19:29:54 by iyahoui-          #+#    #+#             */
-/*   Updated: 2022/06/20 17:21:45 by iyahoui-         ###   ########.fr       */
+/*   Updated: 2022/07/01 13:13:09 by iyahoui-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -156,6 +156,12 @@ void		add_token_by_len(
 
 //	heredoc.c
 void		parse_heredoc(t_cmd *cmd, t_infile *in);
+void		read_heredoc(t_cmd *cmd, t_infile *in);
+char		*get_heredoc_filename(void);
+void		parse_heredoc(t_cmd *cmd, t_infile *in);
+void		close_heredoc(int signum);
+char		*expand_heredoc_tok(char **envp, char **ptr);
+void		expand_heredoc(t_cmd *cmd, t_infile *in, char *heredoc);
 
 //	lst_to_str.c
 char		*expand_env_var(char **envp, char *var_name);
