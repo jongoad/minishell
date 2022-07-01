@@ -6,7 +6,7 @@
 /*   By: iyahoui- <iyahoui-@student.42quebec.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/06/13 15:57:48 by jgoad             #+#    #+#             */
-/*   Updated: 2022/06/29 22:39:07 by iyahoui-         ###   ########.fr       */
+/*   Updated: 2022/07/01 13:28:34 by iyahoui-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,8 +17,6 @@ int	main(int argc, char *argv[], char **envp)
 	t_shell	*sh;
 	int		ret;
 
-	// signal(SIGINT, signal_handler);
-	// signal(SIGQUIT, SIG_IGN);
 	sh = NULL;
 	sh = init_shell(sh, argv, envp);
 	if (argc > 1)
@@ -67,15 +65,11 @@ void	run_single_command(t_shell *sh)
 	ret = validate_input(sh->line);
 	if (ret)
 		ret = parse_error(ret);
-	// ret = parse(sh, sh->line);
 	ret = parse_jobs(sh, sh->line);
 	if (ret)
 		ret = parse_error(ret);
 	else
 	{
-		// cmds_lst_to_str(sh);
-		// if (sh->cmds)
-		// 	execute(sh);
 		execute_jobs(sh);
 		ret = sh->ret_val;
 	}
@@ -96,7 +90,6 @@ int	minishell(t_shell *sh)
 		if (!sh->line)
 			readline_exit(sh);
 		sh->err_char = validate_input(sh->line);
-		// printf("%s:%d : ret = %d\n", __FUNCTION__, __LINE__, sh->err_char);
 		if (sh->err_char)
 			sh->ret_val = parse_error(sh->err_char);
 		else
@@ -110,17 +103,6 @@ int	minishell(t_shell *sh)
 			else
 				execute_jobs(sh);
 		}
-		// sh->err_char = parse(sh, sh->line);
-		// if (sh->err_char)
-		// 	sh->ret_val = parse_error(sh->err_char);
-		// else
-		// {
-			// cmds_lst_to_str(sh);
-		// 	print_cmds_info(sh);
-		// 	if (sh->cmds)
-		// 		execute(sh);
-		// }
-		// reset_shell(sh);
 	}
 	return (sh->ret_val);
 }

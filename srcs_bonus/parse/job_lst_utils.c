@@ -1,3 +1,14 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   job_lst_utils.c                                    :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: iyahoui- <iyahoui-@student.42quebec.com    +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2022/07/01 13:26:51 by iyahoui-          #+#    #+#             */
+/*   Updated: 2022/07/01 13:27:17 by iyahoui-         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
 
 #include "minishell_bonus.h"
 
@@ -29,7 +40,7 @@ t_ms_job	*ms_jobnew(t_cmd **cmds, int nb_cmds, char operator)
 		return (NULL);
 	new_node->cmds = cmds;
 	new_node->operator = operator;
-	new_node->nb_cmds =nb_cmds;
+	new_node->nb_cmds = nb_cmds;
 	new_node->next = NULL;
 	return (new_node);
 }

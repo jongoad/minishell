@@ -6,11 +6,17 @@
 /*   By: iyahoui- <iyahoui-@student.42quebec.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/06/13 16:46:59 by jgoad             #+#    #+#             */
-/*   Updated: 2022/06/30 14:57:33 by iyahoui-         ###   ########.fr       */
+/*   Updated: 2022/07/01 13:33:26 by iyahoui-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell_bonus.h"
+
+static void	update_cmds(t_shell *sh, t_ms_job *ptr)
+{
+	sh->cmds = ptr->cmds;
+	sh->nb_cmds = ptr->nb_cmds;
+}
 
 void	execute_jobs(t_shell *sh)
 {
@@ -24,8 +30,7 @@ void	execute_jobs(t_shell *sh)
 	prev = NULL;
 	while (ptr)
 	{
-		sh->cmds = ptr->cmds;
-		sh->nb_cmds = ptr->nb_cmds;
+		update_cmds(sh, ptr);
 		if (!prev || (ret && operator == '|') || (!ret && operator == '&'))
 		{
 			execute(sh);
@@ -92,54 +97,4 @@ void	execute(t_shell *sh)
 	if (sh->nb_cmds > 1 || (sh->nb_cmds == 1 && sh->cmds[0]->builtin < 0))
 		while (handle_error_return(sh))
 			;
-}
-
-/* Fork process and run a command */
-void	run_cmd(t_shell *sh, t_cmd *cmd, int i)
-{
-	int		ret;
-
-	if (!sh->interpret_mode)
-		signal(SIGQUIT, signal_handler);
-	sh->pids[i] = fork();
-	if (sh->pids[i] == 0)
-	{
-		if (!init_io(sh, cmd) && cmd->exe)
-		{
-			manage_pipes(sh, cmd);
-			if (cmd->builtin < 0)
-				run_cmd_external(sh, cmd);
-			else
-			{
-				cmd->errnum = sh->builtins.f[cmd->builtin](sh, cmd);
-				if (cmd->errnum)
-					put_err_msg(sh->sh_name, cmd->exe, NULL, ERR_PIPE);
-			}
-		}
-		ret = cmd->errnum;
-		cleanup(sh);
-		exit(ret);
-	}
-}
-
-/* Run an external command using execve */
-void	run_cmd_external(t_shell *sh, t_cmd *cmd)
-{
-	char	*exe;
-
-	exe = build_cmd_path(sh->env.path, cmd->exe);
-	if (exe)
-		cmd->errnum = execve(exe, cmd->args, sh->env.envp);
-	cmd->errnum = E_CMDNOTFOUND;
-	put_err_msg(sh->sh_name, cmd->exe, NULL, ERR_CMD);
-}
-
-/* Run builtin command without forking */
-int	run_builtin_parent(t_shell *sh, t_cmd *cmd)
-{
-	if (init_io(sh, cmd))
-		return (cmd->errnum);
-	else
-		sh->builtins.f[cmd->builtin](sh, cmd);
-	return (cmd->errnum);
 }

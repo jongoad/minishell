@@ -6,7 +6,7 @@
 /*   By: iyahoui- <iyahoui-@student.42quebec.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/06/13 16:48:19 by jgoad             #+#    #+#             */
-/*   Updated: 2022/06/30 13:18:43 by iyahoui-         ###   ########.fr       */
+/*   Updated: 2022/07/01 13:19:12 by iyahoui-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,7 +16,6 @@
 void	cleanup(t_shell *sh)
 {	
 	clean_env(sh);
-	// clean_cmds(sh);
 	clean_jobs(sh);
 	free(sh->line);
 	sh->line = NULL;

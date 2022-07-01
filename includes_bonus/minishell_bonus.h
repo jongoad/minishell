@@ -6,7 +6,7 @@
 /*   By: iyahoui- <iyahoui-@student.42quebec.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/06/13 19:29:54 by iyahoui-          #+#    #+#             */
-/*   Updated: 2022/07/01 13:12:47 by iyahoui-         ###   ########.fr       */
+/*   Updated: 2022/07/01 13:30:13 by iyahoui-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -137,6 +137,11 @@ void		clean_jobs(t_shell *sh);
 
 //	validate.c
 int			validate_input(char *line);
+int			validate_parenthesis_contents(char *open_par_pos, int len);
+int			validate_parenthesis(
+				char **line, int *state, int nb_open_parentheses);
+int			validate_redir(char **line, int *state);
+int			validate_job(char **line, int *state);
 
 //	parse.c
 int			parse(t_shell *sh, char *rem_line);
@@ -180,11 +185,14 @@ char		*expand_heredoc_tok(char **envp, char **ptr);
 void		expand_heredoc(t_cmd *cmd, t_infile *in, char *heredoc);
 
 //	lst_to_str.c
-char		*expand_env_var(char **envp, char *var_name);
 char		*lst_to_str(char **envp, t_arglst *lst);
 char		*lst_to_str_no_exp(t_arglst *lst);
 char		**lst_arr_to_str_arr(char **envp, t_arglst **arglst, int nb_elems);
 void		cmds_lst_to_str(t_shell *sh);
+
+//	expand_tokens.c
+char		*expand_env_var(char **envp, char *var_name);
+void		expand_subshell_cmd(t_shell *sh, t_cmd *cmd);
 
 //	parse_utils.c
 void		skip_whitespaces(char **line);

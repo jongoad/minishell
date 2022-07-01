@@ -6,7 +6,7 @@
 /*   By: iyahoui- <iyahoui-@student.42quebec.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/06/09 15:02:11 by jgoad             #+#    #+#             */
-/*   Updated: 2022/06/30 15:31:17 by iyahoui-         ###   ########.fr       */
+/*   Updated: 2022/07/01 13:28:58 by iyahoui-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,7 +25,6 @@ t_shell	*get_data(void)
 /* Initialize shell variables and do preliminary setup */
 t_shell	*init_shell(t_shell *sh, char **argv, char **envp)
 {
-
 	sh = get_data();
 	if (argv[1] && !ft_strncmp(argv[1], "-c", 3))
 		sh->interpret_mode = true;

@@ -1,16 +1,16 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   heredoc.c                                          :+:      :+:    :+:   */
+/*   heredoc_2_bonus.c                                  :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: iyahoui- <iyahoui-@student.42quebec.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/06/13 16:57:54 by jgoad             #+#    #+#             */
-/*   Updated: 2022/07/01 13:14:02 by iyahoui-         ###   ########.fr       */
+/*   Updated: 2022/07/01 13:29:39 by iyahoui-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "minishell.h"
+#include "minishell_bonus.h"
 
 void	close_heredoc(int signum)
 {
@@ -67,53 +67,4 @@ void	expand_heredoc(t_cmd *cmd, t_infile *in, char *heredoc)
 	}
 	write(in->fd, expanded, ft_strlen(expanded));
 	free(expanded);
-}
-
-void	read_heredoc(t_cmd *cmd, t_infile *in)
-{
-	t_shell	*sh;
-	char	*heredoc;
-	char	*buff;
-	int		len;
-
-	(void)cmd;
-	sh = get_data();
-	signal(SIGINT, close_heredoc);
-	heredoc = NULL;
-	while (1)
-	{
-		putstr_fd("> ", STDOUT_FILENO);
-		buff = get_next_line(STDIN_FILENO);
-		len = ft_strlen(buff);
-		if (!buff || (!ft_strncmp(buff, in->delim, len - 1) && len > 1))
-			break ;
-		heredoc = ft_strjoin_free(heredoc, buff);
-		free (buff);
-	}
-	free (buff);
-	expand_heredoc(cmd, in, heredoc);
-	free (heredoc);
-	close(in->fd);
-	cleanup(sh);
-	exit (0);
-}
-
-char	*get_heredoc_filename(void)
-{
-	char	*suffix;
-	char	*filename;
-	uint	n;
-
-	n = 0;
-	suffix = ft_itoa(n++);
-	filename = ft_strjoin(HEREDOC_PATH, suffix);
-	while (access(filename, F_OK) == 0)
-	{
-		free(suffix);
-		free(filename);
-		suffix = ft_itoa(n++);
-		filename = ft_strjoin(HEREDOC_PATH, suffix);
-	}
-	free(suffix);
-	return (filename);
 }

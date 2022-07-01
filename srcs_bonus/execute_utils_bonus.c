@@ -6,7 +6,7 @@
 /*   By: iyahoui- <iyahoui-@student.42quebec.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/06/09 15:09:17 by jgoad             #+#    #+#             */
-/*   Updated: 2022/06/16 18:00:57 by iyahoui-         ###   ########.fr       */
+/*   Updated: 2022/07/01 13:32:25 by iyahoui-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -63,4 +63,54 @@ int	check_builtins(t_shell *sh, t_cmd *cmd)
 	}
 	free(tmp);
 	return (cmd->builtin = -1);
+}
+
+/* Run builtin command without forking */
+int	run_builtin_parent(t_shell *sh, t_cmd *cmd)
+{
+	if (init_io(sh, cmd))
+		return (cmd->errnum);
+	else
+		sh->builtins.f[cmd->builtin](sh, cmd);
+	return (cmd->errnum);
+}
+
+/* Fork process and run a command */
+void	run_cmd(t_shell *sh, t_cmd *cmd, int i)
+{
+	int		ret;
+
+	if (!sh->interpret_mode)
+		signal(SIGQUIT, signal_handler);
+	sh->pids[i] = fork();
+	if (sh->pids[i] == 0)
+	{
+		if (!init_io(sh, cmd) && cmd->exe)
+		{
+			manage_pipes(sh, cmd);
+			if (cmd->builtin < 0)
+				run_cmd_external(sh, cmd);
+			else
+			{
+				cmd->errnum = sh->builtins.f[cmd->builtin](sh, cmd);
+				if (cmd->errnum)
+					put_err_msg(sh->sh_name, cmd->exe, NULL, ERR_PIPE);
+			}
+		}
+		ret = cmd->errnum;
+		cleanup(sh);
+		exit(ret);
+	}
+}
+
+/* Run an external command using execve */
+void	run_cmd_external(t_shell *sh, t_cmd *cmd)
+{
+	char	*exe;
+
+	exe = build_cmd_path(sh->env.path, cmd->exe);
+	if (exe)
+		cmd->errnum = execve(exe, cmd->args, sh->env.envp);
+	cmd->errnum = E_CMDNOTFOUND;
+	put_err_msg(sh->sh_name, cmd->exe, NULL, ERR_CMD);
 }
