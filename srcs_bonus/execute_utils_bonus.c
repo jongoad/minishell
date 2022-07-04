@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   execute_utils_bonus.c                              :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: iyahoui- <iyahoui-@student.42quebec.com    +#+  +:+       +#+        */
+/*   By: jgoad <jgoad@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/06/09 15:09:17 by jgoad             #+#    #+#             */
-/*   Updated: 2022/07/01 18:11:52 by iyahoui-         ###   ########.fr       */
+/*   Updated: 2022/07/04 11:40:33 by jgoad            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -111,6 +111,8 @@ void	run_cmd_external(t_shell *sh, t_cmd *cmd)
 	exe = build_cmd_path(sh->env.path, cmd->exe);
 	if (exe)
 		cmd->errnum = execve(exe, cmd->args, sh->env.envp);
+	if (exe)
+		free(exe);
 	cmd->errnum = E_CMDNOTFOUND;
 	put_err_msg(sh->sh_name, cmd->exe, NULL, ERR_CMD);
 }
