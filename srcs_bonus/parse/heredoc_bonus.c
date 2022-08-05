@@ -6,39 +6,49 @@
 /*   By: iyahoui- <iyahoui-@student.42quebec.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/06/13 16:57:54 by jgoad             #+#    #+#             */
-/*   Updated: 2022/07/01 18:12:11 by iyahoui-         ###   ########.fr       */
+/*   Updated: 2022/08/05 17:39:56 by iyahoui-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell_bonus.h"
+
+void	clean_heredoc(t_infile *in, t_cmd *cmd, char *buff, char *heredoc)
+{
+	t_shell	*sh;
+
+	sh = get_data();
+	free(buff);
+	close(STDIN_FILENO);
+	get_next_line(STDIN_FILENO);
+	expand_heredoc(cmd, in, heredoc);
+	free(heredoc);
+	free(sh->job_string);
+	clean_cmds(sh, false);
+	cleanup(sh, false);
+	exit(0);
+}
 
 void	read_heredoc(t_cmd *cmd, t_infile *in)
 {
 	t_shell	*sh;
 	char	*heredoc;
 	char	*buff;
-	int		len;
+	size_t	len;
 
-	(void)cmd;
 	sh = get_data();
-	signal(SIGINT, close_heredoc);
 	heredoc = NULL;
 	while (1)
 	{
 		putstr_fd("> ", STDOUT_FILENO);
 		buff = get_next_line(STDIN_FILENO);
 		len = ft_strlen(buff);
-		if (!buff || (!ft_strncmp(buff, in->delim, len - 1) && len > 1))
+		if (!buff || (!ft_strncmp(buff, in->delim, len - 1)
+				&& len - 1 == ft_strlen(in->delim)))
 			break ;
 		heredoc = ft_strjoin_free(heredoc, buff);
 		free (buff);
 	}
-	free (buff);
-	expand_heredoc(cmd, in, heredoc);
-	free (heredoc);
-	close(in->fd);
-	cleanup(sh, false);
-	exit (0);
+	clean_heredoc(in, cmd, buff, heredoc);
 }
 
 char	*get_heredoc_filename(void)

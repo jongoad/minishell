@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   get_next_line_utils.c                              :+:      :+:    :+:   */
+/*   gnl_utils.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jgoad <jgoad@student.42.fr>                +#+  +:+       +#+        */
+/*   By: iyahoui- <iyahoui-@student.42quebec.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/06/09 14:30:38 by jgoad             #+#    #+#             */
-/*   Updated: 2022/06/09 14:31:04 by jgoad            ###   ########.fr       */
+/*   Updated: 2022/08/05 16:43:12 by iyahoui-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,6 +37,8 @@ char	*ft_strdup_char(char *s1)
 	char			*str;
 
 	i = 0;
+	if (!s1)
+		return (NULL);
 	str = malloc(strlen_char(s1, '\0') + 1);
 	if (!str)
 		return (NULL);

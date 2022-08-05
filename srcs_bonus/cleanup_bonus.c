@@ -6,7 +6,7 @@
 /*   By: iyahoui- <iyahoui-@student.42quebec.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/06/13 16:48:19 by jgoad             #+#    #+#             */
-/*   Updated: 2022/08/05 15:07:50 by iyahoui-         ###   ########.fr       */
+/*   Updated: 2022/08/05 17:39:25 by iyahoui-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,7 +16,6 @@
 void	cleanup(t_shell *sh, bool delete_heredoc)
 {	
 	clean_env(sh);
-	//clean_cmds(sh, delete_heredoc); (this was causing a segfault when running 'exit', does not seem to be needed for leak prevention)
 	clean_jobs(sh, delete_heredoc);
 	free(sh->line);
 	sh->line = NULL;

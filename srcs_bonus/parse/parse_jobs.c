@@ -6,7 +6,7 @@
 /*   By: iyahoui- <iyahoui-@student.42quebec.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/01 13:23:28 by iyahoui-          #+#    #+#             */
-/*   Updated: 2022/07/01 13:23:29 by iyahoui-         ###   ########.fr       */
+/*   Updated: 2022/08/05 17:31:26 by iyahoui-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -72,6 +72,7 @@ int	parse_jobs(t_shell *sh, char *line)
 	job_string = get_job_string(&line_ptr);
 	while (job_string)
 	{
+		sh->job_string = job_string;
 		parse(sh, job_string);
 		cmds_lst_to_str(sh);
 		steal_job(sh, line_ptr);

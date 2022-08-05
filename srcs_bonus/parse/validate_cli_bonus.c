@@ -6,7 +6,7 @@
 /*   By: iyahoui- <iyahoui-@student.42quebec.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/01 13:01:03 by iyahoui-          #+#    #+#             */
-/*   Updated: 2022/07/01 17:27:55 by iyahoui-         ###   ########.fr       */
+/*   Updated: 2022/08/05 17:40:13 by iyahoui-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,8 +48,6 @@ int	validate_input(char *line)
 	int		ret;
 	bool	is_empty_line;
 
-	// if (!line)
-	// 	return (-1);
 	line_ptr = line;
 	skip_whitespaces(&line_ptr);
 	if (!*line_ptr)

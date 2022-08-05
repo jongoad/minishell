@@ -6,7 +6,7 @@
 /*   By: iyahoui- <iyahoui-@student.42quebec.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/06/13 16:58:26 by jgoad             #+#    #+#             */
-/*   Updated: 2022/06/20 17:21:12 by iyahoui-         ###   ########.fr       */
+/*   Updated: 2022/08/05 17:07:06 by iyahoui-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -54,14 +54,14 @@ void	parse_in(t_cmd *cmd, char **line, bool is_double)
 
 	new_in = ft_xalloc(sizeof(t_infile));
 	new_in->fd = -1;
+	add_infile(cmd, new_in);
+	cmd->nb_ins++;
 	if (is_double)
 		tokenize(&new_in->delim_lst, line);
 	else
 		tokenize(&new_in->in_lst, line);
 	if (is_double)
 		parse_heredoc(cmd, new_in);
-	add_infile(cmd, new_in);
-	cmd->nb_ins++;
 }
 
 void	parse_out(t_cmd *cmd, char **line, bool is_double)

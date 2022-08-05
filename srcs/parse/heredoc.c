@@ -6,7 +6,7 @@
 /*   By: iyahoui- <iyahoui-@student.42quebec.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/06/13 16:57:54 by jgoad             #+#    #+#             */
-/*   Updated: 2022/07/01 17:41:29 by iyahoui-         ###   ########.fr       */
+/*   Updated: 2022/08/05 17:39:00 by iyahoui-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,28 +17,28 @@ void	read_heredoc(t_cmd *cmd, t_infile *in)
 	t_shell	*sh;
 	char	*heredoc;
 	char	*buff;
-	int		len;
+	size_t	len;
 
-	(void)cmd;
 	sh = get_data();
-	signal(SIGINT, close_heredoc);
 	heredoc = NULL;
 	while (1)
 	{
 		putstr_fd("> ", STDOUT_FILENO);
 		buff = get_next_line(STDIN_FILENO);
 		len = ft_strlen(buff);
-		if (!buff || (!ft_strncmp(buff, in->delim, len - 1) && len > 1))
+		if (!buff || (!ft_strncmp(buff, in->delim, len - 1)
+				&& len - 1 == ft_strlen(in->delim)))
 			break ;
 		heredoc = ft_strjoin_free(heredoc, buff);
 		free (buff);
 	}
-	free (buff);
+	free(buff);
+	close(STDIN_FILENO);
+	get_next_line(STDIN_FILENO);
 	expand_heredoc(cmd, in, heredoc);
-	free (heredoc);
-	close(in->fd);
+	free(heredoc);
 	cleanup(sh, false);
-	exit (0);
+	exit(0);
 }
 
 char	*get_heredoc_filename(void)
@@ -72,7 +72,10 @@ void	parse_heredoc(t_cmd *cmd, t_infile *in)
 	in->fd = open(in->infile, O_TRUNC | O_CREAT | O_CLOEXEC | O_RDWR, 0644);
 	pid = fork();
 	if (pid == 0)
+	{
+		signal(SIGINT, close_heredoc);
 		read_heredoc(cmd, in);
+	}
 	status = 0;
 	waitpid(pid, &status, 0);
 	close(in->fd);

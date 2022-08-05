@@ -6,7 +6,7 @@
 /*   By: iyahoui- <iyahoui-@student.42quebec.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/06/13 19:21:29 by iyahoui-          #+#    #+#             */
-/*   Updated: 2022/06/29 17:53:23 by iyahoui-         ###   ########.fr       */
+/*   Updated: 2022/08/05 17:30:43 by iyahoui-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -114,6 +114,7 @@ struct s_shell
 	bool		interpret_mode;
 	char		err_char;
 	char		*pwd;
+	char		*job_string;
 };
 
 struct s_ms_job
