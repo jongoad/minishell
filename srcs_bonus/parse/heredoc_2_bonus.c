@@ -6,7 +6,7 @@
 /*   By: iyahoui- <iyahoui-@student.42quebec.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/06/13 16:57:54 by jgoad             #+#    #+#             */
-/*   Updated: 2022/07/01 18:12:17 by iyahoui-         ###   ########.fr       */
+/*   Updated: 2022/08/05 15:20:44 by iyahoui-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -53,18 +53,14 @@ char	*expand_heredoc_tok(char **envp, char **ptr)
 
 void	expand_heredoc(t_cmd *cmd, t_infile *in, char *heredoc)
 {
-	char	*expanded;
 	char	*token;
 	char	*ptr;
 
-	expanded = NULL;
 	ptr = heredoc;
 	while (ptr && *ptr)
 	{
 		token = expand_heredoc_tok(cmd->envp, &ptr);
-		expanded = ft_strjoin_free(expanded, token);
+		write(in->fd, token, ft_strlen(token));
 		free(token);
 	}
-	write(in->fd, expanded, ft_strlen(expanded));
-	free(expanded);
 }

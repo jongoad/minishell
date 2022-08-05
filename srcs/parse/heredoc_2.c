@@ -6,7 +6,7 @@
 /*   By: iyahoui- <iyahoui-@student.42quebec.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/06/30 15:08:05 by jgoad             #+#    #+#             */
-/*   Updated: 2022/07/21 20:24:10 by iyahoui-         ###   ########.fr       */
+/*   Updated: 2022/08/05 15:19:47 by iyahoui-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -56,7 +56,6 @@ void	expand_heredoc(t_cmd *cmd, t_infile *in, char *heredoc)
 	char	*token;
 	char	*ptr;
 
-	expanded = NULL;
 	ptr = heredoc;
 	while (ptr && *ptr)
 	{
