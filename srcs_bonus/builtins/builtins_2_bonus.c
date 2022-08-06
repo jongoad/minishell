@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   builtins_2_bonus.c                                 :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jgoad <jgoad@student.42.fr>                +#+  +:+       +#+        */
+/*   By: iyahoui- <iyahoui-@student.42quebec.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/06/09 14:43:36 by jgoad             #+#    #+#             */
-/*   Updated: 2022/07/04 10:41:48 by jgoad            ###   ########.fr       */
+/*   Updated: 2022/08/06 18:45:40 by iyahoui-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -101,6 +101,7 @@ int	builtin_exit(t_shell *sh, t_cmd *cmd)
 		if (is_valid && cmd->args[2])
 		{
 			put_err_msg(sh->sh_name, cmd->args[0], NULL, ERR_EXIT_ARGS_NUM);
+			cmd->errnum = 1;
 			return (1);
 		}
 		else if (!is_valid)
