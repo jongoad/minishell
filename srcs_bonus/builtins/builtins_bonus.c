@@ -6,7 +6,7 @@
 /*   By: iyahoui- <iyahoui-@student.42quebec.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/06/09 14:46:44 by jgoad             #+#    #+#             */
-/*   Updated: 2022/08/06 18:41:56 by iyahoui-         ###   ########.fr       */
+/*   Updated: 2022/08/06 19:05:50 by iyahoui-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -95,7 +95,7 @@ void	builtins_cd_2(t_shell *sh, t_cmd *cmd, char *res, char *buf)
 		cd_no_arg(sh, cmd);
 	if (chdir(cmd->args[cmd->nb_args - 1]))
 	{
-		cmd->errnum = errno;
+		cmd->errnum = 1;
 		cmd->errname = ft_strjoin("cd: ", cmd->args[cmd->nb_args - 1]);
 		put_err_msg(sh->sh_name, cmd->exe,
 			cmd->args[cmd->nb_args - 1], ERR_FILE);

@@ -6,7 +6,7 @@
 /*   By: iyahoui- <iyahoui-@student.42quebec.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/06/09 14:46:44 by jgoad             #+#    #+#             */
-/*   Updated: 2022/08/06 18:42:24 by iyahoui-         ###   ########.fr       */
+/*   Updated: 2022/08/06 19:04:26 by iyahoui-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,7 +23,6 @@ int	builtin_echo(t_shell *sh, t_cmd *cmd)
 		i = 2;
 		while (cmd->args[1][i] == 'n')
 			i++;
-			// printf("i = %d\n", i);
 		if (!cmd->args[1][i] || ft_isspace(cmd->args[1][i]))
 			return (builtin_echo_n(sh, cmd));
 	}
@@ -96,7 +95,7 @@ void	builtins_cd_2(t_shell *sh, t_cmd *cmd, char *res, char *buf)
 		cd_no_arg(sh, cmd);
 	if (chdir(cmd->args[cmd->nb_args - 1]))
 	{
-		cmd->errnum = errno;
+		cmd->errnum = 1;
 		cmd->errname = ft_strjoin("cd: ", cmd->args[cmd->nb_args - 1]);
 		put_err_msg(sh->sh_name, cmd->exe,
 			cmd->args[cmd->nb_args - 1], ERR_FILE);

@@ -6,7 +6,7 @@
 /*   By: iyahoui- <iyahoui-@student.42quebec.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/06/09 14:43:36 by jgoad             #+#    #+#             */
-/*   Updated: 2022/08/06 18:46:03 by iyahoui-         ###   ########.fr       */
+/*   Updated: 2022/08/06 19:08:54 by iyahoui-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,7 +22,7 @@ int	builtin_export(t_shell *sh, t_cmd *cmd)
 	{
 		while (sh->env.envp[i])
 		{
-			printf("%s%s\n", "declare -x ", sh->env.envp[i]);
+			printf("declare -x %s\n", sh->env.envp[i]);
 			i++;
 		}
 		return (cmd->errnum);
