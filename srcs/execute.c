@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   execute.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jgoad <jgoad@student.42.fr>                +#+  +:+       +#+        */
+/*   By: iyahoui- <iyahoui-@student.42quebec.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/06/13 16:46:59 by jgoad             #+#    #+#             */
-/*   Updated: 2022/07/04 11:40:28 by jgoad            ###   ########.fr       */
+/*   Updated: 2022/08/06 18:52:23 by iyahoui-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,7 +29,7 @@ static int	handle_error_return(t_shell *sh)
 			printf("Quit: 3\n");
 		else if (WIFSIGNALED(stat_loc) && WTERMSIG(stat_loc) == SIGINT)
 			printf("\n");
-		else if (WTERMSIG(stat_loc))
+		if (WTERMSIG(stat_loc))
 			sh->ret_val = 128 + WTERMSIG(stat_loc);
 	}
 	return (ret);
