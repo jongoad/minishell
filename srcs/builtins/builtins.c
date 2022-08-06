@@ -6,7 +6,7 @@
 /*   By: iyahoui- <iyahoui-@student.42quebec.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/06/09 14:46:44 by jgoad             #+#    #+#             */
-/*   Updated: 2022/06/21 16:56:29 by iyahoui-         ###   ########.fr       */
+/*   Updated: 2022/08/06 18:42:24 by iyahoui-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,8 +18,15 @@ int	builtin_echo(t_shell *sh, t_cmd *cmd)
 	int	i;
 
 	i = 1;
-	if (cmd->args[1] && !ft_strncmp(cmd->args[1], "-n", 3))
-		return (builtin_echo_n(sh, cmd));
+	if (cmd->args[1] && !ft_strncmp(cmd->args[1], "-n", 2))
+	{
+		i = 2;
+		while (cmd->args[1][i] == 'n')
+			i++;
+			// printf("i = %d\n", i);
+		if (!cmd->args[1][i] || ft_isspace(cmd->args[1][i]))
+			return (builtin_echo_n(sh, cmd));
+	}
 	while (cmd->args[i])
 	{
 		putstr_fd(cmd->args[i], cmd->fd_out);
