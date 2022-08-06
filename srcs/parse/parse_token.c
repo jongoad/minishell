@@ -6,7 +6,7 @@
 /*   By: iyahoui- <iyahoui-@student.42quebec.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/06/13 16:58:55 by jgoad             #+#    #+#             */
-/*   Updated: 2022/06/13 19:25:19 by iyahoui-         ###   ########.fr       */
+/*   Updated: 2022/08/06 18:31:46 by iyahoui-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -52,7 +52,7 @@ void	parse_env_var(t_arglst **lst, char **line)
 {
 	*line += 1;
 	if (**line && (ft_isalnum(**line)
-			|| (**line == '?' && (ft_isspace(*(*line + 1)) || !*(*line + 1)))))
+			|| (**line == '?' && (is_set(*(*line + 1), CL_TOK_LIM) || !*(*line + 1)))))
 	{
 		if (**line == '?')
 			add_token_by_len(lst, line, 1, true);
